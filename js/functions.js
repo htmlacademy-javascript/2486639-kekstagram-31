@@ -1,4 +1,4 @@
-"use strict";
+//"use strict";
 
 //alert('1111111111');
 function checkStrLen(str, len) {
@@ -38,7 +38,7 @@ isPalendrom('топот'); // true
 // Несмотря на разный регистр, тоже палиндром
 isPalendrom('ДовОд'); // true
 // Это не палиндром
-isPalendrom('Кекс');  // false
+isPalendrom('Кекс'); // false
 
 // Это палиндром
 isPalendrom('Лёша на полке клопа нашёл '); // true
@@ -59,7 +59,7 @@ function getNumber(str) {
 
   for (let index = 0; index < sstr.length; index++) {
     const symb = sstr[index];
-    const numb = parseInt(symb);
+    const numb = parseInt(symb, 10);
     if (!Number.isNaN(numb)){
       //console.log(numb);
       numberStr += symb;
@@ -68,15 +68,15 @@ function getNumber(str) {
   //console.log(parseInt(numberStr));
 
   //console.log('-----');
-  return parseInt(numberStr);
+  return parseInt(numberStr, 10);
 }
 
-getNumber('2023 год');            // 2023
-getNumber('ECMAScript 2022');     // 2022
+getNumber('2023 год'); // 2023
+getNumber('ECMAScript 2022'); // 2022
 getNumber('1 кефир, 0.5 батона'); // 105
-getNumber('агент 007');           // 7
-getNumber('а я томат');           // NaN
+getNumber('агент 007'); // 7
+getNumber('а я томат'); // NaN
 
 getNumber(2023); // 2023
-getNumber(-1);   // 1
-getNumber(1.5);  // 15
+getNumber(-1); // 1
+getNumber(1.5); // 15
