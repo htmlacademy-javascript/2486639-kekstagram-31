@@ -53,23 +53,22 @@ const getRandomArrayElements = (elements = [], maxCount = 1) => {
   return Array.from({ length: getRandomNumber(1, maxCount) }, () => elements[generateElemetIndex()]);
 };
 
-const POSTS_COUNT = 25;
+const PostParam = {
+  COUNT: 25,
+  ID_START: 1,
+  ID_END: 25, // ID_START + COUNT - 1,
+  URL_PHOTOS_MIN_NUMBER: 1,
+  URL_PHOTOS_MAX_NUMBER: 25,
+  LIKES_MIN: 15,
+  LIKES_MAX: 200,
+};
 
-const POST_ID_MIN = 1;
-const POST_ID_MAX = 25; // POST_ID_MIN + POSTS_COUNT - 1;
-
-const POST_URL_PHOTOS_MIN_NUMBER = 1;
-const POST_URL_PHOTOS_MAX_NUMBER = 25;
-
-const POST_LIKES_MIN = 15;
-const POST_LIKES_MAX = 200;
-
-const POST_COMMENTS_MAX_COUNT = 30;
-
-const COMMENT_AVATAR_MIN_NUMBER = 1;
-const COMMENT_AVATAR_MAX_NUMBER = 6;
-
-const COMMENT_MESSAGE_MAX_COUNT = 2;
+const CommentsParam = {
+  MAX_COUNT: 30,
+  AVATAR_MIN_NUMBER: 1,
+  AVATAR_MAX_NUMBER: 6,
+  MESSAGE_MAX_COUNT: 2,
+};
 
 const POST_DESCRIPTIONS = [
   'Я на море!',
@@ -102,20 +101,20 @@ const COMMENT_NAMES = [
   'Евгений'
 ];
 
-const generatePostId = createIdGenerator(POST_ID_MIN, POST_ID_MAX);
+const generatePostId = createIdGenerator(PostParam.ID_START, PostParam.ID_END);
 
-const generatePostUrlPhotosNumber = createIdGenerator(POST_URL_PHOTOS_MIN_NUMBER, POST_URL_PHOTOS_MAX_NUMBER);
+const generatePostUrlPhotosNumber = createIdGenerator(PostParam.URL_PHOTOS_MIN_NUMBER, PostParam.URL_PHOTOS_MAX_NUMBER);
 
-const generateCommentId = createIdGenerator(1, POSTS_COUNT * POST_COMMENTS_MAX_COUNT);
+const generateCommentId = createIdGenerator(1, PostParam.COUNT * CommentsParam.MAX_COUNT);
 
 const generatePostComments = () => {
-  const commentsCount = getRandomNumber(0, POST_COMMENTS_MAX_COUNT);
+  const commentsCount = getRandomNumber(0, CommentsParam.MAX_COUNT);
 
   const generateComment = () => (
     {
       id: generateCommentId(),
-      avatar: `img/avatar-${getRandomNumber(COMMENT_AVATAR_MIN_NUMBER, COMMENT_AVATAR_MAX_NUMBER)}.svg`,
-      message: getRandomArrayElements(COMMENT_MESSAGES, COMMENT_MESSAGE_MAX_COUNT).join(' '),
+      avatar: `img/avatar-${getRandomNumber(CommentsParam.AVATAR_MIN_NUMBER, CommentsParam.AVATAR_MAX_NUMBER)}.svg`,
+      message: getRandomArrayElements(COMMENT_MESSAGES, CommentsParam.MESSAGE_MAX_COUNT).join(' '),
       name: getRandomArrayElement(COMMENT_NAMES)
     });
 
@@ -127,11 +126,11 @@ const createPost = () => (
     id: generatePostId(),
     url: `photos/${generatePostUrlPhotosNumber()}.jpg`,
     description: getRandomArrayElement(POST_DESCRIPTIONS),
-    likes: getRandomNumber(POST_LIKES_MIN, POST_LIKES_MAX),
+    likes: getRandomNumber(PostParam.LIKES_MIN, PostParam.LIKES_MAX),
     comments: generatePostComments()
   });
 
-const generatePosts = () => Array.from({ length: POSTS_COUNT }, createPost);
+const generatePosts = () => Array.from({ length: PostParam.COUNT }, createPost);
 
 const Posts = generatePosts();
 
