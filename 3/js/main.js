@@ -13,10 +13,10 @@ function getRandomNumber(minNumber = 0, maxNumber = 0) {
   return Math.floor(result);
 }
 
-function createFunctionToGetUniqueRandomNumberFromRange(minNumber = 0, maxNumber = 0) {
+const createIdGenerator = (minNumber = 0, maxNumber = 0) => {
   const previousValues = [];
 
-  return function () {
+  return () => {
     let currentValue = getRandomNumber(minNumber, maxNumber);
 
     if (previousValues.length >= (maxNumber - minNumber + 1)) {
@@ -31,7 +31,7 @@ function createFunctionToGetUniqueRandomNumberFromRange(minNumber = 0, maxNumber
 
     return currentValue;
   };
-}
+};
 
 const getRandomArrayElement = (elements) => (elements.length === 0) ? null : elements[getRandomNumber(0, elements.length - 1)];
 
@@ -40,38 +40,37 @@ const getRandomArrayElements = (elements = [], maxCount = 1) => {
     return null;
   }
 
-  if (maxCount >= elements.length) {
-    return structuredClone(elements);
-  }
-
   if (maxCount === 1) {
     return [getRandomArrayElement(elements)];
   }
 
-  const generateElemetIndex = createFunctionToGetUniqueRandomNumberFromRange(1, maxCount);
+  if (maxCount >= elements.length) {
+    return structuredClone(elements);
+  }
+
+  const generateElemetIndex = createIdGenerator(1, maxCount);
 
   return Array.from({ length: getRandomNumber(1, maxCount) }, () => elements[generateElemetIndex()]);
 };
 
-const IMAGES_COUNT = 25;
+const PostParam = {
+  COUNT: 25,
+  ID_START: 1,
+  ID_END: 25, // ID_START + COUNT - 1,
+  URL_PHOTOS_MIN_NUMBER: 1,
+  URL_PHOTOS_MAX_NUMBER: 25,
+  LIKES_MIN: 15,
+  LIKES_MAX: 200,
+};
 
-const IMAGE_ID_MIN = 1;
-const IMAGE_ID_MAX = 25; // IMAGE_ID_MIN + IMAGES_COUNT - 1;
+const CommentsParam = {
+  MAX_COUNT: 30,
+  AVATAR_MIN_NUMBER: 1,
+  AVATAR_MAX_NUMBER: 6,
+  MESSAGE_MAX_COUNT: 2,
+};
 
-const IMAGE_URL_PHOTOS_MIN_NUMBER = 1;
-const IMAGE_URL_PHOTOS_MAX_NUMBER = 25;
-
-const IMAGE_LIKES_MIN = 15;
-const IMAGE_LIKES_MAX = 200;
-
-const IMAGE_COMMENTS_MAX_COUNT = 30;
-
-const COMMENT_AVATAR_MIN_NUMBER = 1;
-const COMMENT_AVATAR_MAX_NUMBER = 6;
-
-const COMMENT_MESSAGE_MAX_COUNT = 2;
-
-const IMAGE_DESCRIPTIONS = [
+const POST_DESCRIPTIONS = [
   'Я на море!',
   'Горы',
   'Семейное фото',
@@ -102,44 +101,40 @@ const COMMENT_NAMES = [
   'Евгений'
 ];
 
-const generateImageId = createFunctionToGetUniqueRandomNumberFromRange(IMAGE_ID_MIN, IMAGE_ID_MAX);
+const generatePostId = createIdGenerator(PostParam.ID_START, PostParam.ID_END);
 
-const generateImageUrlPhotosNumber = createFunctionToGetUniqueRandomNumberFromRange(IMAGE_URL_PHOTOS_MIN_NUMBER, IMAGE_URL_PHOTOS_MAX_NUMBER);
+const generatePostUrlPhotosNumber = createIdGenerator(PostParam.URL_PHOTOS_MIN_NUMBER, PostParam.URL_PHOTOS_MAX_NUMBER);
 
-//Если Id комментария уникален для всех изображений
-const generateCommentId = createFunctionToGetUniqueRandomNumberFromRange(1, IMAGES_COUNT * IMAGE_COMMENTS_MAX_COUNT);
+const generateCommentId = createIdGenerator(1, PostParam.COUNT * CommentsParam.MAX_COUNT);
 
-const generateImageComments = () => {
-  const commentsCount = getRandomNumber(0, IMAGE_COMMENTS_MAX_COUNT);
-
-  //Если Id комментария уникален в изображении
-  //const generateCommentId = createFunctionToGetUniqueRandomNumberFromRange(1, commentsCount);
+const generatePostComments = () => {
+  const commentsCount = getRandomNumber(0, CommentsParam.MAX_COUNT);
 
   const generateComment = () => (
     {
       id: generateCommentId(),
-      avatar: `img/avatar-${getRandomNumber(COMMENT_AVATAR_MIN_NUMBER, COMMENT_AVATAR_MAX_NUMBER)}.svg`,
-      message: getRandomArrayElements(COMMENT_MESSAGES, COMMENT_MESSAGE_MAX_COUNT).join(' '),
+      avatar: `img/avatar-${getRandomNumber(CommentsParam.AVATAR_MIN_NUMBER, CommentsParam.AVATAR_MAX_NUMBER)}.svg`,
+      message: getRandomArrayElements(COMMENT_MESSAGES, CommentsParam.MESSAGE_MAX_COUNT).join(' '),
       name: getRandomArrayElement(COMMENT_NAMES)
     });
 
   return Array.from({ length: commentsCount }, generateComment);
 };
 
-const createImage = () => (
+const createPost = () => (
   {
-    id: generateImageId(),
-    url: `photos/${generateImageUrlPhotosNumber()}.jpg`,
-    description: getRandomArrayElement(IMAGE_DESCRIPTIONS),
-    likes: getRandomNumber(IMAGE_LIKES_MIN, IMAGE_LIKES_MAX),
-    comments: generateImageComments()
+    id: generatePostId(),
+    url: `photos/${generatePostUrlPhotosNumber()}.jpg`,
+    description: getRandomArrayElement(POST_DESCRIPTIONS),
+    likes: getRandomNumber(PostParam.LIKES_MIN, PostParam.LIKES_MAX),
+    comments: generatePostComments()
   });
 
-const generateImages = () => Array.from({ length: IMAGES_COUNT }, createImage);
+const generatePosts = () => Array.from({ length: PostParam.COUNT }, createPost);
 
-const Images = generateImages();
+const Posts = generatePosts();
 
-//Images[0].id = 30;
+//Posts[0].id = 30;
 
 // eslint-disable-next-line no-console
-console.log(Images);
+console.log(Posts);
