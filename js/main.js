@@ -48,7 +48,7 @@ const getRandomArrayElements = (elements = [], maxCount = 1) => {
     return structuredClone(elements);
   }
 
-  const generateElemetIndex = createIdGenerator(1, maxCount);
+  const generateElemetIndex = createIdGenerator(1, elements.length);
 
   return Array.from({ length: getRandomNumber(1, maxCount) }, () => elements[generateElemetIndex()]);
 };
