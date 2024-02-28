@@ -110,6 +110,11 @@ const checkMeetingTime = (workTimeBeginString, workTimeEndString, meetTimeBeginS
     return false;
   }
 
+  // Есть вариант решения, через приведение всего времени в минуты
+  // workMinutesBegin = getAllMinutes(workTimeBeginString) // часы * 60 + минуты
+  // ...
+
+  // Решим через Date
   const workDateBegin = getDate(workTimeBeginString);
   const workDateEnd = getDate(workTimeEndString);
 
