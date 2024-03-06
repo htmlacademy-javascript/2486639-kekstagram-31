@@ -1,23 +1,22 @@
-const drawMiniatures = (posts) => {
-  const pictures = document.querySelector('.pictures');
-  const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-  const picturesFragment = document.createDocumentFragment();
+import { generatePosts } from './generate-posts.js';
 
-  posts.forEach((post) => {
-    const picture = pictureTemplate.cloneNode(true);
+const posts = generatePosts();
+const pictures = document.querySelector('.pictures');
+const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const picturesFragment = document.createDocumentFragment();
 
-    const pictureImage = picture.querySelector('.picture__img');
-    pictureImage.src = post.url;
-    pictureImage.alt = post.description;
+posts.forEach((post) => {
+  const picture = pictureTemplate.cloneNode(true);
 
-    picture.querySelector('.picture__likes').textContent = post.likes;
+  const pictureImage = picture.querySelector('.picture__img');
+  pictureImage.src = post.url;
+  pictureImage.alt = post.description;
 
-    picture.querySelector('.picture__comments').textContent = post.comments.length;
+  picture.querySelector('.picture__likes').textContent = post.likes;
 
-    picturesFragment.append(picture);
-  });
+  picture.querySelector('.picture__comments').textContent = post.comments.length;
 
-  pictures.append(picturesFragment);
-};
+  picturesFragment.append(picture);
+});
 
-export { drawMiniatures };
+pictures.append(picturesFragment);
