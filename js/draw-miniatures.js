@@ -1,7 +1,8 @@
 import { generatePosts } from './generate-posts.js';
 
 const posts = generatePosts();
-const pictures = document.querySelector('.pictures');
+
+const picturesElement = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const picturesFragment = document.createDocumentFragment();
 
@@ -19,4 +20,4 @@ posts.forEach((post) => {
   picturesFragment.append(picture);
 });
 
-pictures.append(picturesFragment);
+picturesElement.append(picturesFragment);
