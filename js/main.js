@@ -1,3 +1,3 @@
-import { viewPosts } from './view-posts.js';
+import { drawMiniatures } from './draw-miniatures.js';
 
-viewPosts();
+drawMiniatures();

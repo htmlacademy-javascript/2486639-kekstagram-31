@@ -1,4 +1,7 @@
-const drawMiniatures = (posts) => {
+import { generatePosts } from './generate-posts.js';
+
+const drawMiniatures = () => {
+  const posts = generatePosts();
   const pictures = document.querySelector('.pictures');
   const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   const picturesFragment = document.createDocumentFragment();
