@@ -1,50 +1,61 @@
-import { isEscapeKey } from './util.js';
+import { isEscapeKey, getPostById } from './util.js';
 import { fillPostData, clearPostData } from './view-post-data.js';
-import { getPostById } from './posts.js';
 
-const picturesSectionElement = document.querySelector('.pictures');
-const bigPictureElement = document.querySelector('.big-picture');
-const closePictureElement = document.querySelector('.big-picture__cancel');
-const socialCommentCountElement = document.querySelector('.social__comment-count');
-const commentsLoaderElement = document.querySelector('.comments-loader');
+const CommentsCount = {
+  ON_START: 10,
+  ADD_MORE: 5,
+};
 
-let closePostModal = () => { }; // обход правила eslint - 'closePostModal' was used before it was defined.eslintno-use-before-define
+const viewPost = (posts) => {
+  const picturesContainer = document.querySelector('.pictures');
+  const pictureList = picturesContainer.querySelectorAll('.picture');
+  const bigPictureElement = document.querySelector('.big-picture');
+  const closePictureElement = document.querySelector('.big-picture__cancel');
+  const commentsLoaderElement = document.querySelector('.comments-loader');
 
-const onDocumentKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closePostModal();
+  const openPostModal = (post) => {
+    bigPictureElement.classList.remove('hidden');
+    document.body.classList.add('modal-open');
+
+    //const post = getPostById(posts, element.dataset.postId);
+    const commentsStartCount = (CommentsCount.ON_START > post.comments.length) ? post.comments.length : CommentsCount.ON_START;
+
+    if ((commentsStartCount === 0) || (commentsStartCount === post.comments.length)) {
+      commentsLoaderElement.classList.add('hidden');
+    }
+
+    fillPostData(post, commentsStartCount);
+
+    document.addEventListener('keydown', onDocumentEscapeKeydown);
+  };
+
+  const closePostModal = () => {
+    bigPictureElement.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+
+    commentsLoaderElement.classList.remove('hidden');
+
+    clearPostData();
+
+    document.removeEventListener('keydown', onDocumentEscapeKeydown);
+  };
+
+  function onDocumentEscapeKeydown(evt) {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      closePostModal();
+    }
   }
+
+  // сделаем клик на каждой ссылке, т.к. если сделать общий, то нужно дополнительно обрабатывать верстку лайки, коментарии и облать вокруг них
+  pictureList.forEach((element) => {
+    const { postId } = element.dataset;
+    const post = getPostById(posts, postId);
+
+    element.addEventListener('click', () => openPostModal(post));
+  });
+
+  closePictureElement.addEventListener('click', closePostModal);
 };
 
-const openPostModal = (element) => {
-  bigPictureElement.classList.remove('hidden');
-  document.body.classList.add('modal-open');
-  socialCommentCountElement.classList.add('hidden');
-  commentsLoaderElement.classList.add('hidden');
-
-  fillPostData(getPostById(element.id));
-
-  document.addEventListener('keydown', onDocumentKeydown);
-};
-
-/*const*/ closePostModal = () => { // обход правила eslint - 'closePostModal' was used before it was defined.eslintno-use-before-define
-  bigPictureElement.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  socialCommentCountElement.classList.remove('hidden');
-  commentsLoaderElement.classList.remove('hidden');
-
-  clearPostData();
-
-  document.removeEventListener('keydown', onDocumentKeydown);
-};
-
-const onPicturesSectionClick = (evt) => {
-  if ((evt.target.nodeName === 'IMG') && (evt.target.className === 'picture__img')) {
-    evt.preventDefault(); // т.к. картинка обернута в ссылку и страница скролится вверх
-    openPostModal(evt.target.parentElement);
-  }
-};
-
-picturesSectionElement.addEventListener('click', onPicturesSectionClick);
-closePictureElement.addEventListener('click', closePostModal);
+export { viewPost };

@@ -14,10 +14,16 @@ const clearCommentsData = () => {
   commentsContainer.innerHTML = '';
 };
 
-const fillCommentsData = (comments) => (
-  commentsContainer.innerHTML = comments.reduce(
-    (result, value) => result + getCommentHTML(value.avatar, value.name, value.message), '')
-);
+const fillCommentsData = (comments, commentsCount) => {
+  let HTMLString = '';
+
+  //!! slice !!
+  for (let index = 0; index < commentsCount; index++) {
+    HTMLString += getCommentHTML(comments[index].avatar, comments[index].name, comments[index].message);
+  }
+
+  commentsContainer.innerHTML = HTMLString;
+};
 
 
 export { fillCommentsData, clearCommentsData };

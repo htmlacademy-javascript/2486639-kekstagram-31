@@ -8,13 +8,13 @@ const commentShowCountElement = socialElement.querySelector('.social__comment-sh
 const commentTotalCountElement = socialElement.querySelector('.social__comment-total-count');
 const captionElement = socialElement.querySelector('.social__caption');
 
-const fillPostData = (post) => {
+const fillPostData = (post, commentsCount) => {
   imageElement.src = post.url;
   imageElement.alt = post.description;
   likesCountElement.textContent = post.likes;
-  commentShowCountElement.textContent = '7'; // пока текстом
+  commentShowCountElement.textContent = commentsCount;
   commentTotalCountElement.textContent = post.comments.length;
-  fillCommentsData(post.comments);
+  fillCommentsData(post.comments, commentsCount);
   captionElement.textContent = post.description;
 };
 

@@ -62,7 +62,7 @@ const generatePostComments = () => {
       id: generateCommentId(),
       avatar: `img/avatar-${getRandomNumber(CommentsParam.AVATAR_MIN_NUMBER, CommentsParam.AVATAR_MAX_NUMBER)}.svg`,
       message: getRandomArrayElements(COMMENT_MESSAGES, CommentsParam.MESSAGE_MAX_COUNT).join(' '),
-      name: getRandomArrayElement(COMMENT_NAMES)
+      name: getRandomArrayElement(COMMENT_NAMES),
     });
 
   return Array.from({ length: commentsCount }, generateComment);
@@ -74,7 +74,7 @@ const createPost = () => (
     url: `photos/${generatePostUrlPhotosNumber()}.jpg`,
     description: getRandomArrayElement(POST_DESCRIPTIONS),
     likes: getRandomNumber(PostParam.LIKES_MIN, PostParam.LIKES_MAX),
-    comments: generatePostComments()
+    comments: generatePostComments(),
   });
 
 export const generatePosts = () => Array.from({ length: PostParam.COUNT }, createPost);
