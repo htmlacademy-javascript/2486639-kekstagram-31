@@ -1,28 +1,33 @@
 const commentsContainer = document.querySelector('.social__comments');
 
-const getCommentHTML = (avatarUrl, name, text) =>
-  `<li class="social__comment">
-     <img class="social__picture"
-          src="${avatarUrl}"
-          alt="${name}"
-          width="35" height="35">
-     <p class="social__text">${text}</p>
-   </li>
-`;
+// запомним первый элемент с комментарием как шаблон и очистим список
+const commentTemplate = commentsContainer.firstElementChild;
+
+const clearComments = () => {
+  commentsContainer.replaceChildren();
+  //2. commentsContainer.innerHTML = '';
+  //3. while (commentsContainer.childElementCount > 0) { commentsContainer.removeChild(commentsContainer.firstElementChild); }
+};
+
+clearComments();
 
 const loadComments = (comments, commentsCount) => {
-  let HTMLString = '';
+  const commentsFragment = document.createDocumentFragment();
 
   //!! slice !!
   for (let index = 0; index < commentsCount; index++) {
-    HTMLString += getCommentHTML(comments[index].avatar, comments[index].name, comments[index].message);
+    const newCommentElement = commentTemplate.cloneNode(true);
+
+    const commentImageElement = newCommentElement.querySelector('.social__picture');
+    commentImageElement.src = comments[index].avatar;
+    commentImageElement.alt = comments[index].description;
+
+    newCommentElement.querySelector('.social__text').textContent = comments[index].message;
+
+    commentsFragment.append(newCommentElement);
   }
 
-  commentsContainer.innerHTML = HTMLString;
-};
-
-const clearComments = () => {
-  commentsContainer.innerHTML = '';
+  commentsContainer.append(commentsFragment);
 };
 
 export { loadComments, clearComments };
