@@ -1,4 +1,4 @@
-import { loadComments, clearComments } from './view-post-comments';
+import { loadComments, clearComments } from './view-post-comments.js';
 
 const bigPicturePreviewElement = document.querySelector('.big-picture__preview');
 const imageElement = bigPicturePreviewElement.querySelector('.big-picture__img').querySelector('img');
