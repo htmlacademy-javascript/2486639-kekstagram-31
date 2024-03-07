@@ -1,40 +1,25 @@
 import { isEscapeKey } from './util.js';
 import { loadPost, clearPost } from './view-post.js';
 
-const CommentsCount = {
-  ON_START: 10,
-  ADD_MORE: 5,
-};
-
 const prepareViewPosts = (posts) => {
   const picturesContainer = document.querySelector('.pictures');
   const pictureList = picturesContainer.querySelectorAll('.picture');
   const bigPictureElement = document.querySelector('.big-picture');
   const closePictureElement = document.querySelector('.big-picture__cancel');
-  const commentsLoaderElement = document.querySelector('.comments-loader');
 
   const openPostModal = (post) => {
     bigPictureElement.classList.remove('hidden');
     document.body.classList.add('modal-open');
-
-    const commentsStartCount = (CommentsCount.ON_START > post.comments.length) ? post.comments.length : CommentsCount.ON_START;
-
-    if ((commentsStartCount === 0) || (commentsStartCount === post.comments.length)) {
-      commentsLoaderElement.classList.add('hidden');
-    }
-
-    loadPost(post, commentsStartCount);
-
     document.addEventListener('keydown', onDocumentEscapeKeydown);
+
+    loadPost(post);
   };
 
   const closePostModal = () => {
-    bigPictureElement.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-    commentsLoaderElement.classList.remove('hidden');
-
     clearPost();
 
+    bigPictureElement.classList.add('hidden');
+    document.body.classList.remove('modal-open');
     document.removeEventListener('keydown', onDocumentEscapeKeydown);
   };
 

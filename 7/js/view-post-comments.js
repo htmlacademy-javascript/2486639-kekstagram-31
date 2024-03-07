@@ -14,18 +14,17 @@ clearComments();
 const loadComments = (comments, commentsCount) => {
   const commentsFragment = document.createDocumentFragment();
 
-  //!! slice !!
-  for (let index = 0; index < commentsCount; index++) {
+  comments.slice(0, commentsCount).forEach(({ avatar, description, message }) => {
     const newCommentElement = commentTemplate.cloneNode(true);
 
     const commentImageElement = newCommentElement.querySelector('.social__picture');
-    commentImageElement.src = comments[index].avatar;
-    commentImageElement.alt = comments[index].description;
+    commentImageElement.src = avatar;
+    commentImageElement.alt = description;
 
-    newCommentElement.querySelector('.social__text').textContent = comments[index].message;
+    newCommentElement.querySelector('.social__text').textContent = message;
 
     commentsFragment.append(newCommentElement);
-  }
+  });
 
   commentsContainer.append(commentsFragment);
 };
