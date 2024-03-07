@@ -77,4 +77,6 @@ const createPost = () => (
     comments: generatePostComments(),
   });
 
-export const generatePosts = () => Array.from({ length: PostParam.COUNT }, createPost);
+const generatePosts = () => Array.from({ length: PostParam.COUNT }, createPost);
+
+export { generatePosts };

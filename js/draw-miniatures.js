@@ -3,9 +3,8 @@ const drawMiniatures = (posts) => {
   const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   const picturesFragment = document.createDocumentFragment();
 
-  posts.forEach(({ id, url, description, likes, comments }) => {
+  posts.forEach(({ url, description, likes, comments }) => {
     const newPictureElement = pictureTemplate.cloneNode(true);
-    newPictureElement.dataset.postId = id;
 
     const pictureImageElement = newPictureElement.querySelector('.picture__img');
     pictureImageElement.src = url;
