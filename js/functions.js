@@ -9,10 +9,9 @@ checkStrLen('проверяемая строка', 18); // true
 checkStrLen('проверяемая строка', 10); // false
 
 // Палиндром
-function isPalendrom(str) {
+const isPalendrom = (str) => {
   const replaceStr = str.replaceAll(' ', '');
   const lowerCaseStr = replaceStr.toLowerCase();
-  //console.log(lowerCaseStr);
 
   //const reverseStr = lowerCaseStr.split('').reverse().join('');
 
@@ -20,12 +19,9 @@ function isPalendrom(str) {
   for (let index = lowerCaseStr.length - 1; index >= 0; index--) {
     reverseStr += lowerCaseStr[index];
   }
-  //console.log(lowerCaseStr.split(''));
-  //console.log(lowerCaseStr.split('')).reverse());
-  //console.log(reverseStr);
 
   return reverseStr === lowerCaseStr;
-}
+};
 
 // Строка является палиндромом
 isPalendrom('топот'); // true
@@ -38,16 +34,8 @@ isPalendrom('Кекс'); // false
 isPalendrom('Лёша на полке клопа нашёл '); // true
 
 // Преобразовать в число
-function getNumber(str) {
-  //console.log(str);
+const getNumber = (str) => {
   const sstr = String(str);
-  //console.log(sstr);
-
-  /*
-  if (typeof(str) === 'number') {
-    sstr = str.toString();
-  }
-  */
 
   let numberStr = '';
 
@@ -55,15 +43,12 @@ function getNumber(str) {
     const symb = sstr[index];
     const numb = parseInt(symb, 10);
     if (!Number.isNaN(numb)) {
-      //console.log(numb);
       numberStr += symb;
     }
   }
-  //console.log(parseInt(numberStr));
 
-  //console.log('-----');
   return parseInt(numberStr, 10);
-}
+};
 
 getNumber('2023 год'); // 2023
 getNumber('ECMAScript 2022'); // 2022
@@ -101,7 +86,6 @@ const getDate = (timeSring, shortMinuteMultiply10 = false/*true*/) => {
   date.setSeconds(0);
   date.setMilliseconds(0);
 
-  //console.log(date);
   return date;
 };
 
@@ -125,13 +109,6 @@ const checkMeetingTime = (workTimeBeginString, workTimeEndString, meetTimeBeginS
   const meetDateBegin = getDate(meetTimeBeginString);
   const meetDateEnd = new Date(meetDateBegin);
   meetDateEnd.setMinutes(meetDateEnd.getMinutes() + meetDurationMinutes);
-
-  //console.log('---------------');
-  //console.log(workDateTimeBegin);
-  //console.log(workDateTimeEnd);
-  //console.log(meetDateTimeBegin);
-  //console.log(meetDateTimeEnd);
-  //console.log((meetDateTimeBegin >= workDateTimeBegin) && (meetDateTimeEnd <= workDateTimeEnd));
 
   return ((meetDateBegin >= workDateBegin) && (meetDateEnd <= workDateEnd));
 };
