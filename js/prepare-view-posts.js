@@ -1,5 +1,5 @@
 import { isEscapeKey } from './util.js';
-import { loadPost, clearPost } from './view-post.js';
+import { loadPost } from './view-post.js';
 
 const prepareViewPosts = (posts) => {
   const picturesContainer = document.querySelector('.pictures');
@@ -16,8 +16,6 @@ const prepareViewPosts = (posts) => {
   };
 
   const closePostModal = () => {
-    clearPost();
-
     bigPictureElement.classList.add('hidden');
     document.body.classList.remove('modal-open');
     document.removeEventListener('keydown', onDocumentEscapeKeydown);
