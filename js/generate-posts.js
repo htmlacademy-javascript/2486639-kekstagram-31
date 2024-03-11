@@ -23,7 +23,7 @@ const POST_DESCRIPTIONS = [
   'Семейное фото',
   'Было время...',
   'Чудо',
-  'Работа'
+  'Работа',
 ];
 
 const COMMENT_MESSAGES = [
@@ -32,7 +32,7 @@ const COMMENT_MESSAGES = [
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
   'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 
 const COMMENT_NAMES = [
@@ -45,7 +45,7 @@ const COMMENT_NAMES = [
   'Олеся',
   'Виктория',
   'Алексей',
-  'Евгений'
+  'Евгений',
 ];
 
 const generatePostId = createIdGenerator(PostParam.ID_START, PostParam.ID_END);
@@ -62,7 +62,7 @@ const generatePostComments = () => {
       id: generateCommentId(),
       avatar: `img/avatar-${getRandomNumber(CommentsParam.AVATAR_MIN_NUMBER, CommentsParam.AVATAR_MAX_NUMBER)}.svg`,
       message: getRandomArrayElements(COMMENT_MESSAGES, CommentsParam.MESSAGE_MAX_COUNT).join(' '),
-      name: getRandomArrayElement(COMMENT_NAMES)
+      name: getRandomArrayElement(COMMENT_NAMES),
     });
 
   return Array.from({ length: commentsCount }, generateComment);
@@ -74,7 +74,9 @@ const createPost = () => (
     url: `photos/${generatePostUrlPhotosNumber()}.jpg`,
     description: getRandomArrayElement(POST_DESCRIPTIONS),
     likes: getRandomNumber(PostParam.LIKES_MIN, PostParam.LIKES_MAX),
-    comments: generatePostComments()
+    comments: generatePostComments(),
   });
 
-export const generatePosts = () => Array.from({ length: PostParam.COUNT }, createPost);
+const generatePosts = () => Array.from({ length: PostParam.COUNT }, createPost);
+
+export { generatePosts };

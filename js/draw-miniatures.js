@@ -1,23 +1,23 @@
-import { generatePosts } from './generate-posts.js';
+const drawMiniatures = (posts) => {
+  const picturesContainer = document.querySelector('.pictures');
+  const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+  const picturesFragment = document.createDocumentFragment();
 
-const posts = generatePosts();
+  posts.forEach(({ url, description, likes, comments }) => {
+    const newPictureElement = pictureTemplate.cloneNode(true);
 
-const picturesElement = document.querySelector('.pictures');
-const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const picturesFragment = document.createDocumentFragment();
+    const pictureImageElement = newPictureElement.querySelector('.picture__img');
+    pictureImageElement.src = url;
+    pictureImageElement.alt = description;
 
-posts.forEach((post) => {
-  const picture = pictureTemplate.cloneNode(true);
+    newPictureElement.querySelector('.picture__likes').textContent = likes;
 
-  const pictureImage = picture.querySelector('.picture__img');
-  pictureImage.src = post.url;
-  pictureImage.alt = post.description;
+    newPictureElement.querySelector('.picture__comments').textContent = comments.length;
 
-  picture.querySelector('.picture__likes').textContent = post.likes;
+    picturesFragment.append(newPictureElement);
+  });
 
-  picture.querySelector('.picture__comments').textContent = post.comments.length;
+  picturesContainer.append(picturesFragment);
+};
 
-  picturesFragment.append(picture);
-});
-
-picturesElement.append(picturesFragment);
+export { drawMiniatures };

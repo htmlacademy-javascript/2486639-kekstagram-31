@@ -48,9 +48,26 @@ const getRandomArrayElements = (elements = [], maxCount = 1) => {
     return structuredClone(elements);
   }
 
-  const generateElemetIndex = createIdGenerator(1, elements.length);
+  const generateElemetIndex = createIdGenerator(0, elements.length - 1);
 
   return Array.from({ length: getRandomNumber(1, maxCount) }, () => elements[generateElemetIndex()]);
 };
 
-export { getRandomNumber, createIdGenerator, getRandomArrayElement, getRandomArrayElements };
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+const isEnterKey = (evt) => evt.key === 'Enter';
+
+const getPostById = (posts, id) =>
+  posts.find((value) =>
+    value.id === parseInt(id, 10)
+  );
+
+export {
+  getRandomNumber,
+  createIdGenerator,
+  getRandomArrayElement,
+  getRandomArrayElements,
+  isEscapeKey,
+  isEnterKey,
+  getPostById,
+};
