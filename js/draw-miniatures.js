@@ -18,9 +18,7 @@ const drawMiniatures = (posts, openPostModal) => {
     newPictureElement.addEventListener('click', (evt) => {
       evt.preventDefault();
 
-      // Попытка починить баг - на миниатюре остаеться количество постов и лайков с иконками, и далее непропадает, т.к. отменяеться a.click и a.hover
-      //const bigPictureElement = document.querySelector('.big-picture');
-      //bigPictureElement.click();
+      evt.currentTarget.blur(); // Баг - не скрываеться элемент '.picture__info'
 
       openPostModal(post);
     });
