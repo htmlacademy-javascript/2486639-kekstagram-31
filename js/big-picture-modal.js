@@ -1,47 +1,25 @@
 import { isEscapeKey } from './util/util.js';
-import { drawBigPicture, clearBigPicture, commentShowCountElement } from './draw-big-picture.js';
-import { initDrawBigPictureComments, clearBigPictureComments, drawBigPictureComments } from './draw-big-picture-comments.js';
-
-const CommentsCount = {
-  ON_START: 5,
-  LOAD_MORE: 5,
-};
+import { updateClassList } from './util/dom.js';
+import { drawBigPicture, clearBigPicture } from './draw-big-picture.js';
+import { initDrawBigPictureComments, clearBigPictureComments, drawComments, drawMoreComments, isAllcommentsShow } from './draw-big-picture-comments.js';
 
 const bigPictureElement = document.querySelector('.big-picture');
 const closePictureElement = document.querySelector('.big-picture__cancel');
 const commentsLoaderElement = document.querySelector('.comments-loader');
 
-let comments;
-let commentsShowCount;
-
 const closeModal = () => {
-  comments = null;
-  commentsShowCount = 0;
-
-  clearBigPicture();
-  clearBigPictureComments();
-
+  bigPictureElement.scrollTo(scrollX, 0); // + Баг, если модальное окно прокрутить, то при следующих открытиях прокрутка вниз остаеться
   bigPictureElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentEscapeKeydown);
+
+  clearBigPicture();
+  clearBigPictureComments();
 };
 
-const updateVisibleCommentsLoaderElement = () => {
-  if ((commentsShowCount === 0) || (commentsShowCount === comments.length)) {
-    // ? т.к. обеденил вызовы, то нужно проверять - commentsLoaderElement.classList.contains('hidden') ?
-    commentsLoaderElement.classList.add('hidden');
-  } else {
-    commentsLoaderElement.classList.remove('hidden');
-  }
-};
+const updateVisibleCommentsLoaderElement = () => updateClassList(commentsLoaderElement, isAllcommentsShow(), 'hidden');
 
-const drawComments = (newShowCommentsCount) => {
-  commentsShowCount = Math.min(newShowCommentsCount, comments.length);
-  drawBigPictureComments(comments, commentsShowCount, commentShowCountElement);
-  updateVisibleCommentsLoaderElement();
-};
-
-const init = () => {
+const initBigPictureModal = () => {
   clearBigPicture();
   initDrawBigPictureComments();
 
@@ -49,18 +27,19 @@ const init = () => {
 
   commentsLoaderElement.addEventListener('click', (evt) => {
     evt.preventDefault();
-    drawComments(commentsShowCount + CommentsCount.LOAD_MORE);
+    drawMoreComments();
+    updateVisibleCommentsLoaderElement();
   });
 };
 
-const openModal = (post) => {
-  comments = post.comments;
+const openBigPictureModal = (post) => {
   bigPictureElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentEscapeKeydown);
 
   drawBigPicture(post);
-  drawComments(CommentsCount.ON_START);
+  drawComments(post.comments);
+  updateVisibleCommentsLoaderElement();
 };
 
 function onDocumentEscapeKeydown(evt) {
@@ -70,4 +49,4 @@ function onDocumentEscapeKeydown(evt) {
   }
 }
 
-export { init as initBigPictureModal, openModal as openBigPictureModal };
+export { initBigPictureModal, openBigPictureModal };
