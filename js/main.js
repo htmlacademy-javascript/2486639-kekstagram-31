@@ -1,11 +1,11 @@
 import { generatePosts } from './generate-posts.js';
-import { drawMiniatures } from './draw-miniatures.js';
-import { initViewPost, openPostModal } from './view-post.js';
+import { drawPictures } from './draw-pictures.js';
+import { initBigPictureModal, openBigPictureModal } from './big-picture-modal.js';
 
 const posts = generatePosts();
 
-drawMiniatures(posts, openPostModal);
-initViewPost();
+drawPictures(posts, openBigPictureModal);
+initBigPictureModal();
 
 /*
  * Баг 06.03.2024
