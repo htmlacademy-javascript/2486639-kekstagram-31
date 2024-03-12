@@ -1,29 +1,44 @@
+import { createFragment, getTemplate, /*1. removeChilds*/ } from './util/dom.js';
+
 const picturesContainer = document.querySelector('.pictures');
-const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+//2. ? draw - picturesContainer.replaceChildren
+const picturesTitleElement = picturesContainer.querySelector('.pictures__title');
+const picturesImgUploadElement = picturesContainer.querySelector('.img-upload');
 
-const draw = (posts, openBigPictureModal) => {
-  const picturesFragment = document.createDocumentFragment();
-  posts.forEach((post) => {
-    const { url, description, likes, comments } = post;
-    const newPictureElement = pictureTemplate.cloneNode(true);
+const pictureTemplate = getTemplate('picture');
 
-    const pictureImageElement = newPictureElement.querySelector('.picture__img');
-    pictureImageElement.src = url;
-    pictureImageElement.alt = description;
+let cbOpenBigPictureModal = null;
 
-    newPictureElement.querySelector('.picture__likes').textContent = likes;
-    newPictureElement.querySelector('.picture__comments').textContent = comments.length;
+const createElement = (post) => {
+  const { url, description, likes, comments } = post;
+  const newElement = pictureTemplate.cloneNode(true);
+  const pictureImageElement = newElement.querySelector('.picture__img');
+  pictureImageElement.src = url;
+  pictureImageElement.alt = description;
 
-    newPictureElement.addEventListener('click', (evt) => {
+  newElement.querySelector('.picture__likes').textContent = likes;
+  newElement.querySelector('.picture__comments').textContent = comments.length;
+
+  if (cbOpenBigPictureModal) {
+    newElement.addEventListener('click', (evt) => {
       evt.preventDefault();
-
       evt.currentTarget.blur(); // Баг - не скрываеться элемент '.picture__info'
-
-      openBigPictureModal(post);
+      cbOpenBigPictureModal(post);
     });
-    picturesFragment.append(newPictureElement);
-  });
-  picturesContainer.append(picturesFragment);
+  }
+
+  return newElement;
 };
 
-export { draw as drawPictures };
+const drawPictures = (posts, openBigPictureModal) => {
+  cbOpenBigPictureModal = openBigPictureModal;
+
+  //1. ?
+  //removeChilds(picturesContainer, 'picture');
+  //picturesContainer.append(createFragment(posts, createElement));
+
+  //2. опираться на текущую разментку? хотел уменьшить количество отрисовок при childs.forEach((element) => element.remove()) или разницы нет?
+  picturesContainer.replaceChildren(picturesTitleElement, picturesImgUploadElement, createFragment(posts, createElement));
+};
+
+export { drawPictures };
