@@ -6,7 +6,7 @@ const commentShowCountElement = socialElement.querySelector('.social__comment-sh
 const commentTotalCountElement = socialElement.querySelector('.social__comment-total-count');
 const captionElement = socialElement.querySelector('.social__caption');
 
-const draw = ({ url, description, likes, comments }) => {
+const drawBigPicture = ({ url, description, likes, comments }) => {
   imageElement.src = url;
   imageElement.alt = description;
   likesCountElement.textContent = likes;
@@ -14,9 +14,9 @@ const draw = ({ url, description, likes, comments }) => {
   commentTotalCountElement.textContent = comments.length;
   captionElement.textContent = description;
 };
-const clear = () => {
-  draw({ url: '', description: '', likes: 0, comments: [] });
+const clearBigPicture = () => {
+  drawBigPicture({ url: '', description: '', likes: 0, comments: [] });
 };
 
 
-export { draw as drawBigPicture, clear as clearBigPicture, commentShowCountElement };
+export { drawBigPicture, clearBigPicture, commentShowCountElement };

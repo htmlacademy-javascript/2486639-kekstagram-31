@@ -1,17 +1,17 @@
-import { createFragment, getTemplate, /*1. removeChilds*/ } from './util/dom.js';
+import { createFragment, getTemplateElement, /*1. removeChilds*/ } from './util/dom.js';
 
-const picturesContainer = document.querySelector('.pictures');
-//2. ? draw - picturesContainer.replaceChildren
-const picturesTitleElement = picturesContainer.querySelector('.pictures__title');
-const picturesImgUploadElement = picturesContainer.querySelector('.img-upload');
+const picturesContainerElement = document.querySelector('.pictures');
+//2. ? draw - picturesContainerElement.replaceChildren
+const picturesTitleElement = picturesContainerElement.querySelector('.pictures__title');
+const picturesImgUploadElement = picturesContainerElement.querySelector('.img-upload');
 
-const pictureTemplate = getTemplate('picture');
+const pictureTemplateElement = getTemplateElement('picture');
 
 let cbOpenBigPictureModal = null;
 
 const createElement = (post) => {
   const { url, description, likes, comments } = post;
-  const newElement = pictureTemplate.cloneNode(true);
+  const newElement = pictureTemplateElement.cloneNode(true);
   const pictureImageElement = newElement.querySelector('.picture__img');
   pictureImageElement.src = url;
   pictureImageElement.alt = description;
@@ -34,11 +34,11 @@ const drawPictures = (posts, openBigPictureModal) => {
   cbOpenBigPictureModal = openBigPictureModal;
 
   //1. ?
-  //removeChilds(picturesContainer, 'picture');
-  //picturesContainer.append(createFragment(posts, createElement));
+  //removeChilds(picturesContainerElement, 'picture');
+  //picturesContainerElement.append(createFragment(posts, createElement));
 
   //2. опираться на текущую разментку? хотел уменьшить количество отрисовок при childs.forEach((element) => element.remove()) или разницы нет?
-  picturesContainer.replaceChildren(picturesTitleElement, picturesImgUploadElement, createFragment(posts, createElement));
+  picturesContainerElement.replaceChildren(picturesTitleElement, picturesImgUploadElement, createFragment(posts, createElement));
 };
 
 export { drawPictures };
