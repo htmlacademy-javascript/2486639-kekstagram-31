@@ -6,8 +6,8 @@ const CommentsCount = {
   LOAD_MORE: 5,
 };
 
-const commentsContainer = document.querySelector('.social__comments');
-let commentTemplate;
+const commentsContainerElement = document.querySelector('.social__comments');
+let commentTemplateElement;
 let currentComments = [];
 let commentsShowCount = 0;
 
@@ -16,16 +16,16 @@ const isAllcommentsShow = () => (commentsShowCount === 0) || (commentsShowCount 
 const clearBigPictureComments = () => {
   currentComments = [];
   commentsShowCount = 0;
-  removeChilds(commentsContainer);
+  removeChilds(commentsContainerElement);
 };
 
 const initDrawBigPictureComments = () => {
-  commentTemplate = getFirstElementChild('social__comments');
-  removeChilds(commentsContainer);
+  commentTemplateElement = getFirstElementChild('social__comments');
+  removeChilds(commentsContainerElement);
 };
 
 const createElement = ({ avatar, name, message }) => {
-  const newElement = commentTemplate.cloneNode(true);
+  const newElement = commentTemplateElement.cloneNode(true);
   const commentImageElement = newElement.querySelector('.social__picture');
   commentImageElement.src = avatar;
   commentImageElement.alt = name;
@@ -35,7 +35,7 @@ const createElement = ({ avatar, name, message }) => {
 
 const drawBigPictureComments = (newShowCommentsCount) => {
   newShowCommentsCount = Math.min(newShowCommentsCount, currentComments.length);
-  commentsContainer.append(createFragment(currentComments.slice(commentsShowCount, newShowCommentsCount), createElement));
+  commentsContainerElement.append(createFragment(currentComments.slice(commentsShowCount, newShowCommentsCount), createElement));
   commentsShowCount = newShowCommentsCount;
 
   commentShowCountElement.textContent = commentsShowCount;

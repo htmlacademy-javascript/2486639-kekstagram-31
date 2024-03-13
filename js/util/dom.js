@@ -6,7 +6,7 @@ const updateClassList = (element, isAdd, className) => {
   }
 };
 
-const getTemplate = (id, elementChildClassName = '') => {
+const getTemplateElement = (id, elementChildClassName = '') => {
   if (id) {
     const templateElement = document.querySelector(`#${id}`);
     if (!templateElement) {
@@ -48,19 +48,19 @@ const getFirstElementChild = (className) => {
   }
 };
 
-const removeChilds = (container, childClassName) => {
+const removeChilds = (containerElement, childClassName) => {
   if (childClassName) {
-    const childs = container.querySelectorAll(`.${childClassName}`);
+    const childs = containerElement.querySelectorAll(`.${childClassName}`);
     childs.forEach((element) => element.remove());
   } else {
-    container.innerHTML = '';
+    containerElement.innerHTML = '';
   }
 };
 
-const createFragment = (records, cbMakeElement) => {
+const createFragment = (records, createElement) => {
   const fragment = document.createDocumentFragment();
-  records.forEach((record, index) => fragment.append(cbMakeElement(record, index)));
+  records.forEach((record, index) => fragment.append(createElement(record, index)));
   return fragment;
 };
 
-export { updateClassList, getTemplate, getFirstElementChild, removeChilds, createFragment };
+export { updateClassList, getTemplateElement, getFirstElementChild, removeChilds, createFragment };
