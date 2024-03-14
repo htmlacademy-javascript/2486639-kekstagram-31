@@ -13,8 +13,6 @@ const isPalendrom = (str) => {
   const replaceStr = str.replaceAll(' ', '');
   const lowerCaseStr = replaceStr.toLowerCase();
 
-  //const reverseStr = lowerCaseStr.split('').reverse().join('');
-
   let reverseStr = '';
   for (let index = lowerCaseStr.length - 1; index >= 0; index--) {
     reverseStr += lowerCaseStr[index];
@@ -63,13 +61,10 @@ getNumber(1.5); // 15
 
 // Проверка встречи checkMeetingTime
 
-const getDate = (timeSring, shortMinuteMultiply10 = false/*true*/) => {
-  //console.log(timeSring);
-
+const getDate = (timeSring, shortMinuteMultiply10 = false) => {
   const date = new Date();
 
   const array = timeSring.toString().replaceAll(' ', '').split(':');
-  //console.log(array);
 
   if (array.length !== 2) {
     return null;

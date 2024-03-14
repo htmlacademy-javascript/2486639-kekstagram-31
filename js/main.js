@@ -6,7 +6,6 @@ const posts = generatePosts();
 
 drawPictures(posts, openBigPictureModal);
 initBigPictureModal();
-//drawPictures(posts, openBigPictureModal);
 
 /*
  * + Баг 06.03.2024 / возможно будет мешать автотестам

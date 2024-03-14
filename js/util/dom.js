@@ -1,4 +1,4 @@
-const updateClassList = (element, isAdd, className) => {
+const updateClassList = (element, className, isAdd = true) => {
   if (isAdd) {
     element.classList.add(className);
   } else {

@@ -1,7 +1,6 @@
-import { createFragment, getTemplateElement, /*1. removeChilds*/ } from './util/dom.js';
+import { createFragment, getTemplateElement } from './util/dom.js';
 
 const picturesContainerElement = document.querySelector('.pictures');
-//2. ? draw - picturesContainerElement.replaceChildren
 const picturesTitleElement = picturesContainerElement.querySelector('.pictures__title');
 const picturesImgUploadElement = picturesContainerElement.querySelector('.img-upload');
 
@@ -33,11 +32,6 @@ const createElement = (post) => {
 const drawPictures = (posts, openBigPictureModal) => {
   cbOpenBigPictureModal = openBigPictureModal;
 
-  //1. ?
-  //removeChilds(picturesContainerElement, 'picture');
-  //picturesContainerElement.append(createFragment(posts, createElement));
-
-  //2. опираться на текущую разментку? хотел уменьшить количество отрисовок при childs.forEach((element) => element.remove()) или разницы нет?
   picturesContainerElement.replaceChildren(picturesTitleElement, picturesImgUploadElement, createFragment(posts, createElement));
 };
 

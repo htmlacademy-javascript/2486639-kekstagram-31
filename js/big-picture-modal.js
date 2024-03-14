@@ -1,7 +1,7 @@
 import { isEscapeKey } from './util/util.js';
 import { updateClassList } from './util/dom.js';
 import { drawBigPicture, clearBigPicture } from './draw-big-picture.js';
-import { initDrawBigPictureComments, clearBigPictureComments, drawComments, drawMoreComments, isAllcommentsShow } from './draw-big-picture-comments.js';
+import { initDrawComments, clearComments, drawStartComments, drawMoreComments, isAllCommentsShow } from './draw-big-picture-comments.js';
 
 const bigPictureElement = document.querySelector('.big-picture');
 const closePictureElement = document.querySelector('.big-picture__cancel');
@@ -14,21 +14,21 @@ const closeModal = () => {
   document.removeEventListener('keydown', onDocumentEscapeKeydown);
 
   clearBigPicture();
-  clearBigPictureComments();
+  clearComments();
 };
 
-const updateVisibleCommentsLoaderElement = () => updateClassList(commentsLoaderElement, isAllcommentsShow(), 'hidden');
+const updateCommentsLoaderVisible = () => updateClassList(commentsLoaderElement, 'hidden', isAllCommentsShow());
 
 const initBigPictureModal = () => {
   clearBigPicture();
-  initDrawBigPictureComments();
+  initDrawComments();
 
   closePictureElement.addEventListener('click', closeModal);
 
   commentsLoaderElement.addEventListener('click', (evt) => {
     evt.preventDefault();
     drawMoreComments();
-    updateVisibleCommentsLoaderElement();
+    updateCommentsLoaderVisible();
   });
 };
 
@@ -38,8 +38,8 @@ const openBigPictureModal = (post) => {
   document.addEventListener('keydown', onDocumentEscapeKeydown);
 
   drawBigPicture(post);
-  drawComments(post.comments);
-  updateVisibleCommentsLoaderElement();
+  drawStartComments(post.comments);
+  updateCommentsLoaderVisible();
 };
 
 function onDocumentEscapeKeydown(evt) {

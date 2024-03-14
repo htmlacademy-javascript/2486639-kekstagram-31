@@ -57,11 +57,6 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const isEnterKey = (evt) => evt.key === 'Enter';
 
-const getPostById = (posts, id) =>
-  posts.find((value) =>
-    value.id === parseInt(id, 10)
-  );
-
 export {
   getRandomNumber,
   createIdGenerator,
@@ -69,5 +64,4 @@ export {
   getRandomArrayElements,
   isEscapeKey,
   isEnterKey,
-  getPostById,
 };

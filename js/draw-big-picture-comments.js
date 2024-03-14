@@ -11,15 +11,15 @@ let commentTemplateElement;
 let currentComments = [];
 let commentsShowCount = 0;
 
-const isAllcommentsShow = () => (commentsShowCount === 0) || (commentsShowCount === currentComments.length);
+const isAllCommentsShow = () => (commentsShowCount === 0) || (commentsShowCount === currentComments.length);
 
-const clearBigPictureComments = () => {
+const clearComments = () => {
   currentComments = [];
   commentsShowCount = 0;
   removeChilds(commentsContainerElement);
 };
 
-const initDrawBigPictureComments = () => {
+const initDrawComments = () => {
   commentTemplateElement = getFirstElementChild('social__comments');
   removeChilds(commentsContainerElement);
 };
@@ -33,7 +33,7 @@ const createElement = ({ avatar, name, message }) => {
   return newElement;
 };
 
-const drawBigPictureComments = (newShowCommentsCount) => {
+const drawComments = (newShowCommentsCount) => {
   newShowCommentsCount = Math.min(newShowCommentsCount, currentComments.length);
   commentsContainerElement.append(createFragment(currentComments.slice(commentsShowCount, newShowCommentsCount), createElement));
   commentsShowCount = newShowCommentsCount;
@@ -41,11 +41,11 @@ const drawBigPictureComments = (newShowCommentsCount) => {
   commentShowCountElement.textContent = commentsShowCount;
 };
 
-const drawComments = (comments) => {
+const drawStartComments = (comments) => {
   currentComments = comments;
-  drawBigPictureComments(CommentsCount.ON_START);
+  drawComments(CommentsCount.ON_START);
 };
 
-const drawMoreComments = () => drawBigPictureComments(commentsShowCount + CommentsCount.LOAD_MORE);
+const drawMoreComments = () => drawComments(commentsShowCount + CommentsCount.LOAD_MORE);
 
-export { initDrawBigPictureComments, clearBigPictureComments, drawComments, drawMoreComments, isAllcommentsShow };
+export { initDrawComments, clearComments, drawStartComments, drawMoreComments, isAllCommentsShow };
