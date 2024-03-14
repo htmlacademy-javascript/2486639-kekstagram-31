@@ -6,7 +6,7 @@ const picturesImgUploadElement = picturesContainerElement.querySelector('.img-up
 
 const pictureTemplateElement = getTemplateElement('picture');
 
-let cbOpenBigPictureModal = null;
+let openBigPictureModal = null;
 
 const createElement = (post) => {
   const { url, description, likes, comments } = post;
@@ -18,19 +18,19 @@ const createElement = (post) => {
   newElement.querySelector('.picture__likes').textContent = likes;
   newElement.querySelector('.picture__comments').textContent = comments.length;
 
-  if (cbOpenBigPictureModal) {
+  if (openBigPictureModal) {
     newElement.addEventListener('click', (evt) => {
       evt.preventDefault();
       evt.currentTarget.blur(); // Баг - не скрываеться элемент '.picture__info'
-      cbOpenBigPictureModal(post);
+      openBigPictureModal(post);
     });
   }
 
   return newElement;
 };
 
-const drawPictures = (posts, openBigPictureModal) => {
-  cbOpenBigPictureModal = openBigPictureModal;
+const drawPictures = (posts, openModal) => {
+  openBigPictureModal = openModal;
 
   picturesContainerElement.replaceChildren(picturesTitleElement, picturesImgUploadElement, createFragment(posts, createElement));
 };

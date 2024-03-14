@@ -63,4 +63,8 @@ const createFragment = (records, createElement) => {
   return fragment;
 };
 
-export { updateClassList, getTemplateElement, getFirstElementChild, removeChilds, createFragment };
+const disableElement = (evt) => {
+  evt.currentTarget.disabled = true;
+};
+
+export { updateClassList, getTemplateElement, getFirstElementChild, removeChilds, createFragment, disableElement };
