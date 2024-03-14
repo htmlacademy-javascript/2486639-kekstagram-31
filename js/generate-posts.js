@@ -1,4 +1,4 @@
-import { getRandomNumber, createIdGenerator, getRandomArrayElement, getRandomArrayElements } from './util.js';
+import { getRandomNumber, createIdGenerator, getRandomArrayElement, getRandomArrayElements } from './util/util.js';
 
 const PostParam = {
   COUNT: 25,

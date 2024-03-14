@@ -1,39 +1,33 @@
 import { generatePosts } from './generate-posts.js';
-import { drawMiniatures } from './draw-miniatures.js';
-import { prepareViewPosts } from './prepare-view-posts.js';
+import { drawPictures } from './draw-pictures.js';
+import { initBigPictureModal, openBigPictureModal } from './big-picture-modal.js';
 
 const posts = generatePosts();
 
-drawMiniatures(posts);
-prepareViewPosts(posts);
+drawPictures(posts, openBigPictureModal);
+initBigPictureModal();
+//drawPictures(posts, openBigPictureModal);
 
 /*
- * Баг 06.03.2024
+ * + Баг 06.03.2024 / возможно будет мешать автотестам
  * Если ранее модальное окно было прокручено вниз, то при скрытии и показе заново прокрутка не возвращаеться вверх.
  * Нужно найти способ прокрутить доверху модалье окно, а не саму страницу.
  *
- * + Баг 06.03.2024 - prepare-view-posts.js - строка с bigPictureElement.click()
+ * + Баг 06.03.2024 - draw-miniatures.js - строка  evt.currentTarget.blur();
+ * css .picture:hover .picture__info
  * Когда открыто модальное окно, то на нажатой картике остаеться элемент с количеством лайком и коментариев, отображаеться при наведении указателя мыши.
  * Он пропадает когда происходит еще один клик в модальном окне или выключенной части страницы.
  * Сделать либо, чтобы не пропадал, либо пропадал сразу при появлении модального окна.
  * добавил 07.03.2024, после зактыия он остаеться и не скрываеться когда перемещаешь мышь на другую картинку и отображаються сразу две
  *
- * Поробовать реализорвать:
+ * Баг 12.03.2024
+ * Если в модальном окне, что то выделить и потом закрыть по esc, то выделение остаеться на следующее открытие.
+ * выдение на "Нравится", "5 из 26 комментариев"
+ *
+ * Поробовать реализорвать: возможно будет мешать автотестам
  * Кнопка для загрузки новой порции комментариев === прокрутка до самого низу.
  *
  * ------------------------
- * В модальном окне может быть случай когда 0 из 0 комментариев и как то не очень звучит, но менять разметку не очень, оба числа отдельными элементами
- * //view-post.js
- * const socialCommentsContainer = document.querySelector('.social__comments');
- * const socialCommentCountElement = document.querySelector('.social__comment-count');
- *
- * if (commentsStartCount === 0) {
- *   socialCommentsContainer.classList.add('hidden');
- *   socialCommentCountElement.classList.add('hidden');
- * }
- *
- * socialCommentsContainer.classList.remove('hidden');
- * socialCommentCountElement.classList.remove('hidden');
  * ------------------------
  * ------------------------
  */
