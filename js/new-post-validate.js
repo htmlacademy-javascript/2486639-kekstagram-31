@@ -1,20 +1,35 @@
+import { leaveOneSpace } from './util/util.js';
 import { uploadImageFormElement, hashtagsIntupElement, descriptionIntupElement } from './new-post-elements.js';
 
-const DESCRIPTION_MAX_LENGTH = 14;
-//const DESCRIPTION_MAX_LENGTH = 140;
-const HASHTAG_MAX_LENGTH = 20;
+const DESCRIPTION_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;
+const HASHTAG_REGEXP = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const WarningMessages = {
   WRONG_HASHTAG: 'введён невалидный хэштег',
-  WRONG_HASHTAGS_COUNT: 'превышено количество хэштегов',
   DUBLICATE_HASHTAGS: 'хэштеги повторяются',
+  WRONG_HASHTAGS_COUNT: 'превышено количество хэштегов',
   WRONG_DESCRIPTION_LENGTH: `длина комментария больше ${DESCRIPTION_MAX_LENGTH} символов`,
 };
 
 let pristine;
 
-const initNewPostValidate = () => {
+const validateWrongHashtag = (value) => {
+  const normalString = leaveOneSpace(value);
+  return (normalString.length === 0) || (normalString.split(' ').every((element) => (HASHTAG_REGEXP).test(element)));
+};
+
+const validateDublicateHashtags = (value) => {
+  const array = leaveOneSpace(value).split(' ');
+  return new Set(array).size === array.length;
+};
+
+const validateHashtagsCount = (value) => {
+  const array = leaveOneSpace(value).split(' ');
+  return (array.length === 0) || (array.length <= HASHTAGS_MAX_COUNT);
+};
+
+const initValidateNewPost = () => {
   pristine = new Pristine(
     uploadImageFormElement,
     {
@@ -24,26 +39,38 @@ const initNewPostValidate = () => {
       errorTextClass: 'img-upload__field-wrapper--error',
     });
 
-  function validateHashtags(value) {
-    return value.length <= 5;
-  }
-  function validateDescription(value) {
-    return value.length <= DESCRIPTION_MAX_LENGTH;
-  }
-
   pristine.addValidator(
     hashtagsIntupElement,
-    validateHashtags,
-    'Хештег до 5 символов'
+    validateWrongHashtag,
+    WarningMessages.WRONG_HASHTAG,
+    3,
+    true
+  );
+  pristine.addValidator(
+    hashtagsIntupElement,
+    validateDublicateHashtags,
+    WarningMessages.DUBLICATE_HASHTAGS,
+    2,
+    true
+  );
+  pristine.addValidator(
+    hashtagsIntupElement,
+    validateHashtagsCount,
+    WarningMessages.WRONG_HASHTAGS_COUNT,
+    1,
+    true
   );
 
   pristine.addValidator(
     descriptionIntupElement,
-    validateDescription,
+    //(value) => value.length <= DESCRIPTION_MAX_LENGTH,
+    (value) => value.trim().length <= DESCRIPTION_MAX_LENGTH,
     WarningMessages.WRONG_DESCRIPTION_LENGTH
   );
 };
 
-const clearNewPostValidate = () => pristine.reset();
+const resetValidateNewPost = () => pristine.reset();
 
-export { initNewPostValidate, clearNewPostValidate };
+const validateNewPostFrom = () => pristine.validate();
+
+export { initValidateNewPost, resetValidateNewPost, validateNewPostFrom };

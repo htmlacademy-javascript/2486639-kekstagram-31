@@ -1,3 +1,7 @@
+const removeAllSpaces = (string) => string.replace(/\s+/g, '');
+
+const leaveOneSpace = (string) => string.replace(/ +(?= )/g, '').trim();
+
 const getRandomNumber = (minNumber = 0, maxNumber = 0) => {
   const absMinNumber = Math.abs(minNumber);
   const absMaxNumber = Math.abs(maxNumber);
@@ -58,6 +62,8 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
 const isEnterKey = (evt) => evt.key === 'Enter';
 
 export {
+  removeAllSpaces,
+  leaveOneSpace,
   getRandomNumber,
   createIdGenerator,
   getRandomArrayElement,

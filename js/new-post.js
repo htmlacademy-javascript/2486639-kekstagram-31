@@ -1,16 +1,16 @@
-import { disableElement } from './util/dom.js';
+import { disableEventCurrentTargetElement } from './util/dom.js';
 import { initBasicModal } from './basic-modal.js';
 import {
   uploadSubmitElement, imageUploadOverlayElement, imageUploadIntupElement,
   imageUploadCancelElement, hashtagsIntupElement, descriptionIntupElement,
 } from './new-post-elements.js';
-import { initNewPostValidate, clearNewPostValidate } from './new-post-validate.js';
+import { initValidateNewPost, resetValidateNewPost, validateNewPostFrom } from './new-post-validate.js';
 
 const closeNewPostModal = () => {
   imageUploadIntupElement.value = '';
   hashtagsIntupElement.value = '';
   descriptionIntupElement.value = '';
-  clearNewPostValidate();
+  resetValidateNewPost();
 };
 
 const openNewPostModal = () => {
@@ -29,9 +29,17 @@ const openNewPostModal = () => {
 
 const initNewPost = () => {
   imageUploadIntupElement.addEventListener('change', openNewPostModal);
-  uploadSubmitElement.addEventListener('click', disableElement);
+  uploadSubmitElement.addEventListener('click', (evt) => {
+    if (validateNewPostFrom()) {
+      disableEventCurrentTargetElement(evt);
+      //!!
+      evt.preventDefault();
+    }
 
-  initNewPostValidate();
+    evt.preventDefault();
+  });
+
+  initValidateNewPost();
 
   //!!
   openNewPostModal();
