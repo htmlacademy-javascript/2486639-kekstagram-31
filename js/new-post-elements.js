@@ -1,11 +1,11 @@
 const uploadImageFormElement = document.querySelector('#upload-select-image');
 const uploadSubmitElement = uploadImageFormElement.querySelector('#upload-submit');
-const uploadFileInputElement = uploadImageFormElement.querySelector('#upload-file');// возможно понадобиться для отправки фото
+const uploadFileInputElement = uploadImageFormElement.querySelector('#upload-file'); // возможно понадобиться для отправки фото
 const imageUploadOverlayElement = uploadImageFormElement.querySelector('.img-upload__overlay');
-const imageUploadIntupElement = uploadImageFormElement.querySelector('.img-upload__input');
-const imageUploadCancelElement = uploadImageFormElement.querySelector('.img-upload__cancel');
-const textHashtagsElement = uploadImageFormElement.querySelector('.text__hashtags');
-const textDescriptionElement = uploadImageFormElement.querySelector('.text__description');
+const imageUploadIntupElement = uploadImageFormElement.querySelector('#upload-file');
+const imageUploadCancelElement = uploadImageFormElement.querySelector('#upload-cancel');
+const hashtagsIntupElement = uploadImageFormElement.querySelector('[name="hashtags"]');
+const descriptionIntupElement = uploadImageFormElement.querySelector('[name="description"]');
 const imageUploadPreviewElement = uploadImageFormElement.querySelector('.img-upload__preview'); // предварительный просмотр фотографии
 
 export {
@@ -15,7 +15,7 @@ export {
   imageUploadOverlayElement,
   imageUploadIntupElement,
   imageUploadCancelElement,
-  textHashtagsElement,
-  textDescriptionElement,
+  hashtagsIntupElement,
+  descriptionIntupElement,
   imageUploadPreviewElement,
 };

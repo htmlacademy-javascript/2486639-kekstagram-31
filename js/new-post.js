@@ -2,14 +2,15 @@ import { disableElement } from './util/dom.js';
 import { initBasicModal } from './basic-modal.js';
 import {
   uploadSubmitElement, imageUploadOverlayElement, imageUploadIntupElement,
-  imageUploadCancelElement, textHashtagsElement, textDescriptionElement,
+  imageUploadCancelElement, hashtagsIntupElement, descriptionIntupElement,
 } from './new-post-elements.js';
-import { initNewPostValidate } from './new-post-validate.js';
+import { initNewPostValidate, clearNewPostValidate } from './new-post-validate.js';
 
 const closeNewPostModal = () => {
   imageUploadIntupElement.value = '';
-  textHashtagsElement.value = '';
-  textDescriptionElement.value = '';
+  hashtagsIntupElement.value = '';
+  descriptionIntupElement.value = '';
+  clearNewPostValidate();
 };
 
 const openNewPostModal = () => {
@@ -17,7 +18,7 @@ const openNewPostModal = () => {
     imageUploadOverlayElement,
     imageUploadCancelElement,
     closeNewPostModal,
-    (evt) => (evt.target !== textHashtagsElement) && (evt.target !== textDescriptionElement)
+    (evt) => (evt.target !== hashtagsIntupElement) && (evt.target !== descriptionIntupElement)
   );
 
   uploadSubmitElement.disabled = false;
