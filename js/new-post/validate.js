@@ -1,5 +1,5 @@
 import { leaveOneSpace } from './../util/util.js';
-import { uploadImageFormElement, hashtagsIntupElement, descriptionIntupElement } from './new-post-elements.js';
+import { uploadImageFormElement, hashtagsIntupElement, descriptionIntupElement } from './elements.js';
 
 const DESCRIPTION_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;

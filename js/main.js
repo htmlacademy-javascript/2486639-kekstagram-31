@@ -1,8 +1,8 @@
 import { generatePosts } from './generate-posts.js';
 import { drawPictures } from './draw-pictures.js';
 import { openBasicModal } from './basic-modal.js';
-import { initBigPictureModal, openBigPictureModal } from './view-post/big-picture-modal.js';
-import { initNewPost } from './new-post/new-post.js';
+import { initBigPictureModal, openBigPictureModal } from './view-post/index.js';
+import { initNewPost } from './new-post/index.js';
 
 const posts = generatePosts();
 

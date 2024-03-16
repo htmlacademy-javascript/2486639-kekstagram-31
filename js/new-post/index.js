@@ -2,8 +2,8 @@ import { disableEventCurrentTargetElement } from './../util/dom.js';
 import {
   uploadSubmitElement, imageUploadOverlayElement, imageUploadIntupElement,
   imageUploadCancelElement, hashtagsIntupElement, descriptionIntupElement,
-} from './new-post-elements.js';
-import { initValidateNewPost, resetValidateNewPost, validateNewPostFrom } from './new-post-validate.js';
+} from './elements.js';
+import { initValidateNewPost, resetValidateNewPost, validateNewPostFrom } from './validate.js';
 
 let openBasicModal = null;
 
