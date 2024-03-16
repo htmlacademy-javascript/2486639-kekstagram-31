@@ -1,5 +1,5 @@
 import { disableEventCurrentTargetElement } from './util/dom.js';
-import { initBasicModal } from './basic-modal.js';
+import { openBasicModal } from './basic-modal.js';
 import {
   uploadSubmitElement, imageUploadOverlayElement, imageUploadIntupElement,
   imageUploadCancelElement, hashtagsIntupElement, descriptionIntupElement,
@@ -14,7 +14,7 @@ const closeNewPostModal = () => {
 };
 
 const openNewPostModal = () => {
-  initBasicModal(
+  openBasicModal(
     imageUploadOverlayElement,
     imageUploadCancelElement,
     closeNewPostModal,

@@ -1,5 +1,5 @@
 import { updateClassList } from './util/dom.js';
-import { initBasicModal } from './basic-modal.js';
+import { openBasicModal } from './basic-modal.js';
 import { drawBigPicture, clearBigPicture } from './draw-big-picture.js';
 import { initDrawComments, clearComments, drawStartComments, drawMoreComments, isAllCommentsShow } from './draw-big-picture-comments.js';
 
@@ -26,7 +26,7 @@ const initBigPictureModal = () => {
 };
 
 const openBigPictureModal = (post) => {
-  initBasicModal(bigPictureElement, closePictureElement, closeBigPictureModal);
+  openBasicModal(bigPictureElement, closePictureElement, closeBigPictureModal);
 
   drawBigPicture(post);
   drawStartComments(post.comments);
