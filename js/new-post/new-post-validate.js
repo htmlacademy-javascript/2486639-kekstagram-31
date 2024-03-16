@@ -1,4 +1,4 @@
-import { leaveOneSpace } from './util/util.js';
+import { leaveOneSpace } from './../util/util.js';
 import { uploadImageFormElement, hashtagsIntupElement, descriptionIntupElement } from './new-post-elements.js';
 
 const DESCRIPTION_MAX_LENGTH = 140;

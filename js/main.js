@@ -1,13 +1,14 @@
 import { generatePosts } from './generate-posts.js';
 import { drawPictures } from './draw-pictures.js';
-import { initBigPictureModal, openBigPictureModal } from './big-picture-modal.js';
-import { initNewPost } from './new-post.js';
+import { openBasicModal } from './basic-modal.js';
+import { initBigPictureModal, openBigPictureModal } from './view-post/big-picture-modal.js';
+import { initNewPost } from './new-post/new-post.js';
 
 const posts = generatePosts();
 
 drawPictures(posts, openBigPictureModal);
-initBigPictureModal();
-initNewPost();
+initBigPictureModal(openBasicModal);
+initNewPost(openBasicModal);
 
 /*
  * + Баг 06.03.2024 / возможно будет мешать автотестам

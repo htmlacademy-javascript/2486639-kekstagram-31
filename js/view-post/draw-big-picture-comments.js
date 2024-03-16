@@ -1,4 +1,4 @@
-import { getFirstElementChild, removeChilds, createFragment } from './util/dom.js';
+import { getFirstElementChild, removeChilds, createFragment } from './../util/dom.js';
 import { commentShowCountElement } from './draw-big-picture.js';
 
 const CommentsCount = {

@@ -1,10 +1,11 @@
-import { disableEventCurrentTargetElement } from './util/dom.js';
-import { openBasicModal } from './basic-modal.js';
+import { disableEventCurrentTargetElement } from './../util/dom.js';
 import {
   uploadSubmitElement, imageUploadOverlayElement, imageUploadIntupElement,
   imageUploadCancelElement, hashtagsIntupElement, descriptionIntupElement,
 } from './new-post-elements.js';
 import { initValidateNewPost, resetValidateNewPost, validateNewPostFrom } from './new-post-validate.js';
+
+let openBasicModal = null;
 
 const closeNewPostModal = () => {
   imageUploadIntupElement.value = '';
@@ -14,12 +15,14 @@ const closeNewPostModal = () => {
 };
 
 const openNewPostModal = () => {
-  openBasicModal(
-    imageUploadOverlayElement,
-    imageUploadCancelElement,
-    closeNewPostModal,
-    (evt) => (evt.target !== hashtagsIntupElement) && (evt.target !== descriptionIntupElement)
-  );
+  if (openBasicModal) {
+    openBasicModal(
+      imageUploadOverlayElement,
+      imageUploadCancelElement,
+      closeNewPostModal,
+      (evt) => (evt.target !== hashtagsIntupElement) && (evt.target !== descriptionIntupElement)
+    );
+  }
 
   uploadSubmitElement.disabled = false;
 
@@ -27,7 +30,8 @@ const openNewPostModal = () => {
   //console.log(imageUploadIntupElement.value);
 };
 
-const initNewPost = () => {
+const initNewPost = (cb) => {
+  openBasicModal = cb;
   imageUploadIntupElement.addEventListener('change', openNewPostModal);
   uploadSubmitElement.addEventListener('click', (evt) => {
     if (validateNewPostFrom()) {
