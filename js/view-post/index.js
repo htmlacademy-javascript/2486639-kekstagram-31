@@ -1,13 +1,14 @@
 import { updateClassList } from './../util/dom.js';
 import { openBasicModal } from './../basic-modal.js';
-import { bigPictureElement, closePictureElement, commentsLoaderElement } from './elements.js';
+import { bigPictureElement, closePictureElement, commentCountElement, commentsLoaderElement } from './elements.js';
 import { initDrawBigPicture, drawBigPicture, clearBigPicture, drawMoreBigPictureComments, isAllBigPictureCommentsShow } from './big-picture.js';
 
-const closeBigPictureModal = () => {
-  clearBigPicture();
+const updateCommentsLoaderVisible = () => {
+  const isAllCommentsShow = isAllBigPictureCommentsShow();
+  // Скроем надпись и ссылку, т.к. все комментарии загружены
+  updateClassList(commentCountElement, 'hidden', isAllCommentsShow);
+  updateClassList(commentsLoaderElement, 'hidden', isAllCommentsShow);
 };
-
-const updateCommentsLoaderVisible = () => updateClassList(commentsLoaderElement, 'hidden', isAllBigPictureCommentsShow());
 
 const initBigPictureModal = () => {
   initDrawBigPicture();
@@ -20,7 +21,7 @@ const initBigPictureModal = () => {
 };
 
 const openBigPictureModal = (post) => {
-  openBasicModal(bigPictureElement, closePictureElement, closeBigPictureModal);
+  openBasicModal(bigPictureElement, closePictureElement, clearBigPicture);
 
   drawBigPicture(post);
   updateCommentsLoaderVisible();

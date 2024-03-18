@@ -7,8 +7,9 @@ const bigPicturePreviewElement = bigPictureElement.querySelector('.big-picture__
 const imageElement = bigPicturePreviewElement.querySelector('.big-picture__img img');
 const socialElement = bigPicturePreviewElement.querySelector('.big-picture__social');
 const likesCountElement = socialElement.querySelector('.likes-count');
-const commentShowCountElement = socialElement.querySelector('.social__comment-shown-count');
-const commentTotalCountElement = socialElement.querySelector('.social__comment-total-count');
+const commentCountElement = socialElement.querySelector('.social__comment-count');
+const commentShowCountElement = commentCountElement.querySelector('.social__comment-shown-count');
+const commentTotalCountElement = commentCountElement.querySelector('.social__comment-total-count');
 const captionElement = socialElement.querySelector('.social__caption');
 const socialCommentsClassName = 'social__comments';
 const commentsContainerElement = document.querySelector(addDotToClassName(socialCommentsClassName));
@@ -19,6 +20,7 @@ export {
   commentsLoaderElement,
   imageElement,
   likesCountElement,
+  commentCountElement,
   commentShowCountElement,
   commentTotalCountElement,
   captionElement,
