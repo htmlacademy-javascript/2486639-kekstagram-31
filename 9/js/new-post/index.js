@@ -1,8 +1,8 @@
 import { isEscapeKey } from './../util/util.js';
-import { disableEventCurrentTargetElement, clearInputValue } from './../util/dom.js';
+import { clearInputValue } from './../util/dom.js';
 import { openBasicModal } from './../basic-modal.js';
 import {
-  uploadImageFormElement, /*uploadSubmitElement,*/ imageUploadOverlayElement,
+  uploadImageFormElement, uploadSubmitElement, imageUploadOverlayElement,
   imageUploadInputElement, imageUploadCancelElement, hashtagsInputElement, descriptionInputElement
 } from './elements.js';
 import { initValidateNewPost, resetValidateNewPost, validateNewPostFrom } from './validate.js';
@@ -41,7 +41,7 @@ const initNewPost = () => {
   descriptionInputElement.addEventListener('keydown', onElementEscapeKeyDown);
   uploadImageFormElement.addEventListener('submit', (evt) => {
     if (validateNewPostFrom()) {
-      disableEventCurrentTargetElement(evt);
+      uploadSubmitElement.disabled = true;
     } else {
       evt.preventDefault();
     }
