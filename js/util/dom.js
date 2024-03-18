@@ -1,3 +1,5 @@
+const addDotToClassName = (className) => `.${className}`;
+
 const updateClassList = (element, className, isAdd = true) => {
   if (isAdd) {
     element.classList.add(className);
@@ -15,7 +17,7 @@ const getTemplateElement = (id, elementChildClassName = '') => {
 
     if (elementChildClassName) {
       try {
-        return templateElement.content.querySelector(`.${elementChildClassName}`);
+        return templateElement.content.querySelector(addDotToClassName(elementChildClassName));
       } catch (error) {
         throw new Error(`Не найден дочерний элемент с сlass = "${elementChildClassName}" у шаблона id = "${id}"`);
       }
@@ -33,7 +35,7 @@ const getTemplateElement = (id, elementChildClassName = '') => {
 
 const getFirstElementChild = (className) => {
   if (className) {
-    const element = document.querySelector(`.${className}`);
+    const element = document.querySelector(addDotToClassName(className));
     if (!element) {
       throw new Error(`Не найден элемент c class = "${className}"`);
     }
@@ -50,7 +52,7 @@ const getFirstElementChild = (className) => {
 
 const removeChilds = (containerElement, childClassName) => {
   if (childClassName) {
-    const childs = containerElement.querySelectorAll(`.${childClassName}`);
+    const childs = containerElement.querySelectorAll(addDotToClassName(childClassName));
     childs.forEach((element) => element.remove());
   } else {
     containerElement.innerHTML = '';
@@ -67,4 +69,12 @@ const disableEventCurrentTargetElement = (evt) => {
   evt.currentTarget.disabled = true;
 };
 
-export { updateClassList, getTemplateElement, getFirstElementChild, removeChilds, createFragment, disableEventCurrentTargetElement };
+export {
+  addDotToClassName,
+  updateClassList,
+  getTemplateElement,
+  getFirstElementChild,
+  removeChilds,
+  createFragment,
+  disableEventCurrentTargetElement,
+};

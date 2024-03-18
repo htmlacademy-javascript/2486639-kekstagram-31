@@ -1,52 +1,45 @@
 import { disableEventCurrentTargetElement } from './../util/dom.js';
+import { openBasicModal } from './../basic-modal.js';
 import {
-  uploadSubmitElement, imageUploadOverlayElement, imageUploadIntupElement,
-  imageUploadCancelElement, hashtagsIntupElement, descriptionIntupElement,
+  uploadSubmitElement, imageUploadOverlayElement, imageUploadInputElement,
+  imageUploadCancelElement, hashtagsInputElement, descriptionInputElement,
 } from './elements.js';
 import { initValidateNewPost, resetValidateNewPost, validateNewPostFrom } from './validate.js';
 
-let openBasicModal = null;
-
 const closeNewPostModal = () => {
-  imageUploadIntupElement.value = '';
-  hashtagsIntupElement.value = '';
-  descriptionIntupElement.value = '';
+  imageUploadInputElement.value = '';
+  hashtagsInputElement.value = '';
+  descriptionInputElement.value = '';
   resetValidateNewPost();
 };
 
 const openNewPostModal = () => {
-  if (openBasicModal) {
-    openBasicModal(
-      imageUploadOverlayElement,
-      imageUploadCancelElement,
-      closeNewPostModal,
-      (evt) => (evt.target !== hashtagsIntupElement) && (evt.target !== descriptionIntupElement)
-    );
-  }
+  openBasicModal(
+    imageUploadOverlayElement,
+    imageUploadCancelElement,
+    closeNewPostModal,
+    (evt) => (evt.target !== hashtagsInputElement) && (evt.target !== descriptionInputElement)
+  );
 
   uploadSubmitElement.disabled = false;
 
-  //!! imageUploadIntupElement.value
-  //console.log(imageUploadIntupElement.value);
+  //!! imageUploadInputElement.value
+  //console.log(imageUploadInputElement.value);
+
+  //!! нужно ли тримить коментарий и хештеги при отправке?
 };
 
-const initNewPost = (cb) => {
-  openBasicModal = cb;
-  imageUploadIntupElement.addEventListener('change', openNewPostModal);
+const initNewPost = () => {
+  imageUploadInputElement.addEventListener('change', openNewPostModal);
   uploadSubmitElement.addEventListener('click', (evt) => {
     if (validateNewPostFrom()) {
       disableEventCurrentTargetElement(evt);
-      //!!
+    } else {
       evt.preventDefault();
     }
-
-    evt.preventDefault();
   });
 
   initValidateNewPost();
-
-  //!!
-  openNewPostModal();
 };
 
 export { initNewPost };

@@ -1,39 +1,28 @@
 import { updateClassList } from './../util/dom.js';
-import { drawBigPicture, clearBigPicture } from './draw-big-picture.js';
-import { initDrawComments, clearComments, drawStartComments, drawMoreComments, isAllCommentsShow } from './draw-big-picture-comments.js';
-
-const bigPictureElement = document.querySelector('.big-picture');
-const closePictureElement = document.querySelector('.big-picture__cancel');
-const commentsLoaderElement = document.querySelector('.comments-loader');
-
-let openBasicModal = null;
+import { openBasicModal } from './../basic-modal.js';
+import { bigPictureElement, closePictureElement, commentsLoaderElement } from './elements.js';
+import { initDrawBigPicture, drawBigPicture, clearBigPicture, drawMoreBigPictureComments, isAllBigPictureCommentsShow } from './big-picture.js';
 
 const closeBigPictureModal = () => {
   clearBigPicture();
-  clearComments();
 };
 
-const updateCommentsLoaderVisible = () => updateClassList(commentsLoaderElement, 'hidden', isAllCommentsShow());
+const updateCommentsLoaderVisible = () => updateClassList(commentsLoaderElement, 'hidden', isAllBigPictureCommentsShow());
 
-const initBigPictureModal = (cb) => {
-  openBasicModal = cb;
-  clearBigPicture();
-  initDrawComments();
+const initBigPictureModal = () => {
+  initDrawBigPicture();
 
   commentsLoaderElement.addEventListener('click', (evt) => {
     evt.preventDefault();
-    drawMoreComments();
+    drawMoreBigPictureComments();
     updateCommentsLoaderVisible();
   });
 };
 
 const openBigPictureModal = (post) => {
-  if (openBasicModal) {
-    openBasicModal(bigPictureElement, closePictureElement, closeBigPictureModal);
-  }
+  openBasicModal(bigPictureElement, closePictureElement, closeBigPictureModal);
 
   drawBigPicture(post);
-  drawStartComments(post.comments);
   updateCommentsLoaderVisible();
 };
 

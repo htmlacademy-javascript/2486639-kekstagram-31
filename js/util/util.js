@@ -1,3 +1,5 @@
+const checkStringLength = (str, len) => str.length <= len;
+
 const removeAllSpaces = (string) => string.replace(/\s+/g, '');
 
 const leaveOneSpace = (string) => string.replace(/ +(?= )/g, '').trim();
@@ -62,6 +64,7 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
 const isEnterKey = (evt) => evt.key === 'Enter';
 
 export {
+  checkStringLength,
   removeAllSpaces,
   leaveOneSpace,
   getRandomNumber,

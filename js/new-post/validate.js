@@ -1,11 +1,11 @@
-import { leaveOneSpace } from './../util/util.js';
-import { uploadImageFormElement, hashtagsIntupElement, descriptionIntupElement } from './elements.js';
+import { checkStringLength, leaveOneSpace } from './../util/util.js';
+import { uploadImageFormElement, hashtagsInputElement, descriptionInputElement } from './elements.js';
 
 const DESCRIPTION_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;
 const HASHTAG_REGEXP = /^#[a-zа-яё0-9]{1,19}$/i;
 
-const WarningMessages = {
+const WarningMessage = {
   WRONG_HASHTAG: 'введён невалидный хэштег',
   DUBLICATE_HASHTAGS: 'хэштеги повторяются',
   WRONG_HASHTAGS_COUNT: 'превышено количество хэштегов',
@@ -40,32 +40,32 @@ const initValidateNewPost = () => {
     });
 
   pristine.addValidator(
-    hashtagsIntupElement,
+    hashtagsInputElement,
     validateWrongHashtag,
-    WarningMessages.WRONG_HASHTAG,
+    WarningMessage.WRONG_HASHTAG,
     3,
     true
   );
   pristine.addValidator(
-    hashtagsIntupElement,
+    hashtagsInputElement,
     validateDublicateHashtags,
-    WarningMessages.DUBLICATE_HASHTAGS,
+    WarningMessage.DUBLICATE_HASHTAGS,
     2,
     true
   );
   pristine.addValidator(
-    hashtagsIntupElement,
+    hashtagsInputElement,
     validateHashtagsCount,
-    WarningMessages.WRONG_HASHTAGS_COUNT,
+    WarningMessage.WRONG_HASHTAGS_COUNT,
     1,
     true
   );
 
   pristine.addValidator(
-    descriptionIntupElement,
+    descriptionInputElement,
     //(value) => value.length <= DESCRIPTION_MAX_LENGTH,
-    (value) => value.trim().length <= DESCRIPTION_MAX_LENGTH,
-    WarningMessages.WRONG_DESCRIPTION_LENGTH
+    (value) => checkStringLength(value.trim()), DESCRIPTION_MAX_LENGTH,
+    WarningMessage.WRONG_DESCRIPTION_LENGTH
   );
 };
 
