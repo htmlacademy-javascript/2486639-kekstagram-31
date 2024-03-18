@@ -1,52 +1,54 @@
-import { disableEventCurrentTargetElement } from './../util/dom.js';
+import { isEscapeKey } from './../util/util.js';
+import { disableEventCurrentTargetElement, clearInputValue } from './../util/dom.js';
+import { openBasicModal } from './../basic-modal.js';
 import {
-  uploadSubmitElement, imageUploadOverlayElement, imageUploadIntupElement,
-  imageUploadCancelElement, hashtagsIntupElement, descriptionIntupElement,
+  uploadImageFormElement, /*uploadSubmitElement,*/ imageUploadOverlayElement,
+  imageUploadInputElement, imageUploadCancelElement, hashtagsInputElement, descriptionInputElement
 } from './elements.js';
 import { initValidateNewPost, resetValidateNewPost, validateNewPostFrom } from './validate.js';
 
-let openBasicModal = null;
-
 const closeNewPostModal = () => {
-  imageUploadIntupElement.value = '';
-  hashtagsIntupElement.value = '';
-  descriptionIntupElement.value = '';
+  // когда закрыто по Escape, то поля не очищены
+  clearInputValue(imageUploadInputElement);
+  clearInputValue(hashtagsInputElement);
+  clearInputValue(descriptionInputElement);
+  // сброс валидации
   resetValidateNewPost();
 };
 
 const openNewPostModal = () => {
-  if (openBasicModal) {
-    openBasicModal(
-      imageUploadOverlayElement,
-      imageUploadCancelElement,
-      closeNewPostModal,
-      (evt) => (evt.target !== hashtagsIntupElement) && (evt.target !== descriptionIntupElement)
-    );
-  }
+  openBasicModal(
+    imageUploadOverlayElement,
+    imageUploadCancelElement,
+    closeNewPostModal
+  );
 
-  uploadSubmitElement.disabled = false;
+  //!! imageUploadInputElement.value
+  //console.log(imageUploadInputElement.value);
 
-  //!! imageUploadIntupElement.value
-  //console.log(imageUploadIntupElement.value);
+  //!! нужно ли тримить коментарий и хештеги при отправке?
 };
 
-const initNewPost = (cb) => {
-  openBasicModal = cb;
-  imageUploadIntupElement.addEventListener('change', openNewPostModal);
-  uploadSubmitElement.addEventListener('click', (evt) => {
+const onElementEscapeKeyDown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.stopPropagation();
+  }
+};
+
+const initNewPost = () => {
+  imageUploadInputElement.addEventListener('change', openNewPostModal);
+  hashtagsInputElement.addEventListener('keydown', onElementEscapeKeyDown);
+  descriptionInputElement.addEventListener('keydown', onElementEscapeKeyDown);
+  uploadImageFormElement.addEventListener('submit', (evt) => {
     if (validateNewPostFrom()) {
       disableEventCurrentTargetElement(evt);
-      //!!
+    } else {
       evt.preventDefault();
     }
-
-    evt.preventDefault();
   });
+  //!! как нужно обработать Enter?
 
   initValidateNewPost();
-
-  //!!
-  openNewPostModal();
 };
 
 export { initNewPost };

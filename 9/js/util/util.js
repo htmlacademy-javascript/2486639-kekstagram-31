@@ -1,6 +1,4 @@
-const removeAllSpaces = (string) => string.replace(/\s+/g, '');
-
-const leaveOneSpace = (string) => string.replace(/ +(?= )/g, '').trim();
+const checkStringLength = (string, length) => string.length <= length;
 
 const getRandomNumber = (minNumber = 0, maxNumber = 0) => {
   const absMinNumber = Math.abs(minNumber);
@@ -24,8 +22,7 @@ const createIdGenerator = (minNumber = 0, maxNumber = 0) => {
     let currentValue = getRandomNumber(minNumber, maxNumber);
 
     if (previousValues.length >= (maxNumber - minNumber + 1)) {
-      //console.error('Перебраны все числа из диапазона от ' + minNumber + ' до ' + maxNumber);
-      return null;
+      throw new Error(`Перебраны все числа из диапазона от ${minNumber} до ${maxNumber}`);
     }
 
     while (previousValues.includes(currentValue)) {
@@ -62,8 +59,7 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
 const isEnterKey = (evt) => evt.key === 'Enter';
 
 export {
-  removeAllSpaces,
-  leaveOneSpace,
+  checkStringLength,
   getRandomNumber,
   createIdGenerator,
   getRandomArrayElement,
