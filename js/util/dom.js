@@ -69,6 +69,12 @@ const disableEventCurrentTargetElement = (evt) => {
   evt.currentTarget.disabled = true;
 };
 
+const clearInputValue = (element) => {
+  if (element.value) {
+    element.value = '';
+  }
+};
+
 export {
   addDotToClassName,
   updateClassList,
@@ -77,4 +83,5 @@ export {
   removeChilds,
   createFragment,
   disableEventCurrentTargetElement,
+  clearInputValue,
 };

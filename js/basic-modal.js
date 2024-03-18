@@ -4,7 +4,6 @@ const baseModal = {
   element: null,
   closeElement: null,
   onCloseModal: null,
-  onEscapeKeydown: null,
   removeElementClassName: 'hidden',
   addDocumentClassName: 'modal-open',
 };
@@ -22,11 +21,10 @@ const closeBasicModal = () => {
   }
 };
 
-const openBasicModal = (modalElement, closeElement, onCloseModal, onEscapeKeydown = null) => {
+const openBasicModal = (modalElement, closeElement, onCloseModal) => {
   baseModal.element = modalElement;
   baseModal.closeElement = closeElement;
   baseModal.onCloseModal = onCloseModal;
-  baseModal.onEscapeKeydown = onEscapeKeydown;
 
   baseModal.element.classList.remove(baseModal.removeElementClassName);
   document.body.classList.add(baseModal.addDocumentClassName);
@@ -38,10 +36,8 @@ const openBasicModal = (modalElement, closeElement, onCloseModal, onEscapeKeydow
 
 function onDocumentEscapeKeydown(evt) {
   if (isEscapeKey(evt)) {
-    if (!baseModal.onEscapeKeydown || baseModal.onEscapeKeydown && baseModal.onEscapeKeydown(evt)) {
-      evt.preventDefault();
-      closeBasicModal();
-    }
+    evt.preventDefault();
+    closeBasicModal();
   }
 }
 
