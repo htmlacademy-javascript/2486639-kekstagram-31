@@ -65,10 +65,6 @@ const createFragment = (records, createElement) => {
   return fragment;
 };
 
-const disableEventCurrentTargetElement = (evt) => {
-  evt.currentTarget.disabled = true;
-};
-
 const clearInputValue = (element) => {
   if (element.value) {
     element.value = '';
@@ -82,6 +78,5 @@ export {
   getFirstElementChild,
   removeChilds,
   createFragment,
-  disableEventCurrentTargetElement,
   clearInputValue,
 };
