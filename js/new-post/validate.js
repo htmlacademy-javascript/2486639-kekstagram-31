@@ -1,4 +1,4 @@
-import { checkStringLength, leaveOneSpace } from './../util/util.js';
+import { checkStringLength } from './../util/util.js';
 import { uploadImageFormElement, hashtagsInputElement, descriptionInputElement } from './elements.js';
 
 const DESCRIPTION_MAX_LENGTH = 140;
@@ -14,19 +14,21 @@ const WarningMessage = {
 
 let pristine;
 
+const getHashtags = (string) => string.trim().toLocaleLowerCase().split(' ').filter((element) => (element) ? element : null);
+
 const validateWrongHashtag = (value) => {
-  const normalString = leaveOneSpace(value);
-  return (normalString.length === 0) || (normalString.split(' ').every((element) => (HASHTAG_REGEXP).test(element)));
+  const hashtags = getHashtags(value);
+  return (hashtags.length === 0) || (hashtags.every((element) => HASHTAG_REGEXP.test(element)));
 };
 
 const validateDublicateHashtags = (value) => {
-  const array = leaveOneSpace(value).split(' ');
-  return new Set(array).size === array.length;
+  const hashtags = getHashtags(value);
+  return new Set(hashtags).size === hashtags.length;
 };
 
 const validateHashtagsCount = (value) => {
-  const array = leaveOneSpace(value).split(' ');
-  return (array.length === 0) || (array.length <= HASHTAGS_MAX_COUNT);
+  const length = getHashtags(value).length;
+  return (length === 0) || (length <= HASHTAGS_MAX_COUNT);
 };
 
 const initValidateNewPost = () => {
@@ -63,8 +65,7 @@ const initValidateNewPost = () => {
 
   pristine.addValidator(
     descriptionInputElement,
-    //(value) => value.length <= DESCRIPTION_MAX_LENGTH,
-    (value) => checkStringLength(value.trim()), DESCRIPTION_MAX_LENGTH,
+    (value) => checkStringLength(value, DESCRIPTION_MAX_LENGTH),
     WarningMessage.WRONG_DESCRIPTION_LENGTH
   );
 };
