@@ -8,7 +8,7 @@ const baseModal = {
   addDocumentClassName: 'modal-open',
 };
 
-const closeBasicModal = () => {
+const closeBasicModal = (evt, exitByEscapeKey = false) => {
   baseModal.element.scrollTo(scrollX, 0); // + Баг, если модальное окно прокрутить, то при следующих открытиях прокрутка вниз остаеться
   baseModal.element.classList.add(baseModal.removeElementClassName);
   document.body.classList.remove(baseModal.addDocumentClassName);
@@ -17,7 +17,7 @@ const closeBasicModal = () => {
   }
   document.removeEventListener('keydown', onDocumentEscapeKeydown);
   if (baseModal.onCloseModal) {
-    baseModal.onCloseModal();
+    baseModal.onCloseModal(evt, exitByEscapeKey);
   }
 };
 
@@ -37,7 +37,7 @@ const openBasicModal = (modalElement, closeElement, onCloseModal) => {
 function onDocumentEscapeKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeBasicModal();
+    closeBasicModal(evt, true);
   }
 }
 
