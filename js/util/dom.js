@@ -65,12 +65,6 @@ const createFragment = (records, createElement) => {
   return fragment;
 };
 
-const clearInputValue = (element) => {
-  if (element.value) {
-    element.value = '';
-  }
-};
-
 export {
   addDotToClassName,
   updateClassList,
@@ -78,5 +72,4 @@ export {
   getFirstElementChild,
   removeChilds,
   createFragment,
-  clearInputValue,
 };

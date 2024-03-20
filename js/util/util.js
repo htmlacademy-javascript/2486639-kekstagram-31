@@ -1,5 +1,12 @@
 const checkStringLength = (string, length) => string.length <= length;
 
+const roundOneSignNumber = (value) => {
+  if (Number.isInteger(value)) {
+    return value.toFixed(0);
+  }
+  return value.toFixed(1);
+};
+
 const getRandomNumber = (minNumber = 0, maxNumber = 0) => {
   const absMinNumber = Math.abs(minNumber);
   const absMaxNumber = Math.abs(maxNumber);
@@ -56,14 +63,12 @@ const getRandomArrayElements = (elements = [], maxCount = 1) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const isEnterKey = (evt) => evt.key === 'Enter';
-
 export {
   checkStringLength,
+  roundOneSignNumber,
   getRandomNumber,
   createIdGenerator,
   getRandomArrayElement,
   getRandomArrayElements,
   isEscapeKey,
-  isEnterKey,
 };
