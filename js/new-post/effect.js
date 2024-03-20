@@ -34,7 +34,7 @@ const initEffect = () => {
     applyEffectOption();
   });
 
-  effectsListElement.addEventListener('click', (evt) => {
+  effectsListElement.addEventListener('change', (evt) => {
     const element = evt.target.closest('.effects__radio');
     if (element) {
       const newEffectOption = effectTypeList[element.value];

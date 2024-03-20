@@ -6,7 +6,7 @@ const imageUploadInputElement = uploadImageFormElement.querySelector('#upload-fi
 const imageUploadCancelElement = uploadImageFormElement.querySelector('#upload-cancel');
 const hashtagsInputElement = uploadImageFormElement.querySelector('[name="hashtags"]');
 const descriptionInputElement = uploadImageFormElement.querySelector('[name="description"]');
-const imageUploadPreviewElement = uploadImageFormElement.querySelector('.img-upload__preview');
+const imageUploadPreviewElement = uploadImageFormElement.querySelector('.img-upload__preview img');
 const scaleControlInputElement = uploadImageFormElement.querySelector('.scale__control--value');
 const scaleControlSmallerButtonElement = uploadImageFormElement.querySelector('.scale__control--smaller');
 const scaleControlBiggerButtonElement = uploadImageFormElement.querySelector('.scale__control--bigger');
