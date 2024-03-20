@@ -63,8 +63,6 @@ const getRandomArrayElements = (elements = [], maxCount = 1) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const isEnterKey = (evt) => evt.key === 'Enter';
-
 export {
   checkStringLength,
   roundOneSignNumber,
@@ -73,5 +71,4 @@ export {
   getRandomArrayElement,
   getRandomArrayElements,
   isEscapeKey,
-  isEnterKey,
 };

@@ -35,18 +35,15 @@ const initEffect = () => {
   });
 
   effectsListElement.addEventListener('change', (evt) => {
-    const element = evt.target.closest('.effects__radio');
-    if (element) {
-      const newEffectOption = effectTypeList[element.value];
-      if (newEffectOption !== currentEffectType) {
-        currentEffectType = newEffectOption;
-        // видимость слайдера
-        updateSliderVisible();
-        // смена слайдера, т.к. в насройках есть start, то дополнительно не вызываю noUiSlider.set
-        effectLevelSliderElement.noUiSlider.updateOptions(currentEffectType.sliderOption);
-        // отрисовка
-        applyEffectOption();
-      }
+    const newEffectOption = effectTypeList[evt.target.value];
+    if (newEffectOption !== currentEffectType) {
+      currentEffectType = newEffectOption;
+      // видимость слайдера
+      updateSliderVisible();
+      // смена слайдера, т.к. в насройках есть start, то дополнительно не вызываю noUiSlider.set
+      effectLevelSliderElement.noUiSlider.updateOptions(currentEffectType.sliderOption);
+      // отрисовка
+      applyEffectOption();
     }
   });
 };

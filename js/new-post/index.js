@@ -10,8 +10,6 @@ import { initValidateNewPost, resetValidateNewPost, validateNewPostFrom } from '
 
 const closeNewPostModal = (_, exitByEscapeKey) => {
   if (exitByEscapeKey) {
-    //!! когда закрыто по Escape, то поля не очищены, есть вариант проверить сброшена ли форма, что бы по кнопке закрытия два раза не запускать?
-    //!! пока добавил дополнительный параметр exitByEscapeKey
     uploadImageFormElement.reset();
   }
 };
@@ -51,7 +49,6 @@ const initNewPost = () => {
       evt.preventDefault();
     }
   });
-  //!! как нужно обработать Enter? и на какой элемент добавить листенер?
 
   initScale();
   initEffect();
