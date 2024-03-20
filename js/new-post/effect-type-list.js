@@ -1,4 +1,4 @@
-const EffectOption = {
+const effectTypeList = {
   none: {
     sliderOption: {
       range: { min: 0, max: 0 },
@@ -55,6 +55,4 @@ const EffectOption = {
   },
 };
 
-const isNoneEffectOption = (effectOption) => (effectOption === EffectOption.none);
-
-export { EffectOption, isNoneEffectOption };
+export { effectTypeList };
