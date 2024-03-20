@@ -3,7 +3,7 @@ import { getRandomNumber, createIdGenerator, getRandomArrayElement, getRandomArr
 const PostParam = {
   COUNT: 25,
   ID_START: 1,
-  ID_END: 25, // ID_START + COUNT - 1,
+  ID_END: 25,
   URL_PHOTOS_MIN_NUMBER: 1,
   URL_PHOTOS_MAX_NUMBER: 25,
   LIKES_MIN: 15,

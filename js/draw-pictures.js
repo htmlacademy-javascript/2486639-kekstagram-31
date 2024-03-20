@@ -1,13 +1,12 @@
-import { createFragment, getTemplateElement, /*1. removeChilds*/ } from './util/dom.js';
+import { createFragment, getTemplateElement } from './util/dom.js';
 
 const picturesContainerElement = document.querySelector('.pictures');
-//2. ? draw - picturesContainerElement.replaceChildren
 const picturesTitleElement = picturesContainerElement.querySelector('.pictures__title');
 const picturesImgUploadElement = picturesContainerElement.querySelector('.img-upload');
 
 const pictureTemplateElement = getTemplateElement('picture');
 
-let cbOpenBigPictureModal = null;
+let openBigPictureModal = null;
 
 const createElement = (post) => {
   const { url, description, likes, comments } = post;
@@ -19,25 +18,20 @@ const createElement = (post) => {
   newElement.querySelector('.picture__likes').textContent = likes;
   newElement.querySelector('.picture__comments').textContent = comments.length;
 
-  if (cbOpenBigPictureModal) {
+  if (openBigPictureModal) {
     newElement.addEventListener('click', (evt) => {
       evt.preventDefault();
       evt.currentTarget.blur(); // Баг - не скрываеться элемент '.picture__info'
-      cbOpenBigPictureModal(post);
+      openBigPictureModal(post);
     });
   }
 
   return newElement;
 };
 
-const drawPictures = (posts, openBigPictureModal) => {
-  cbOpenBigPictureModal = openBigPictureModal;
+const drawPictures = (posts, openModal) => {
+  openBigPictureModal = openModal;
 
-  //1. ?
-  //removeChilds(picturesContainerElement, 'picture');
-  //picturesContainerElement.append(createFragment(posts, createElement));
-
-  //2. опираться на текущую разментку? хотел уменьшить количество отрисовок при childs.forEach((element) => element.remove()) или разницы нет?
   picturesContainerElement.replaceChildren(picturesTitleElement, picturesImgUploadElement, createFragment(posts, createElement));
 };
 
