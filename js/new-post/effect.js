@@ -4,30 +4,30 @@ import {
   imageUploadPreviewElement, effectsListElement, effectLevelElement,
   effectLevelSliderElement, effectLevelInputlement
 } from './elements.js';
-import { effectTypeList } from './effect-type-list.js';
+import { effectList } from './effect-list.js';
 
-let currentEffectType;
+let currentEffect;
 
-const updateSliderVisible = () => updateClassList(effectLevelElement, 'hidden', currentEffectType === effectTypeList.none);
+const updateSliderVisible = () => updateClassList(effectLevelElement, 'hidden', currentEffect === effectList.none);
 
 const applyEffectOption = () => {
-  if (currentEffectType === effectTypeList.none) {
+  if (currentEffect === effectList.none) {
     imageUploadPreviewElement.style.removeProperty('filter');
   } else {
-    const { filterType, filterUnit } = currentEffectType;
+    const { filterType, filterUnit } = currentEffect;
     imageUploadPreviewElement.style.setProperty('filter', `${filterType}(${effectLevelInputlement.value}${filterUnit})`);
   }
 };
 
 const resetEffect = () => {
-  currentEffectType = effectTypeList.none;
+  currentEffect = effectList.none;
   updateSliderVisible();
   applyEffectOption();
 };
 
 const initEffect = () => {
   resetEffect();
-  noUiSlider.create(effectLevelSliderElement, currentEffectType.sliderOption);
+  noUiSlider.create(effectLevelSliderElement, currentEffect.sliderOption);
   effectLevelSliderElement.noUiSlider.updateOptions({ format: { to: roundOneSignNumber, from: parseFloat, } });
   effectLevelSliderElement.noUiSlider.on('update', () => {
     effectLevelInputlement.value = effectLevelSliderElement.noUiSlider.get();
@@ -35,13 +35,13 @@ const initEffect = () => {
   });
 
   effectsListElement.addEventListener('change', (evt) => {
-    const newEffectOption = effectTypeList[evt.target.value];
-    if (newEffectOption !== currentEffectType) {
-      currentEffectType = newEffectOption;
+    const newEffectOption = effectList[evt.target.value];
+    if (newEffectOption !== currentEffect) {
+      currentEffect = newEffectOption;
       // видимость слайдера
       updateSliderVisible();
       // смена слайдера, т.к. в насройках есть start, то дополнительно не вызываю noUiSlider.set
-      effectLevelSliderElement.noUiSlider.updateOptions(currentEffectType.sliderOption);
+      effectLevelSliderElement.noUiSlider.updateOptions(currentEffect.sliderOption);
       // отрисовка
       applyEffectOption();
     }
