@@ -1,4 +1,4 @@
-import { addDot } from './util.js';
+import { addDot } from './../util/util.js';
 import { getFirstElementChild, removeChilds, createFragment } from './../util/dom.js';
 import {
   socialCommentsClass, socialPictureClass, socialTextClass, likesCountElement, imageElement,
