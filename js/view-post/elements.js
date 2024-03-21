@@ -1,5 +1,8 @@
 import { addDotToClassName } from './../util/dom.js';
 
+const socialCommentsClassName = 'social__comments';
+const socialPictureClassName = '.social__picture';
+const socialTextClassName = '.social__text';
 const bigPictureElement = document.querySelector('.big-picture');
 const closePictureElement = bigPictureElement.querySelector('.big-picture__cancel');
 const commentsLoaderElement = bigPictureElement.querySelector('.comments-loader');
@@ -11,10 +14,12 @@ const commentCountElement = socialElement.querySelector('.social__comment-count'
 const commentShowCountElement = commentCountElement.querySelector('.social__comment-shown-count');
 const commentTotalCountElement = commentCountElement.querySelector('.social__comment-total-count');
 const captionElement = socialElement.querySelector('.social__caption');
-const socialCommentsClassName = 'social__comments';
 const commentsContainerElement = document.querySelector(addDotToClassName(socialCommentsClassName));
 
 export {
+  socialCommentsClassName,
+  socialPictureClassName,
+  socialTextClassName,
   bigPictureElement,
   closePictureElement,
   commentsLoaderElement,
@@ -24,6 +29,5 @@ export {
   commentShowCountElement,
   commentTotalCountElement,
   captionElement,
-  socialCommentsClassName,
   commentsContainerElement,
 };

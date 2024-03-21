@@ -1,5 +1,6 @@
 import { roundOneSignNumber } from './../util/util.js';
 import { updateClassList } from './../util/dom.js';
+import { hiddenClass } from './../elements.js';
 import {
   imageUploadPreviewElement, effectsListElement, effectLevelElement,
   effectLevelSliderElement, effectLevelInputlement
@@ -8,7 +9,7 @@ import { effectList } from './effect-list.js';
 
 let currentEffect;
 
-const updateSliderVisible = () => updateClassList(effectLevelElement, 'hidden', currentEffect === effectList.none);
+const updateSliderVisible = () => updateClassList(effectLevelElement, hiddenClass, currentEffect === effectList.none);
 
 const applyEffectOption = () => {
   if (currentEffect === effectList.none) {

@@ -63,6 +63,28 @@ const getRandomArrayElements = (elements = [], maxCount = 1) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
+const addDot = (string, isBefore = true) => `${(isBefore) ? '.' : ''}${string}${(!isBefore) ? '.' : ''}`;
+
+const throwError = (errorMessage) => {
+  if (!errorMessage) {
+    errorMessage = 'Нет сообщения об ошибке!';
+  }
+  if (errorMessage.stack) {
+    errorMessage = errorMessage.stack;
+  }
+  //!! ??
+  //if (errorMessage.message && errorMessage.stack) {
+  //  errorMessage = `${errorMessage.message}\n ${errorMessage.stack}`;
+  //}
+  //console.log(errorMessage);
+  //console.log(errorMessage.message);
+  //console.log(errorMessage.stack);
+  //throw new Error(errorMessage);
+  //throw new Error(errorMessage.message);
+  //throw new Error(errorMessage.stack);
+  throw new Error(errorMessage);
+};
+
 export {
   checkStringLength,
   roundOneSignNumber,
@@ -71,4 +93,6 @@ export {
   getRandomArrayElement,
   getRandomArrayElements,
   isEscapeKey,
+  addDot,
+  throwError,
 };

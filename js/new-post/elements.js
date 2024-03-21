@@ -1,3 +1,10 @@
+const pristineOption = {
+  classTo: 'img-upload__field-wrapper',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextTag: 'div',
+  errorTextClass: 'img-upload__field-wrapper--error',
+};
+
 const uploadImageFormElement = document.querySelector('#upload-select-image');
 const uploadSubmitElement = uploadImageFormElement.querySelector('#upload-submit');
 const uploadFileInputElement = uploadImageFormElement.querySelector('#upload-file'); // возможно понадобиться для отправки фото
@@ -16,6 +23,7 @@ const effectLevelSliderElement = effectLevelElement.querySelector('.effect-level
 const effectLevelInputlement = effectLevelElement.querySelector('.effect-level__value');
 
 export {
+  pristineOption,
   uploadImageFormElement,
   uploadSubmitElement,
   uploadFileInputElement,

@@ -1,4 +1,4 @@
-const addDotToClassName = (className) => `.${className}`;
+import { addDot } from './util.js';
 
 const updateClassList = (element, className, isAdd = true) => {
   if (isAdd) {
@@ -17,7 +17,7 @@ const getTemplateElement = (id, elementChildClassName = '') => {
 
     if (elementChildClassName) {
       try {
-        return templateElement.content.querySelector(addDotToClassName(elementChildClassName));
+        return templateElement.content.querySelector(addDot(elementChildClassName));
       } catch (error) {
         throw new Error(`Не найден дочерний элемент с сlass = "${elementChildClassName}" у шаблона id = "${id}"`);
       }
@@ -35,7 +35,7 @@ const getTemplateElement = (id, elementChildClassName = '') => {
 
 const getFirstElementChild = (className) => {
   if (className) {
-    const element = document.querySelector(addDotToClassName(className));
+    const element = document.querySelector(addDot(className));
     if (!element) {
       throw new Error(`Не найден элемент c class = "${className}"`);
     }
@@ -52,7 +52,7 @@ const getFirstElementChild = (className) => {
 
 const removeChilds = (containerElement, childClassName) => {
   if (childClassName) {
-    const childs = containerElement.querySelectorAll(addDotToClassName(childClassName));
+    const childs = containerElement.querySelectorAll(addDot(childClassName));
     childs.forEach((element) => element.remove());
   } else {
     containerElement.innerHTML = '';
@@ -66,7 +66,6 @@ const createFragment = (records, createElement) => {
 };
 
 export {
-  addDotToClassName,
   updateClassList,
   getTemplateElement,
   getFirstElementChild,

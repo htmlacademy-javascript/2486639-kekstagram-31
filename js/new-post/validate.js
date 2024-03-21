@@ -1,5 +1,5 @@
 import { checkStringLength } from './../util/util.js';
-import { uploadImageFormElement, hashtagsInputElement, descriptionInputElement } from './elements.js';
+import { pristineOption, uploadImageFormElement, hashtagsInputElement, descriptionInputElement } from './elements.js';
 
 const DESCRIPTION_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;
@@ -32,14 +32,7 @@ const validateHashtagsCount = (value) => {
 };
 
 const initValidateNewPost = () => {
-  pristine = new Pristine(
-    uploadImageFormElement,
-    {
-      classTo: 'img-upload__field-wrapper',
-      errorTextParent: 'img-upload__field-wrapper',
-      errorTextTag: 'div',
-      errorTextClass: 'img-upload__field-wrapper--error',
-    });
+  pristine = new Pristine(uploadImageFormElement, pristineOption);
 
   pristine.addValidator(
     hashtagsInputElement,
