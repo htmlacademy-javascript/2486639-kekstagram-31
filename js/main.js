@@ -1,10 +1,16 @@
 import { getPosts } from './api.js';
 import { showError } from './show-error.js';
 import { drawPictures } from './draw-pictures.js';
+import { showFilter } from './filter.js';
 import { initBigPictureModal } from './view-post/index.js';
 import { initNewPosteModal } from './new-post/index.js';
 
-getPosts(drawPictures, showError);
+getPosts(
+  (posts) => {
+    drawPictures(posts);
+    showFilter();
+  },
+  showError);
 initBigPictureModal();
 initNewPosteModal();
 
