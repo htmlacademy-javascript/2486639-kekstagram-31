@@ -1,4 +1,4 @@
-import { getPosts } from './get-posts.js';
+import { getPosts } from './api.js';
 import { showError } from './show-error.js';
 import { drawPictures } from './draw-pictures.js';
 import { initBigPictureModal } from './view-post/index.js';

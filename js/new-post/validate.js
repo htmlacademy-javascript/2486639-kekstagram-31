@@ -65,6 +65,6 @@ const initValidateNewPost = () => {
 
 const resetValidateNewPost = () => pristine.reset();
 
-const validateNewPostFrom = () => pristine.validate();
+const isNewPostFromValid = () => pristine.validate();
 
-export { initValidateNewPost, resetValidateNewPost, validateNewPostFrom };
+export { initValidateNewPost, resetValidateNewPost, isNewPostFromValid };

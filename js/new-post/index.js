@@ -6,7 +6,7 @@ import {
 } from './elements.js';
 import { initScale, resetScale } from './scale.js';
 import { initEffect, resetEffect } from './effect.js';
-import { initValidateNewPost, resetValidateNewPost, validateNewPostFrom } from './validate.js';
+import { initValidateNewPost, resetValidateNewPost, isNewPostFromValid } from './validate.js';
 
 const closeNewPostModal = (_, exitByEscapeKey) => {
   if (exitByEscapeKey) {
@@ -42,11 +42,20 @@ const initNewPost = () => {
     resetValidateNewPost(); // сброс валидации
   });
   uploadImageFormElement.addEventListener('submit', (evt) => {
-    if (validateNewPostFrom()) {
+    evt.preventDefault();
+
+    if (isNewPostFromValid()) {
       uploadSubmitElement.disabled = true;
       //!! нужно ли тримить коментарий и хештеги при отправке?
-    } else {
-      evt.preventDefault();
+
+      const formData = new FormData(evt.target);
+      fetch(
+        'https://31.javascript.htmlacademy.pro/kekstagram',
+        {
+          method: 'POST',
+          body: formData
+        },
+      ).then(console.log);
     }
   });
 
