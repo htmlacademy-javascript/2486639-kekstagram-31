@@ -42,4 +42,4 @@ function onDocumentEscapeKeydown(evt) {
   }
 }
 
-export { openBasicModal };
+export { openBasicModal, closeBasicModal };

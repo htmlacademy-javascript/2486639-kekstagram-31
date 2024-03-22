@@ -1,5 +1,5 @@
 import { isEscapeKey } from './../util/util.js';
-import { openBasicModal } from './../basic-modal.js';
+import { openBasicModal, closeBasicModal } from './../basic-modal.js';
 import {
   uploadImageFormElement, uploadSubmitElement, imageUploadOverlayElement, imageUploadInputElement,
   imageUploadCancelElement, hashtagsInputElement, descriptionInputElement
@@ -7,6 +7,11 @@ import {
 import { initScale, resetScale } from './scale.js';
 import { initEffect, resetEffect } from './effect.js';
 import { initValidateNewPost, resetValidateNewPost, isNewPostFromValid } from './validate.js';
+import { sendPost } from './../api.js';
+import { showSuccess } from './show-success.js';
+
+const enableSubmitButton = () => (uploadSubmitElement.disabled = false);
+const disablekSubmitButton = () => (uploadSubmitElement.disabled = true);
 
 const closeNewPostModal = (_, exitByEscapeKey) => {
   if (exitByEscapeKey) {
@@ -32,6 +37,17 @@ const onElementEscapeKeyDown = (evt) => {
   }
 };
 
+const onSuccessSendPost = (data) => {
+  //!!
+  console.log(data);
+  uploadImageFormElement.reset();
+  closeBasicModal();
+  showSuccess();
+};
+const onErrorSendPost = (err) => {
+  console.log(err);
+};
+
 const initNewPost = () => {
   imageUploadInputElement.addEventListener('change', openNewPostModal);
   hashtagsInputElement.addEventListener('keydown', onElementEscapeKeyDown);
@@ -40,22 +56,15 @@ const initNewPost = () => {
     resetScale();
     resetEffect();
     resetValidateNewPost(); // сброс валидации
+    enableSubmitButton();
   });
   uploadImageFormElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
     if (isNewPostFromValid()) {
-      uploadSubmitElement.disabled = true;
-      //!! нужно ли тримить коментарий и хештеги при отправке?
-
-      const formData = new FormData(evt.target);
-      fetch(
-        'https://31.javascript.htmlacademy.pro/kekstagram',
-        {
-          method: 'POST',
-          body: formData
-        },
-      ).then(console.log);
+      disablekSubmitButton();
+      //!! ?? нужно ли тримить коментарий и хештеги при отправке? и при провеке коментария на длинну?
+      sendPost(onSuccessSendPost, onErrorSendPost, new FormData(evt.target));
     }
   });
 
