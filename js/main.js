@@ -2,11 +2,11 @@ import { getPosts } from './api.js';
 import { showError } from './show-error.js';
 import { drawPictures } from './draw-pictures.js';
 import { initBigPictureModal } from './view-post/index.js';
-import { initNewPost } from './new-post/index.js';
+import { initNewPosteModal } from './new-post/index.js';
 
 getPosts(drawPictures, showError);
 initBigPictureModal();
-initNewPost();
+initNewPosteModal();
 
 /*
  * + Баг 06.03.2024 / возможно будет мешать автотестам

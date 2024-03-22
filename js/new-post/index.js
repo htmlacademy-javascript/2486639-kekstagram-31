@@ -30,11 +30,11 @@ const onElementEscapeKeyDown = (evt) => {
   }
 };
 
-const initNewPost = () => {
+const initNewPosteModal = () => {
   imageUploadInputElement.addEventListener('change', openNewPostModal);
   hashtagsInputElement.addEventListener('keydown', onElementEscapeKeyDown);
   descriptionInputElement.addEventListener('keydown', onElementEscapeKeyDown);
   initForm(closeBasicModal);
 };
 
-export { initNewPost };
+export { initNewPosteModal };
