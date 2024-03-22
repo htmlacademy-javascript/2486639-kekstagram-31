@@ -9,6 +9,8 @@ const pristineOption = {
 
 const successButtonClass = 'success__button';
 const successInnerClass = 'success__inner';
+const errorButtonClass = 'error__button';
+const errorInnerClass = 'error__inner';
 
 const uploadImageFormElement = document.querySelector('#upload-select-image');
 const uploadSubmitElement = uploadImageFormElement.querySelector('#upload-submit');
@@ -27,11 +29,14 @@ const effectLevelElement = uploadImageFormElement.querySelector('.img-upload__ef
 const effectLevelSliderElement = effectLevelElement.querySelector('.effect-level__slider');
 const effectLevelInputlement = effectLevelElement.querySelector('.effect-level__value');
 const successTemplateElement = getTemplateElement('success');
+const errorTemplateElement = getTemplateElement('error');
 
 export {
   pristineOption,
   successButtonClass,
   successInnerClass,
+  errorButtonClass,
+  errorInnerClass,
   uploadImageFormElement,
   uploadSubmitElement,
   uploadFileInputElement,
@@ -49,4 +54,5 @@ export {
   effectLevelSliderElement,
   effectLevelInputlement,
   successTemplateElement,
+  errorTemplateElement,
 };

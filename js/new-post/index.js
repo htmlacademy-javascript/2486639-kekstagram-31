@@ -8,7 +8,7 @@ import { initScale, resetScale } from './scale.js';
 import { initEffect, resetEffect } from './effect.js';
 import { initValidateNewPost, resetValidateNewPost, isNewPostFromValid } from './validate.js';
 import { sendPost } from './../api.js';
-import { showSuccess } from './show-success.js';
+import { showSuccess, showError } from './show-message.js';
 
 const enableSubmitButton = () => (uploadSubmitElement.disabled = false);
 const disablekSubmitButton = () => (uploadSubmitElement.disabled = true);
@@ -37,15 +37,16 @@ const onElementEscapeKeyDown = (evt) => {
   }
 };
 
-const onSuccessSendPost = (data) => {
+const onSuccessSendPost = (/*data*/) => {
   //!!
-  console.log(data);
+  //console.log(data);
   uploadImageFormElement.reset();
   closeBasicModal();
   showSuccess();
 };
-const onErrorSendPost = (err) => {
-  console.log(err);
+const onErrorSendPost = (/*err*/) => {
+  //console.log(err);
+  showError();
 };
 
 const initNewPost = () => {
