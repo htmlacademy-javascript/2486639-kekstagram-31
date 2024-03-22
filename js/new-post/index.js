@@ -1,17 +1,10 @@
 import { isEscapeKey } from './../util/util.js';
 import { openBasicModal, closeBasicModal } from './../basic-modal.js';
 import {
-  uploadImageFormElement, uploadSubmitElement, imageUploadOverlayElement, imageUploadInputElement,
+  uploadImageFormElement, imageUploadOverlayElement, imageUploadInputElement,
   imageUploadCancelElement, hashtagsInputElement, descriptionInputElement
 } from './elements.js';
-import { initScale, resetScale } from './scale.js';
-import { initEffect, resetEffect } from './effect.js';
-import { initValidateNewPost, resetValidateNewPost, isNewPostFromValid } from './validate.js';
-import { sendPost } from './../api.js';
-import { showSuccess, showError } from './show-message.js';
-
-const enableSubmitButton = () => (uploadSubmitElement.disabled = false);
-const disablekSubmitButton = () => (uploadSubmitElement.disabled = true);
+import { initForm } from './form.js';
 
 const closeNewPostModal = (_, exitByEscapeKey) => {
   if (exitByEscapeKey) {
@@ -37,41 +30,11 @@ const onElementEscapeKeyDown = (evt) => {
   }
 };
 
-const onSuccessSendPost = (/*data*/) => {
-  //!!
-  //console.log(data);
-  uploadImageFormElement.reset();
-  closeBasicModal();
-  showSuccess();
-};
-const onErrorSendPost = (/*err*/) => {
-  //console.log(err);
-  showError();
-};
-
 const initNewPost = () => {
   imageUploadInputElement.addEventListener('change', openNewPostModal);
   hashtagsInputElement.addEventListener('keydown', onElementEscapeKeyDown);
   descriptionInputElement.addEventListener('keydown', onElementEscapeKeyDown);
-  uploadImageFormElement.addEventListener('reset', () => {
-    resetScale();
-    resetEffect();
-    resetValidateNewPost(); // сброс валидации
-    enableSubmitButton();
-  });
-  uploadImageFormElement.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    if (isNewPostFromValid()) {
-      disablekSubmitButton();
-      //!! ?? нужно ли тримить коментарий и хештеги при отправке? и при провеке коментария на длинну?
-      sendPost(onSuccessSendPost, onErrorSendPost, new FormData(evt.target));
-    }
-  });
-
-  initScale();
-  initEffect();
-  initValidateNewPost();
+  initForm(closeBasicModal);
 };
 
 export { initNewPost };

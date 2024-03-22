@@ -25,7 +25,6 @@ const showMessage = (templateElement, innerClass, buttonClass) => {
   document.addEventListener('click', onDocumentClick);
 };
 
-//!! есть похожий кусок в base-modal
 function onDocumentEscapeKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();

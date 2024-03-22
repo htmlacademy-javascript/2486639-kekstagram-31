@@ -31,7 +31,7 @@ const validateHashtagsCount = (value) => {
   return (length === 0) || (length <= HASHTAGS_MAX_COUNT);
 };
 
-const initValidateNewPost = () => {
+const initValidate = () => {
   pristine = new Pristine(uploadImageFormElement, pristineOption);
 
   pristine.addValidator(
@@ -63,8 +63,8 @@ const initValidateNewPost = () => {
   );
 };
 
-const resetValidateNewPost = () => pristine.reset();
+const resetValidate = () => pristine.reset();
 
-const isNewPostFromValid = () => pristine.validate();
+const checkValidate = () => pristine.validate();
 
-export { initValidateNewPost, resetValidateNewPost, isNewPostFromValid };
+export { initValidate, resetValidate, checkValidate };
