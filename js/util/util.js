@@ -61,26 +61,6 @@ const createIdGenerator = (minNumber = 0, maxNumber = 0) => {
   };
 };
 
-const getRandomArrayElement = (elements) => (elements.length === 0) ? null : elements[getRandomNumber(0, elements.length - 1)];
-
-const getRandomArrayElements = (elements = [], maxCount = 1) => {
-  if ((elements.length === 0) || (maxCount < 1)) {
-    return null;
-  }
-
-  if (maxCount === 1) {
-    return [getRandomArrayElement(elements)];
-  }
-
-  if (maxCount >= elements.length) {
-    return structuredClone(elements);
-  }
-
-  const generateElemetIndex = createIdGenerator(0, elements.length - 1);
-
-  return Array.from({ length: getRandomNumber(1, maxCount) }, () => elements[generateElemetIndex()]);
-};
-
 const getRandomArray = (elements, сount) => {
   const getRandomIndex = createIdGenerator(0, elements.length - 1);
   return Array.from({ length: сount }, () => elements[getRandomIndex()]);
@@ -96,8 +76,6 @@ export {
   roundOneSignNumber,
   getRandomNumber,
   createIdGenerator,
-  getRandomArrayElement,
-  getRandomArrayElements,
   getRandomArray,
   isEscapeKey,
   addDot,
