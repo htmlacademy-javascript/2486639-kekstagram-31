@@ -1,4 +1,4 @@
-import { throwError, getRandomArray } from './util/util.js';
+import { throwError } from './util/util.js';
 import {
   filterInactiveClass, filterButtonActiveClass, filterButtonSelector, filterDefaultId,
   filterRandomId, filterDiscussedId, filtersContainerElement, filtersFormElement
@@ -32,19 +32,6 @@ const showFilter = (onFilterDefalut, onFilterRandom, onFilterDiscussed) => {
   filterOption[filterRandomId].onAfterApplyFilter = onFilterRandom;
   filterOption[filterDiscussedId].onAfterApplyFilter = onFilterDiscussed;
 
-  //
-  /*
-  Обсуждаемые — фотографии, отсортированные в порядке убывания количества комментариев.
-  выкинуть нули!
-   */
-  // т.к. с сервера загружаеться один раз, то и обсуждаемые подготовим один раз
-  /*
-  const discussedPosts = posts.slice(0, 11);
-
-  filterOption[filterDefaultId] = () => posts;
-  filterOption[filterRandomId] = () => getRandomArray(posts, 10);
-  filterOption[filterDiscussedId] = () => discussedPosts;
-*/
   filtersContainerElement.classList.remove(filterInactiveClass);
 
   filtersFormElement.querySelectorAll(filterButtonSelector).forEach(

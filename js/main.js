@@ -1,18 +1,14 @@
 import { getPosts } from './api.js';
 import { showError } from './show-error.js';
 import { drawPictures } from './draw-pictures.js';
-import { showFilter } from './filter.js';
+import { initFilter } from './filter-posts.js';
 import { initBigPictureModal } from './view-post/index.js';
 import { initNewPosteModal } from './new-post/index.js';
 
 getPosts(
   (posts) => {
     drawPictures(posts);
-    showFilter(
-      () => drawPictures(posts),
-      () => drawPictures(posts.slice(0, 11)),
-      () => drawPictures(posts.slice(10, 21))
-    );
+    initFilter(posts);
   },
   showError);
 initBigPictureModal();
