@@ -8,7 +8,11 @@ import { initNewPosteModal } from './new-post/index.js';
 getPosts(
   (posts) => {
     drawPictures(posts);
-    showFilter();
+    showFilter(
+      () => drawPictures(posts),
+      () => drawPictures(posts.slice(0, 11)),
+      () => drawPictures(posts.slice(10, 21))
+    );
   },
   showError);
 initBigPictureModal();
@@ -33,6 +37,9 @@ initNewPosteModal();
  * Баг или фича 21.03.2024
  * При открытом модальном окне и смене фокуса Tab-ом, то переходит на элементы основной страницы
  * Наверное нужно обработать смену фокуса...
+ *
+ * Баг 23.03.2024
+ * У кнопки "СЛУЧАЙНЫЕ" моргает курсов ввода в конце слова
  *
  * Поробовать реализорвать: возможно будет мешать автотестам
  * Кнопка для загрузки новой порции комментариев === прокрутка до самого низу.

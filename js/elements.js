@@ -7,6 +7,10 @@ const filterButtonActiveClass = 'img-filters__button--active';
 const pictureImageClass = 'picture__img';
 const pictureLikesClass = 'picture__likes';
 const pictureCommentsClass = 'picture__comments';
+const filterButtonSelector = 'button.img-filters__button';
+const filterDefaultId = 'filter-default';
+const filterRandomId = 'filter-random';
+const filterDiscussedId = 'filter-discussed';
 const filtersContainerElement = document.querySelector('.img-filters');
 const filtersFormElement = filtersContainerElement.querySelector('.img-filters__form');
 const picturesContainerElement = document.querySelector('.pictures');
@@ -23,6 +27,10 @@ export {
   pictureImageClass,
   pictureLikesClass,
   pictureCommentsClass,
+  filterButtonSelector,
+  filterDefaultId,
+  filterRandomId,
+  filterDiscussedId,
   filtersContainerElement,
   filtersFormElement,
   picturesContainerElement,

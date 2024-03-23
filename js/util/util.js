@@ -81,6 +81,11 @@ const getRandomArrayElements = (elements = [], maxCount = 1) => {
   return Array.from({ length: getRandomNumber(1, maxCount) }, () => elements[generateElemetIndex()]);
 };
 
+const getRandomArray = (elements, сount) => {
+  const getRandomIndex = createIdGenerator(0, elements.length - 1);
+  return Array.from({ length: сount }, () => elements[getRandomIndex()]);
+};
+
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const addDot = (string, isBefore = true) => `${(isBefore) ? '.' : ''}${string}${(!isBefore) ? '.' : ''}`;
@@ -93,6 +98,7 @@ export {
   createIdGenerator,
   getRandomArrayElement,
   getRandomArrayElements,
+  getRandomArray,
   isEscapeKey,
   addDot,
 };
