@@ -65,10 +65,23 @@ const createFragment = (records, createElement) => {
   return fragment;
 };
 
+const clearSelected = () => {
+  if (window.getSelection) {
+    if (window.getSelection().empty) {// Chrome
+      window.getSelection().empty();
+    } else if (window.getSelection().removeAllRanges) {// Firefox
+      window.getSelection().removeAllRanges();
+    }
+  } else if (document.selection) {// IE?
+    document.selection.empty();
+  }
+};
+
 export {
   updateClassList,
   getTemplateElement,
   getFirstElementChild,
   removeChilds,
   createFragment,
+  clearSelected,
 };

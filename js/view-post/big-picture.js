@@ -1,5 +1,5 @@
 import { addDot } from './../util/util.js';
-import { getFirstElementChild, removeChilds, createFragment } from './../util/dom.js';
+import { getFirstElementChild, removeChilds, createFragment, clearSelected } from './../util/dom.js';
 import {
   socialCommentsClass, socialPictureClass, socialTextClass, likesCountElement, imageElement,
   commentShowCountElement, commentTotalCountElement, captionElement, commentsContainerElement
@@ -42,6 +42,11 @@ const renderImageElement = ({ url, description, likes, comments }) => {
   commentShowCountElement.textContent = 0;
   commentTotalCountElement.textContent = comments.length;
   captionElement.textContent = description;
+  if (url) {
+    // Баг оставалось выделение и курссор ввода
+    clearSelected();
+    imageElement.focus();
+  }
 };
 
 const clearBigPicture = () => {
