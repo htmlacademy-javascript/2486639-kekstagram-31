@@ -1,3 +1,23 @@
+const throwError = (errorMessage) => {
+  if (!errorMessage) {
+    errorMessage = 'Нет сообщения об ошибке!';
+  }
+  if (errorMessage.stack) {
+    errorMessage = errorMessage.stack;
+  }
+  //!! ??
+  //if (errorMessage.message && errorMessage.stack) {
+  //  errorMessage = `${errorMessage.message}\n ${errorMessage.stack}`;
+  //}
+  //console.log(errorMessage);
+  //console.log(errorMessage.message);
+  //console.log(errorMessage.stack);
+  //throw new Error(errorMessage);
+  //throw new Error(errorMessage.message);
+  //throw new Error(errorMessage.stack);
+  throw new Error(errorMessage);
+};
+
 const checkStringLength = (string, length) => string.length <= length;
 
 const roundOneSignNumber = (value) => {
@@ -29,7 +49,7 @@ const createIdGenerator = (minNumber = 0, maxNumber = 0) => {
     let currentValue = getRandomNumber(minNumber, maxNumber);
 
     if (previousValues.length >= (maxNumber - minNumber + 1)) {
-      throw new Error(`Перебраны все числа из диапазона от ${minNumber} до ${maxNumber}`);
+      throwError(`Перебраны все числа из диапазона от ${minNumber} до ${maxNumber}`);
     }
 
     while (previousValues.includes(currentValue)) {
@@ -63,7 +83,10 @@ const getRandomArrayElements = (elements = [], maxCount = 1) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
+const addDot = (string, isBefore = true) => `${(isBefore) ? '.' : ''}${string}${(!isBefore) ? '.' : ''}`;
+
 export {
+  throwError,
   checkStringLength,
   roundOneSignNumber,
   getRandomNumber,
@@ -71,4 +94,5 @@ export {
   getRandomArrayElement,
   getRandomArrayElements,
   isEscapeKey,
+  addDot,
 };

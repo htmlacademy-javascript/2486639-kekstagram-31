@@ -1,13 +1,12 @@
-import { generatePosts } from './generate-posts.js';
+import { getPosts } from './api.js';
+import { showError } from './show-error.js';
 import { drawPictures } from './draw-pictures.js';
-import { initBigPictureModal, openBigPictureModal } from './view-post/index.js';
-import { initNewPost } from './new-post/index.js';
+import { initBigPictureModal } from './view-post/index.js';
+import { initNewPosteModal } from './new-post/index.js';
 
-const posts = generatePosts();
-
-drawPictures(posts, openBigPictureModal);
+getPosts(drawPictures, showError);
 initBigPictureModal();
-initNewPost();
+initNewPosteModal();
 
 /*
  * + Баг 06.03.2024 / возможно будет мешать автотестам
@@ -24,6 +23,10 @@ initNewPost();
  * Баг 12.03.2024
  * Если в модальном окне, что то выделить и потом закрыть по esc, то выделение остаеться на следующее открытие.
  * выдение на "Нравится", "5 из 26 комментариев"
+ *
+ * Баг или фича 21.03.2024
+ * При открытом модальном окне и смене фокуса Tab-ом, то переходит на элементы основной страницы
+ * Наверное нужно обработать смену фокуса...
  *
  * Поробовать реализорвать: возможно будет мешать автотестам
  * Кнопка для загрузки новой порции комментариев === прокрутка до самого низу.

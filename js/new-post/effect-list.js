@@ -1,4 +1,4 @@
-const effectTypeList = {
+const effectList = {
   none: {
     sliderOption: {
       range: { min: 0, max: 0 },
@@ -55,4 +55,4 @@ const effectTypeList = {
   },
 };
 
-export { effectTypeList };
+export { effectList };
