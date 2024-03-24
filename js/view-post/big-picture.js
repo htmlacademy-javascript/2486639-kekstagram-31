@@ -1,8 +1,8 @@
-
+import { addDot } from './../util/util.js';
 import { getFirstElementChild, removeChilds, createFragment } from './../util/dom.js';
 import {
-  likesCountElement, imageElement, commentShowCountElement, commentTotalCountElement,
-  captionElement, socialCommentsClassName, commentsContainerElement
+  socialCommentsClass, socialPictureClass, socialTextClass, likesCountElement, imageElement,
+  commentShowCountElement, commentTotalCountElement, captionElement, commentsContainerElement
 } from './elements.js';
 
 const CommentsCount = {
@@ -10,7 +10,7 @@ const CommentsCount = {
   LOAD_MORE: 5,
 };
 
-let commentTemplateElement;
+const commentTemplateElement = getFirstElementChild(socialCommentsClass);
 let currentComments = [];
 let commentsShowCount = 0;
 
@@ -18,10 +18,10 @@ const isAllBigPictureCommentsShow = () => (commentsShowCount === 0) || (comments
 
 const createElement = ({ avatar, name, message }) => {
   const newElement = commentTemplateElement.cloneNode(true);
-  const commentImageElement = newElement.querySelector('.social__picture');
+  const commentImageElement = newElement.querySelector(addDot(socialPictureClass));
   commentImageElement.src = avatar;
   commentImageElement.alt = name;
-  newElement.querySelector('.social__text').textContent = message;
+  newElement.querySelector(addDot(socialTextClass)).textContent = message;
   return newElement;
 };
 
@@ -57,9 +57,4 @@ const drawBigPicture = (post) => {
   drawComments(CommentsCount.ON_START);
 };
 
-const initDrawBigPicture = () => {
-  commentTemplateElement = getFirstElementChild(socialCommentsClassName);
-  clearBigPicture();
-};
-
-export { initDrawBigPicture, drawBigPicture, clearBigPicture, drawMoreBigPictureComments, isAllBigPictureCommentsShow };
+export { clearBigPicture as initDrawBigPicture, drawBigPicture, clearBigPicture, drawMoreBigPictureComments, isAllBigPictureCommentsShow };

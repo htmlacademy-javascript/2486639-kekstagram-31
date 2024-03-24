@@ -1,11 +1,12 @@
 import { isEscapeKey } from './util/util.js';
+import { hiddenClass, modalOpenClass } from './elements.js';
 
 const baseModal = {
   element: null,
   closeElement: null,
   onCloseModal: null,
-  removeElementClassName: 'hidden',
-  addDocumentClassName: 'modal-open',
+  removeElementClassName: hiddenClass,
+  addDocumentClassName: modalOpenClass,
 };
 
 const closeBasicModal = (evt, exitByEscapeKey = false) => {
@@ -41,4 +42,4 @@ function onDocumentEscapeKeydown(evt) {
   }
 }
 
-export { openBasicModal };
+export { openBasicModal, closeBasicModal };

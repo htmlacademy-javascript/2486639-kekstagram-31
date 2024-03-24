@@ -1,22 +1,20 @@
-import { createFragment, getTemplateElement } from './util/dom.js';
-
-const picturesContainerElement = document.querySelector('.pictures');
-const picturesTitleElement = picturesContainerElement.querySelector('.pictures__title');
-const picturesImgUploadElement = picturesContainerElement.querySelector('.img-upload');
-
-const pictureTemplateElement = getTemplateElement('picture');
-
-let openBigPictureModal = null;
+import { createFragment } from './util/dom.js';
+import { addDot } from './util/util.js';
+import {
+  pictureImageClass, pictureLikesClass, pictureCommentsClass, pictureTemplateElement,
+  picturesContainerElement, picturesTitleElement, picturesImgUploadElement
+} from './elements.js';
+import { openBigPictureModal } from './view-post/index.js';
 
 const createElement = (post) => {
   const { url, description, likes, comments } = post;
   const newElement = pictureTemplateElement.cloneNode(true);
-  const pictureImageElement = newElement.querySelector('.picture__img');
+  const pictureImageElement = newElement.querySelector(addDot(pictureImageClass));
   pictureImageElement.src = url;
   pictureImageElement.alt = description;
 
-  newElement.querySelector('.picture__likes').textContent = likes;
-  newElement.querySelector('.picture__comments').textContent = comments.length;
+  newElement.querySelector(addDot(pictureLikesClass)).textContent = likes;
+  newElement.querySelector(addDot(pictureCommentsClass)).textContent = comments.length;
 
   if (openBigPictureModal) {
     newElement.addEventListener('click', (evt) => {
@@ -29,10 +27,7 @@ const createElement = (post) => {
   return newElement;
 };
 
-const drawPictures = (posts, openModal) => {
-  openBigPictureModal = openModal;
-
+const drawPictures = (posts) =>
   picturesContainerElement.replaceChildren(picturesTitleElement, picturesImgUploadElement, createFragment(posts, createElement));
-};
 
 export { drawPictures };

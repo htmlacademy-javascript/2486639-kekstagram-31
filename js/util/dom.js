@@ -1,4 +1,4 @@
-const addDotToClassName = (className) => `.${className}`;
+import { throwError, addDot } from './util.js';
 
 const updateClassList = (element, className, isAdd = true) => {
   if (isAdd) {
@@ -12,47 +12,47 @@ const getTemplateElement = (id, elementChildClassName = '') => {
   if (id) {
     const templateElement = document.querySelector(`#${id}`);
     if (!templateElement) {
-      throw new Error(`Не найден шаблон c id = "${id}"`);
+      throwError(`Не найден шаблон c id = "${id}"`);
     }
 
     if (elementChildClassName) {
       try {
-        return templateElement.content.querySelector(addDotToClassName(elementChildClassName));
+        return templateElement.content.querySelector(addDot(elementChildClassName));
       } catch (error) {
-        throw new Error(`Не найден дочерний элемент с сlass = "${elementChildClassName}" у шаблона id = "${id}"`);
+        throwError(`Не найден дочерний элемент с сlass = "${elementChildClassName}" у шаблона id = "${id}"`);
       }
     } else {
       const element = templateElement.content.firstElementChild;
       if (!element) {
-        throw new Error(`Не найден первый дочерний элемент у шаблона id = "${id}"`);
+        throwError(`Не найден первый дочерний элемент у шаблона id = "${id}"`);
       }
       return element;
     }
   } else {
-    throw new Error('Не указан id шаблона');
+    throwError('Не указан id шаблона');
   }
 };
 
 const getFirstElementChild = (className) => {
   if (className) {
-    const element = document.querySelector(addDotToClassName(className));
+    const element = document.querySelector(addDot(className));
     if (!element) {
-      throw new Error(`Не найден элемент c class = "${className}"`);
+      throwError(`Не найден элемент c class = "${className}"`);
     }
 
     const firstElement = element.firstElementChild;
     if (!firstElement) {
-      throw new Error(`Не найден первый дочерний элемент у элемента class = "${className}"`);
+      throwError(`Не найден первый дочерний элемент у элемента class = "${className}"`);
     }
     return firstElement;
   } else {
-    throw new Error('Не указан className элемента');
+    throwError('Не указан className элемента');
   }
 };
 
 const removeChilds = (containerElement, childClassName) => {
   if (childClassName) {
-    const childs = containerElement.querySelectorAll(addDotToClassName(childClassName));
+    const childs = containerElement.querySelectorAll(addDot(childClassName));
     childs.forEach((element) => element.remove());
   } else {
     containerElement.innerHTML = '';
@@ -66,7 +66,6 @@ const createFragment = (records, createElement) => {
 };
 
 export {
-  addDotToClassName,
   updateClassList,
   getTemplateElement,
   getFirstElementChild,
