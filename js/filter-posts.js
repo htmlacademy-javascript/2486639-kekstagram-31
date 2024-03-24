@@ -10,9 +10,8 @@ const getDiscussedPosts = (posts) => posts.slice().sort(
   (firstElement, secondElement) => (secondElement.comments.length - firstElement.comments.length)
 );
 
-
 const initFilter = (posts) => {
-  // т.к. с сервера загружаеться один раз, то и обсуждаемые подготовим один раз
+  // т.к. с сервера загружаеться один раз, то и обсуждаемые подготовим сразу
   const discussedPosts = getDiscussedPosts(posts);
 
   showFilter(

@@ -9,9 +9,9 @@ getPosts(
   (posts) => {
     drawPictures(posts);
     initFilter(posts);
+    initBigPictureModal();
   },
   showError);
-initBigPictureModal();
 initNewPosteModal();
 
 /*

@@ -16,13 +16,11 @@ const createElement = (post) => {
   newElement.querySelector(addDot(pictureLikesClass)).textContent = likes;
   newElement.querySelector(addDot(pictureCommentsClass)).textContent = comments.length;
 
-  if (openBigPictureModal) {
-    newElement.addEventListener('click', (evt) => {
-      evt.preventDefault();
-      evt.currentTarget.blur(); // Баг - не скрываеться элемент '.picture__info'
-      openBigPictureModal(post);
-    });
-  }
+  newElement.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    evt.currentTarget.blur(); // Баг - не скрываеться элемент '.picture__info'
+    openBigPictureModal(post);
+  });
 
   return newElement;
 };
