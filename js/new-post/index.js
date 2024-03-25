@@ -7,9 +7,7 @@ import {
 import { initForm, resetForm } from './form.js';
 import { showSuccessMessage, showErrorMessage } from './show-message.js';
 
-const onSuccessSendPost = (/*data для следующего задания*/) => {
-  //!!
-  //console.log(data);
+const onSuccessSendPost = () => {
   uploadImageFormElement.reset();
   closeBasicModal();
   showSuccessMessage();
@@ -34,10 +32,6 @@ const openNewPostModal = () => {
     imageUploadCancelElement,
     closeNewPostModal
   );
-
-  // подставить загруженное изображение
-  //!! imageUploadInputElement.value
-  //console.log(imageUploadInputElement.value);
 };
 
 const onElementEscapeKeyDown = (evt) => {
