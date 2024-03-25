@@ -1,8 +1,8 @@
 import { addDot } from './../util/util.js';
-import { getFirstElementChild, removeChilds, createFragment, clearSelected } from './../util/dom.js';
+import { removeChilds, createFragment, clearSelected } from './../util/dom.js';
 import {
-  socialCommentsClass, socialPictureClass, socialTextClass, likesCountElement, imageElement,
-  commentShowCountElement, commentTotalCountElement, captionElement, commentsContainerElement
+  socialPictureClass, socialTextClass, likesCountElement, imageElement, commentShowCountElement,
+  commentTotalCountElement, captionElement, commentsContainerElement, commentTemplateElement
 } from './elements.js';
 
 const CommentsCount = {
@@ -10,7 +10,6 @@ const CommentsCount = {
   LOAD_MORE: 5,
 };
 
-const commentTemplateElement = getFirstElementChild(socialCommentsClass);
 let currentComments = [];
 let commentsShowCount = 0;
 
@@ -27,13 +26,17 @@ const createElement = ({ avatar, name, message }) => {
 
 const drawComments = (newShowCommentsCount) => {
   newShowCommentsCount = Math.min(newShowCommentsCount, currentComments.length);
-  commentsContainerElement.append(createFragment(currentComments.slice(commentsShowCount, newShowCommentsCount), createElement));
+  const comments = currentComments.slice(commentsShowCount, newShowCommentsCount);
+  const fragment = createFragment(comments, createElement);
+  commentsContainerElement.append(fragment);
   commentsShowCount = newShowCommentsCount;
 
   commentShowCountElement.textContent = commentsShowCount;
 };
 
-const drawMoreBigPictureComments = () => drawComments(commentsShowCount + CommentsCount.LOAD_MORE);
+const drawMoreBigPictureComments = () => {
+  drawComments(commentsShowCount + CommentsCount.LOAD_MORE);
+};
 
 const renderImageElement = ({ url, description, likes, comments }) => {
   imageElement.src = url;
@@ -62,4 +65,7 @@ const drawBigPicture = (post) => {
   drawComments(CommentsCount.ON_START);
 };
 
-export { clearBigPicture as initDrawBigPicture, drawBigPicture, clearBigPicture, drawMoreBigPictureComments, isAllBigPictureCommentsShow };
+export {
+  clearBigPicture as initDrawBigPicture, drawBigPicture,
+  clearBigPicture, drawMoreBigPictureComments, isAllBigPictureCommentsShow
+};

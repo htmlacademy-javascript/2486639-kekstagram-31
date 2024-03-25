@@ -78,5 +78,5 @@ export {
   createIdGenerator,
   getRandomArray,
   isEscapeKey,
-  addDot,
+  addDot
 };

@@ -4,6 +4,7 @@ import {
   filterRandomId, filterDiscussedId, filtersContainerElement, filtersFormElement
 } from './elements.js';
 
+//!!! немного переделать
 const filterOption = {
   'filter-default': { onAfterApplyFilter: null },
   'filter-random': { onAfterApplyFilter: null },
@@ -15,7 +16,10 @@ const applyFilter = (evt) => {
   // проверка на активный фильтр
   if (!buttonElement.classList.contains(filterButtonActiveClass)) {
     // переместим выделение на нужную фильтр-кнопку
-    [...(filtersFormElement.children)].forEach((element) => element.classList.remove(filterButtonActiveClass));
+    //!! тут бы одинаковый вызов как снизу
+    [...(filtersFormElement.children)].forEach((element) => {
+      element.classList.remove(filterButtonActiveClass);
+    });
     buttonElement.classList.add(filterButtonActiveClass);
     // вызовем нужную загрузку
     const onAfterApplyFilter = filterOption[buttonElement.id].onAfterApplyFilter;
@@ -34,8 +38,12 @@ const showFilter = (onFilterDefalut, onFilterRandom, onFilterDiscussed) => {
 
   filtersContainerElement.classList.remove(filterInactiveClass);
 
-  filtersFormElement.querySelectorAll(filterButtonSelector).forEach(
-    (element) => element.addEventListener('click', applyFilter)
+  //!! попробовать сделать на все... однотипно как везде
+  const buttons = filtersFormElement.querySelectorAll(filterButtonSelector);
+  buttons.forEach(
+    (element) => {
+      element.addEventListener('click', applyFilter);
+    }
   );
 };
 

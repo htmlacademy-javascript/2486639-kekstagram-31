@@ -6,7 +6,7 @@ const baseModal = {
   closeElement: null,
   onCloseModal: null,
   removeElementClassName: hiddenClass,
-  addDocumentClassName: modalOpenClass,
+  addDocumentClassName: modalOpenClass
 };
 
 const closeBasicModal = (evt, exitByEscapeKey = false) => {

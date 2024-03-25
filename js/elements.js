@@ -37,5 +37,5 @@ export {
   picturesTitleElement,
   picturesImgUploadElement,
   pictureTemplateElement,
-  errorTemplateElement,
+  errorTemplateElement
 };

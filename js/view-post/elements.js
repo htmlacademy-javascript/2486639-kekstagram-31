@@ -1,8 +1,9 @@
 import { addDot } from './../util/util.js';
+import { getFirstElementChild } from './../util/dom.js';
 
-const socialCommentsClass = 'social__comments';
-const socialPictureClass = 'social__picture';
-const socialTextClass = 'social__text';
+const socialCommentsClass = 'social__comments'; //??
+const socialPictureClass = 'social__picture'; //??
+const socialTextClass = 'social__text'; //??
 const bigPictureElement = document.querySelector('.big-picture');
 const closePictureElement = bigPictureElement.querySelector('.big-picture__cancel');
 const commentsLoaderElement = bigPictureElement.querySelector('.comments-loader');
@@ -14,7 +15,8 @@ const commentCountElement = socialElement.querySelector('.social__comment-count'
 const commentShowCountElement = commentCountElement.querySelector('.social__comment-shown-count');
 const commentTotalCountElement = commentCountElement.querySelector('.social__comment-total-count');
 const captionElement = socialElement.querySelector('.social__caption');
-const commentsContainerElement = document.querySelector(addDot(socialCommentsClass));
+const commentsContainerElement = document.querySelector(addDot(socialCommentsClass)); //??
+const commentTemplateElement = getFirstElementChild(socialCommentsClass); //??
 
 export {
   socialCommentsClass,
@@ -30,4 +32,5 @@ export {
   commentTotalCountElement,
   captionElement,
   commentsContainerElement,
+  commentTemplateElement
 };

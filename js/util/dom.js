@@ -83,5 +83,5 @@ export {
   getFirstElementChild,
   removeChilds,
   createFragment,
-  clearSelected,
+  clearSelected
 };

@@ -7,10 +7,14 @@ import { showSuccess, showError } from './show-message.js';
 
 let onSuccess = null;
 
-const enableSubmitButton = () => (uploadSubmitElement.disabled = false);
-const disablekSubmitButton = () => (uploadSubmitElement.disabled = true);
+const enableSubmitButton = () => {
+  uploadSubmitElement.disabled = false;
+};
+const disablekSubmitButton = () => {
+  uploadSubmitElement.disabled = true;
+};
 
-const onSuccessSendPost = (/*data*/) => {
+const onSuccessSendPost = (/*data для следующего задания*/) => {
   //!!
   //console.log(data);
   uploadImageFormElement.reset();
@@ -20,9 +24,7 @@ const onSuccessSendPost = (/*data*/) => {
   showSuccess();
 };
 
-const onErrorSendPost = (/*err*/) => {
-  //!!
-  //console.log(err);
+const onErrorSendPost = () => {
   showError();
   enableSubmitButton();
 };

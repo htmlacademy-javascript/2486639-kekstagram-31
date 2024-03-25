@@ -25,7 +25,9 @@ const createElement = (post) => {
   return newElement;
 };
 
-const drawPictures = (posts) =>
-  picturesContainerElement.replaceChildren(picturesTitleElement, picturesImgUploadElement, createFragment(posts, createElement));
+const drawPictures = (posts) => {
+  const fragment = createFragment(posts, createElement);
+  picturesContainerElement.replaceChildren(picturesTitleElement, picturesImgUploadElement, fragment);
+};
 
 export { drawPictures };

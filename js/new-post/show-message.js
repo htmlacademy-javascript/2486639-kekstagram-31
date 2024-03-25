@@ -27,6 +27,7 @@ const showMessage = (templateElement, innerClass, buttonClass) => {
 
 function onDocumentEscapeKeydown(evt) {
   if (isEscapeKey(evt)) {
+    //!! evt.stopPropagation();  ???
     evt.preventDefault();
     hideMessage();
   }
@@ -38,8 +39,12 @@ function onDocumentClick(evt) {
   }
 }
 
-const showSuccess = () => showMessage(successTemplateElement, successInnerClass, successButtonClass);
+const showSuccess = () => {
+  showMessage(successTemplateElement, successInnerClass, successButtonClass);
+};
 
-const showError = () => showMessage(errorTemplateElement, errorInnerClass, errorButtonClass);
+const showError = () => {
+  showMessage(errorTemplateElement, errorInnerClass, errorButtonClass);
+};
 
 export { showSuccess, showError };

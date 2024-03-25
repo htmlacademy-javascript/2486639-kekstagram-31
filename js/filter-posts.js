@@ -14,10 +14,17 @@ const initFilter = (posts) => {
   // т.к. с сервера загружаеться один раз, то и обсуждаемые подготовим сразу
   const discussedPosts = getDiscussedPosts(posts);
 
+  //!! немного передеалать чтоб функции возвращали значения .....
   showFilter(
-    () => drawPictures(posts),
-    () => drawPictures(getRandomPosts(posts)),
-    () => drawPictures(discussedPosts)
+    () => {
+      drawPictures(posts);
+    },
+    () => {
+      drawPictures(getRandomPosts(posts));
+    },
+    () => {
+      drawPictures(discussedPosts);
+    }
   );
 };
 

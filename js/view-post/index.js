@@ -2,7 +2,10 @@ import { updateClassList } from './../util/dom.js';
 import { openBasicModal } from './../basic-modal.js';
 import { hiddenClass } from './../elements.js';
 import { bigPictureElement, closePictureElement, commentCountElement, commentsLoaderElement } from './elements.js';
-import { initDrawBigPicture, drawBigPicture, clearBigPicture, drawMoreBigPictureComments, isAllBigPictureCommentsShow } from './big-picture.js';
+import {
+  initDrawBigPicture, drawBigPicture, clearBigPicture,
+  drawMoreBigPictureComments, isAllBigPictureCommentsShow
+} from './big-picture.js';
 
 const updateCommentsLoaderVisible = () => {
   const isAllCommentsShow = isAllBigPictureCommentsShow();

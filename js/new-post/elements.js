@@ -54,5 +54,5 @@ export {
   effectLevelSliderElement,
   effectLevelInputlement,
   successTemplateElement,
-  errorTemplateElement,
+  errorTemplateElement
 };

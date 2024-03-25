@@ -9,14 +9,17 @@ import { effectList } from './effect-list.js';
 
 let currentEffect;
 
-const updateSliderVisible = () => updateClassList(effectLevelElement, hiddenClass, currentEffect === effectList.none);
+const updateSliderVisible = () => {
+  updateClassList(effectLevelElement, hiddenClass, currentEffect === effectList.none);
+};
 
 const applyEffectOption = () => {
   if (currentEffect === effectList.none) {
     imageUploadPreviewElement.style.removeProperty('filter');
   } else {
     const { filterType, filterUnit } = currentEffect;
-    imageUploadPreviewElement.style.setProperty('filter', `${filterType}(${effectLevelInputlement.value}${filterUnit})`);
+    const filter = `${filterType}(${effectLevelInputlement.value}${filterUnit})`;
+    imageUploadPreviewElement.style.setProperty('filter', filter);
   }
 };
 
@@ -29,7 +32,14 @@ const resetEffect = () => {
 const initEffect = () => {
   resetEffect();
   noUiSlider.create(effectLevelSliderElement, currentEffect.sliderOption);
-  effectLevelSliderElement.noUiSlider.updateOptions({ format: { to: roundOneSignNumber, from: parseFloat, } });
+  effectLevelSliderElement.noUiSlider.updateOptions(
+    {
+      format:
+      {
+        to: roundOneSignNumber,
+        from: parseFloat
+      }
+    });
   effectLevelSliderElement.noUiSlider.on('update', () => {
     effectLevelInputlement.value = effectLevelSliderElement.noUiSlider.get();
     applyEffectOption();
