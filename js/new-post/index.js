@@ -1,14 +1,27 @@
 import { isEscapeKey } from './../util/util.js';
-import { openBasicModal, closeBasicModal } from './../basic-modal.js';
+import { openBasicModal, closeBasicModal, changeEnabledEscapeKeydownBasicModal } from './../basic-modal.js';
 import {
   uploadImageFormElement, imageUploadOverlayElement, imageUploadInputElement,
   imageUploadCancelElement, hashtagsInputElement, descriptionInputElement
 } from './elements.js';
-import { initForm } from './form.js';
+import { initForm, resetForm } from './form.js';
+import { showSuccessMessage, showErrorMessage } from './show-message.js';
+
+const onSuccessSendPost = (/*data для следующего задания*/) => {
+  //!!
+  //console.log(data);
+  uploadImageFormElement.reset();
+  closeBasicModal();
+  showSuccessMessage();
+};
+
+const onErrorSendPost = () => {
+  showErrorMessage(changeEnabledEscapeKeydownBasicModal);
+};
 
 const closeNewPostModal = (_, exitByEscapeKey) => {
   if (exitByEscapeKey) {
-    uploadImageFormElement.reset();
+    resetForm();
   }
 };
 
@@ -34,7 +47,7 @@ const initNewPosteModal = () => {
   imageUploadInputElement.addEventListener('change', openNewPostModal);
   hashtagsInputElement.addEventListener('keydown', onElementEscapeKeyDown);
   descriptionInputElement.addEventListener('keydown', onElementEscapeKeyDown);
-  initForm(closeBasicModal);
+  initForm(onSuccessSendPost, onErrorSendPost);
 };
 
 export { initNewPosteModal };

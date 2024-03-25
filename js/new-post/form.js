@@ -3,34 +3,20 @@ import { initScale, resetScale } from './scale.js';
 import { initEffect, resetEffect } from './effect.js';
 import { initValidate, resetValidate, checkValidate } from './validate.js';
 import { sendPost } from './../api.js';
-import { showSuccess, showError } from './show-message.js';
-
-let onSuccess = null;
 
 const enableSubmitButton = () => {
   uploadSubmitElement.disabled = false;
 };
-const disablekSubmitButton = () => {
+
+const disableSubmitButton = () => {
   uploadSubmitElement.disabled = true;
 };
 
-const onSuccessSendPost = (/*data для следующего задания*/) => {
-  //!!
-  //console.log(data);
+const resetForm = () => {
   uploadImageFormElement.reset();
-  if (onSuccess) {
-    onSuccess();
-  }
-  showSuccess();
 };
 
-const onErrorSendPost = () => {
-  showError();
-  enableSubmitButton();
-};
-
-const initForm = (onSuccessSubmit) => {
-  onSuccess = onSuccessSubmit;
+const initForm = (onSuccessSendPost, onErrorSendPost) => {
   uploadImageFormElement.addEventListener('reset', () => {
     resetScale();
     resetEffect();
@@ -41,9 +27,14 @@ const initForm = (onSuccessSubmit) => {
     evt.preventDefault();
 
     if (checkValidate()) {
-      disablekSubmitButton();
-      //!! ?? нужно ли тримить коментарий и хештеги при отправке? и при провеке коментария на длинну?
-      sendPost(onSuccessSendPost, onErrorSendPost, new FormData(evt.target));
+      disableSubmitButton();
+      sendPost(
+        onSuccessSendPost,
+        (err) => {
+          onErrorSendPost(err);
+          enableSubmitButton();
+        },
+        new FormData(evt.target));
     }
   });
 
@@ -52,4 +43,4 @@ const initForm = (onSuccessSubmit) => {
   initValidate();
 };
 
-export { initForm };
+export { initForm, resetForm };

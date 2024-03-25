@@ -1,45 +1,54 @@
 import { isEscapeKey } from './util/util.js';
 import { hiddenClass, modalOpenClass } from './elements.js';
 
-const baseModal = {
+const modalOption = {
   element: null,
   closeElement: null,
   onCloseModal: null,
+  enabledCloseByEscapeKey: true,
   removeElementClassName: hiddenClass,
   addDocumentClassName: modalOpenClass
 };
 
+const changeEnabledEscapeKeydownBasicModal = (value) => {
+  modalOption.enabledCloseByEscapeKey = value;
+};
+
 const closeBasicModal = (evt, exitByEscapeKey = false) => {
-  baseModal.element.scrollTo(scrollX, 0); // + Баг, если модальное окно прокрутить, то при следующих открытиях прокрутка вниз остаеться
-  baseModal.element.classList.add(baseModal.removeElementClassName);
-  document.body.classList.remove(baseModal.addDocumentClassName);
-  if (baseModal.closeElement) {
-    baseModal.closeElement.removeEventListener('click', closeBasicModal);
+  modalOption.element.scrollTo(scrollX, 0); // + Баг, если модальное окно прокрутить, то при следующих открытиях прокрутка вниз остаеться
+  modalOption.element.classList.add(modalOption.removeElementClassName);
+  document.body.classList.remove(modalOption.addDocumentClassName);
+  if (modalOption.closeElement) {
+    modalOption.closeElement.removeEventListener('click', closeBasicModal);
   }
   document.removeEventListener('keydown', onDocumentEscapeKeydown);
-  if (baseModal.onCloseModal) {
-    baseModal.onCloseModal(evt, exitByEscapeKey);
+  if (modalOption.onCloseModal) {
+    modalOption.onCloseModal(evt, exitByEscapeKey);
   }
 };
 
 const openBasicModal = (modalElement, closeElement, onCloseModal) => {
-  baseModal.element = modalElement;
-  baseModal.closeElement = closeElement;
-  baseModal.onCloseModal = onCloseModal;
+  modalOption.element = modalElement;
+  modalOption.closeElement = closeElement;
+  modalOption.onCloseModal = onCloseModal;
 
-  baseModal.element.classList.remove(baseModal.removeElementClassName);
-  document.body.classList.add(baseModal.addDocumentClassName);
-  if (baseModal.closeElement) {
-    baseModal.closeElement.addEventListener('click', closeBasicModal);
+  modalOption.element.classList.remove(modalOption.removeElementClassName);
+  document.body.classList.add(modalOption.addDocumentClassName);
+  if (modalOption.closeElement) {
+    modalOption.closeElement.addEventListener('click', closeBasicModal);
   }
   document.addEventListener('keydown', onDocumentEscapeKeydown);
 };
 
 function onDocumentEscapeKeydown(evt) {
   if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closeBasicModal(evt, true);
+    if (modalOption.enabledCloseByEscapeKey) {
+      evt.stopPropagation();
+    } else {
+      evt.preventDefault();
+      closeBasicModal(evt, true);
+    }
   }
 }
 
-export { openBasicModal, closeBasicModal };
+export { openBasicModal, closeBasicModal, changeEnabledEscapeKeydownBasicModal };
