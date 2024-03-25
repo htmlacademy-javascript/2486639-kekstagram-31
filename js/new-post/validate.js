@@ -1,4 +1,4 @@
-import { checkStringLength } from './../util/util.js';
+import { checkStringLength, removeNullElements } from './../util/util.js';
 import { pristineOption, uploadImageFormElement, hashtagsInputElement, descriptionInputElement } from './elements.js';
 
 const DESCRIPTION_MAX_LENGTH = 140;
@@ -14,7 +14,7 @@ const WarningMessage = {
 
 let pristine;
 
-const getHashtags = (string) => string.trim().toLocaleLowerCase().split(' ').filter((element) => (element) ? element : null);
+const getHashtags = (string) => removeNullElements(string.trim().toLocaleLowerCase().split(' '));
 
 const validateWrongHashtag = (value) => {
   const hashtags = getHashtags(value);
