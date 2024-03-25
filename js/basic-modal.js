@@ -18,7 +18,6 @@ const disableEscapeKeydownBasicModal = () => {
   modalOption.enabledEscapeKeydown = false;
 };
 
-
 const closeBasicModal = (evt, exitByEscapeKey = false) => {
   modalOption.element.scrollTo(scrollX, 0); // + Баг, если модальное окно прокрутить, то при следующих открытиях прокрутка вниз остаеться
   modalOption.element.classList.add(modalOption.removeElementClassName);
