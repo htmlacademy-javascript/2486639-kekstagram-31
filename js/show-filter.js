@@ -8,7 +8,7 @@ import {
 const filterOption = {
   'filter-default': { onAfterApplyFilter: null },
   'filter-random': { onAfterApplyFilter: null },
-  'filter-discussed': { onAfterApplyFilter: null },
+  'filter-discussed': { onAfterApplyFilter: null }
 };
 
 const applyFilter = (evt) => {
