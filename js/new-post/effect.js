@@ -5,35 +5,36 @@ import {
   imageUploadPreviewElement, effectsListElement, effectLevelElement,
   effectLevelSliderElement, effectLevelInputlement
 } from './elements.js';
-import { effectList } from './effect-list.js';
+import { defaultSliderOption, effectList } from './effect-list.js';
 
 let currentEffect;
 
 const updateSliderVisible = () => {
-  updateClassList(effectLevelElement, hiddenClass, currentEffect === effectList.none);
+  updateClassList(effectLevelElement, hiddenClass, !currentEffect);
 };
 
 const applyEffectOption = () => {
-  if (currentEffect === effectList.none) {
-    imageUploadPreviewElement.style.removeProperty('filter');
-  } else {
+  if (currentEffect) {
     const { filterType, filterUnit } = currentEffect;
     const filter = `${filterType}(${effectLevelInputlement.value}${filterUnit})`;
     imageUploadPreviewElement.style.setProperty('filter', filter);
+  } else {
+    imageUploadPreviewElement.style.removeProperty('filter');
   }
 };
 
-const resetEffect = () => {
-  currentEffect = effectList.none;
+const resetEffect = (needApply = true) => {
   updateSliderVisible();
-  applyEffectOption();
+  if (needApply) {
+    applyEffectOption();
+  }
 };
 
 const initEffect = () => {
-  resetEffect();
-  const initSliderOption = currentEffect.sliderOption;
-  initSliderOption.connect = 'lower';
-  noUiSlider.create(effectLevelSliderElement, initSliderOption);
+  resetEffect(false);
+  noUiSlider.create(effectLevelSliderElement, defaultSliderOption);
+  effectLevelSliderElement.noUiSlider.updateOptions({ connect: false });
+
   effectLevelSliderElement.noUiSlider.updateOptions(
     {
       format: {
@@ -53,9 +54,9 @@ const initEffect = () => {
       // видимость слайдера
       updateSliderVisible();
       // смена слайдера, т.к. в насройках есть start, то дополнительно не вызываю noUiSlider.set
-      effectLevelSliderElement.noUiSlider.updateOptions(currentEffect.sliderOption);
-      // отрисовка
-      applyEffectOption();
+      const newSliderOption = (currentEffect) ? currentEffect.sliderOption : defaultSliderOption;
+      effectLevelSliderElement.noUiSlider.updateOptions(newSliderOption);
+      // не вызываем applyEffectOption, т.к. отрисовка будет вызвана при применении параметра 'start' у слайдера
     }
   });
 };

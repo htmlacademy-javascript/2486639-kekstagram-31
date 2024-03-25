@@ -1,5 +1,5 @@
 import { isEscapeKey } from './../util/util.js';
-import { openBasicModal, closeBasicModal, changeEnabledEscapeKeydownBasicModal } from './../basic-modal.js';
+import { openBasicModal, closeBasicModal, enableEscapeKeydownBasicModal, disableEscapeKeydownBasicModal } from './../basic-modal.js';
 import {
   uploadImageFormElement, imageUploadOverlayElement, imageUploadInputElement,
   imageUploadCancelElement, hashtagsInputElement, descriptionInputElement
@@ -16,7 +16,10 @@ const onSuccessSendPost = (/*data для следующего задания*/) 
 };
 
 const onErrorSendPost = () => {
-  showErrorMessage(changeEnabledEscapeKeydownBasicModal);
+  disableEscapeKeydownBasicModal();
+  showErrorMessage(() => {
+    enableEscapeKeydownBasicModal();
+  });
 };
 
 const closeNewPostModal = (_, exitByEscapeKey) => {

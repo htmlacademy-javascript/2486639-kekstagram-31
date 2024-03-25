@@ -6,27 +6,22 @@ const messageOption = {
   element: null,
   buttonElement: null,
   innerClass: null,
-  changeEnabledEscapeKeydown: null
-};
-
-const changeEnabledEscapeKeydown = (value) => {
-  if (messageOption.changeEnabledEscapeKeydown) {
-    messageOption.changeEnabledEscapeKeydown(value);
-  }
+  onClose: null
 };
 
 const hideMessage = () => {
-  changeEnabledEscapeKeydown(false);
+  if (messageOption.onClose) {
+    messageOption.onClose();
+  }
   messageOption.element.remove();
   messageOption.buttonElement.removeEventListener('click', hideMessage);
   document.removeEventListener('keydown', onDocumentEscapeKeydown);
   document.removeEventListener('click', onDocumentClick);
 };
 
-const showMessage = (templateElement, innerClass, buttonClass, setStopPropagation1 = null/* !!!!! */) => {
+const showMessage = (templateElement, innerClass, buttonClass, onClose) => {
   messageOption.innerClass = innerClass;
-  messageOption.changeEnabledEscapeKeydown = setStopPropagation1;
-  changeEnabledEscapeKeydown(true);
+  messageOption.onClose = onClose;
   messageOption.element = templateElement.cloneNode(true);
   document.body.append(messageOption.element);
 
@@ -54,8 +49,8 @@ const showSuccessMessage = () => {
   showMessage(successTemplateElement, successInnerClass, successButtonClass);
 };
 
-const showErrorMessage = (setStopPropagation1) => {
-  showMessage(errorTemplateElement, errorInnerClass, errorButtonClass, setStopPropagation1);
+const showErrorMessage = () => {
+  showMessage(errorTemplateElement, errorInnerClass, errorButtonClass);
 };
 
 export { showSuccessMessage, showErrorMessage };

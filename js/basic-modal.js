@@ -5,14 +5,19 @@ const modalOption = {
   element: null,
   closeElement: null,
   onCloseModal: null,
-  enabledCloseByEscapeKey: true,
+  enabledEscapeKeydown: true,
   removeElementClassName: hiddenClass,
   addDocumentClassName: modalOpenClass
 };
 
-const changeEnabledEscapeKeydownBasicModal = (value) => {
-  modalOption.enabledCloseByEscapeKey = value;
+const enableEscapeKeydownBasicModal = () => {
+  modalOption.enabledEscapeKeydown = true;
 };
+
+const disableEscapeKeydownBasicModal = () => {
+  modalOption.enabledEscapeKeydown = false;
+};
+
 
 const closeBasicModal = (evt, exitByEscapeKey = false) => {
   modalOption.element.scrollTo(scrollX, 0); // + Баг, если модальное окно прокрутить, то при следующих открытиях прокрутка вниз остаеться
@@ -42,13 +47,13 @@ const openBasicModal = (modalElement, closeElement, onCloseModal) => {
 
 function onDocumentEscapeKeydown(evt) {
   if (isEscapeKey(evt)) {
-    if (modalOption.enabledCloseByEscapeKey) {
-      evt.stopPropagation();
-    } else {
+    if (modalOption.enabledEscapeKeydown) {
       evt.preventDefault();
       closeBasicModal(evt, true);
+    } else {
+      evt.stopPropagation();
     }
   }
 }
 
-export { openBasicModal, closeBasicModal, changeEnabledEscapeKeydownBasicModal };
+export { openBasicModal, closeBasicModal, enableEscapeKeydownBasicModal, disableEscapeKeydownBasicModal };

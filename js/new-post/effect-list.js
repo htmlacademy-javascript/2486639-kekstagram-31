@@ -1,13 +1,11 @@
+const defaultSliderOption = {
+  range: { min: 0, max: 0 },
+  step: 0,
+  start: 0,
+  connect: 'lower'
+};
+
 const effectList = {
-  none: {
-    sliderOption: {
-      range: { min: 0, max: 0 },
-      step: 0,
-      start: 0
-    },
-    filterType: 'none',
-    filterUnit: ''
-  },
   chrome: {
     sliderOption: {
       range: { min: 0, max: 1 },
@@ -55,4 +53,4 @@ const effectList = {
   }
 };
 
-export { effectList };
+export { defaultSliderOption, effectList };
