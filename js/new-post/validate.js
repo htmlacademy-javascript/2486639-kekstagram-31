@@ -1,5 +1,5 @@
 import { checkStringLength, removeNullElements } from './../util/util.js';
-import { pristineOption, uploadImageFormElement, hashtagsInputElement, descriptionInputElement } from './elements.js';
+import { pristineClassList, uploadImageFormElement, hashtagsInputElement, descriptionInputElement } from './elements.js';
 
 const DESCRIPTION_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;
@@ -32,7 +32,7 @@ const validateHashtagsCount = (value) => {
 };
 
 const initValidate = () => {
-  pristine = new Pristine(uploadImageFormElement, pristineOption);
+  pristine = new Pristine(uploadImageFormElement, pristineClassList);
 
   pristine.addValidator(
     hashtagsInputElement,

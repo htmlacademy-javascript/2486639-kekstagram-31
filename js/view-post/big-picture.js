@@ -1,7 +1,6 @@
-import { addDot } from './../util/util.js';
 import { removeChilds, createFragment, clearSelected } from './../util/dom.js';
 import {
-  socialPictureClass, socialTextClass, likesCountElement, imageElement, commentShowCountElement,
+  socialSelectorList, likesCountElement, imageElement, commentShowCountElement,
   commentTotalCountElement, captionElement, commentsContainerElement, commentTemplateElement
 } from './elements.js';
 
@@ -17,10 +16,10 @@ const isAllBigPictureCommentsShow = () => ((commentsShowCount === 0) || (comment
 
 const createElement = ({ avatar, name, message }) => {
   const newElement = commentTemplateElement.cloneNode(true);
-  const commentImageElement = newElement.querySelector(addDot(socialPictureClass));
+  const commentImageElement = newElement.querySelector(socialSelectorList.picture);
   commentImageElement.src = avatar;
   commentImageElement.alt = name;
-  newElement.querySelector(addDot(socialTextClass)).textContent = message;
+  newElement.querySelector(socialSelectorList.text).textContent = message;
   return newElement;
 };
 

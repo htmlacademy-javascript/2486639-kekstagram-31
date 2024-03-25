@@ -1,11 +1,10 @@
-import { addDot, isEscapeKey } from './../util/util.js';
-import { successButtonClass, successInnerClass, successTemplateElement } from './elements.js';
-import { errorButtonClass, errorInnerClass, errorTemplateElement } from './elements.js';
+import { isEscapeKey } from './../util/util.js';
+import { messageSelectorList, successTemplateElement, errorTemplateElement } from './elements.js';
 
 const messageOption = {
   element: null,
   buttonElement: null,
-  innerClass: null,
+  innerSelector: null,
   onClose: null
 };
 
@@ -19,13 +18,13 @@ const hideMessage = () => {
   document.removeEventListener('click', onDocumentClick);
 };
 
-const showMessage = (templateElement, innerClass, buttonClass, onClose) => {
-  messageOption.innerClass = innerClass;
+const showMessage = (templateElement, innerSelector, buttonSelector, onClose) => {
+  messageOption.innerClass = innerSelector;
   messageOption.onClose = onClose;
   messageOption.element = templateElement.cloneNode(true);
   document.body.append(messageOption.element);
 
-  messageOption.buttonElement = messageOption.element.querySelector(addDot(buttonClass));
+  messageOption.buttonElement = messageOption.element.querySelector(buttonSelector);
 
   messageOption.buttonElement.addEventListener('click', hideMessage);
   document.addEventListener('keydown', onDocumentEscapeKeydown);
@@ -40,17 +39,17 @@ function onDocumentEscapeKeydown(evt) {
 }
 
 function onDocumentClick(evt) {
-  if (!evt.target.closest(addDot(messageOption.innerClass))) {
+  if (!evt.target.closest(messageOption.innerSelector)) {
     hideMessage();
   }
 }
 
 const showSuccessMessage = () => {
-  showMessage(successTemplateElement, successInnerClass, successButtonClass);
+  showMessage(successTemplateElement, ...Object.values(messageSelectorList.success));
 };
 
-const showErrorMessage = () => {
-  showMessage(errorTemplateElement, errorInnerClass, errorButtonClass);
+const showErrorMessage = (onClose) => {
+  showMessage(errorTemplateElement, ...Object.values(messageSelectorList.error), onClose);
 };
 
 export { showSuccessMessage, showErrorMessage };
