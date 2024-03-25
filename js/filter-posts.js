@@ -1,6 +1,7 @@
 import { getRandomArray } from './util/util.js';
 import { showFilter } from './show-filter.js';
 import { drawPictures } from './draw-pictures.js';
+import { openBigPictureModal } from './view-post/index.js';
 
 const RANDOM_POST_COUNT = 10;
 
@@ -17,13 +18,13 @@ const initFilter = (posts) => {
   //!! немного передеалать чтоб функции возвращали значения .....
   showFilter(
     () => {
-      drawPictures(posts);
+      drawPictures(posts, openBigPictureModal);
     },
     () => {
-      drawPictures(getRandomPosts(posts));
+      drawPictures(getRandomPosts(posts), openBigPictureModal);
     },
     () => {
-      drawPictures(discussedPosts);
+      drawPictures(discussedPosts, openBigPictureModal);
     }
   );
 };
