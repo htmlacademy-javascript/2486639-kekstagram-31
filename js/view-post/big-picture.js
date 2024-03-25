@@ -7,13 +7,13 @@ import {
 
 const CommentsCount = {
   ON_START: 5,
-  LOAD_MORE: 5,
+  LOAD_MORE: 5
 };
 
 let currentComments = [];
 let commentsShowCount = 0;
 
-const isAllBigPictureCommentsShow = () => (commentsShowCount === 0) || (commentsShowCount === currentComments.length);
+const isAllBigPictureCommentsShow = () => ((commentsShowCount === 0) || (commentsShowCount === currentComments.length));
 
 const createElement = ({ avatar, name, message }) => {
   const newElement = commentTemplateElement.cloneNode(true);
@@ -65,7 +65,4 @@ const drawBigPicture = (post) => {
   drawComments(CommentsCount.ON_START);
 };
 
-export {
-  clearBigPicture as initDrawBigPicture, drawBigPicture,
-  clearBigPicture, drawMoreBigPictureComments, isAllBigPictureCommentsShow
-};
+export { drawBigPicture, clearBigPicture, drawMoreBigPictureComments, isAllBigPictureCommentsShow };
