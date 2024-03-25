@@ -66,6 +66,8 @@ const getRandomArray = (elements, сount) => {
   return Array.from({ length: сount }, () => elements[getRandomIndex()]);
 };
 
+const removeNullElements = (elements) => elements.filter((element) => (element) ? element : null);
+
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const addDot = (string, isBefore = true) => `${(isBefore) ? '.' : ''}${string}${(!isBefore) ? '.' : ''}`;
@@ -77,6 +79,7 @@ export {
   getRandomNumber,
   createIdGenerator,
   getRandomArray,
+  removeNullElements,
   isEscapeKey,
   addDot
 };
