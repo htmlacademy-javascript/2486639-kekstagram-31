@@ -9,7 +9,7 @@ const WarningMessage = {
   WRONG_HASHTAG: 'введён невалидный хэштег',
   DUBLICATE_HASHTAGS: 'хэштеги повторяются',
   WRONG_HASHTAGS_COUNT: 'превышено количество хэштегов',
-  WRONG_DESCRIPTION_LENGTH: `длина комментария больше ${DESCRIPTION_MAX_LENGTH} символов`,
+  WRONG_DESCRIPTION_LENGTH: `длина комментария больше ${DESCRIPTION_MAX_LENGTH} символов`
 };
 
 let pristine;

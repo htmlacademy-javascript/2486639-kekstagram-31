@@ -4,7 +4,7 @@ const pristineOption = {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextTag: 'div',
-  errorTextClass: 'img-upload__field-wrapper--error',
+  errorTextClass: 'img-upload__field-wrapper--error'
 };
 
 const successButtonClass = 'success__button';

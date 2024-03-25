@@ -6,7 +6,7 @@ import {
 const ScaleOption = {
   MIN: 0.25,
   MAX: 1,
-  STEP: 0.25,
+  STEP: 0.25
 };
 
 let currentScale;
