@@ -31,11 +31,12 @@ const resetEffect = () => {
 
 const initEffect = () => {
   resetEffect();
-  noUiSlider.create(effectLevelSliderElement, currentEffect.sliderOption);
+  const initSliderOption = currentEffect.sliderOption;
+  initSliderOption.connect = 'lower';
+  noUiSlider.create(effectLevelSliderElement, initSliderOption);
   effectLevelSliderElement.noUiSlider.updateOptions(
     {
-      format:
-      {
+      format: {
         to: roundOneSignNumber,
         from: parseFloat
       }
