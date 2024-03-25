@@ -70,8 +70,6 @@ const removeNullElements = (elements) => elements.filter((element) => (element) 
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const addDot = (string, isBefore = true) => `${(isBefore) ? '.' : ''}${string}${(!isBefore) ? '.' : ''}`;
-
 export {
   throwError,
   checkStringLength,
@@ -80,6 +78,5 @@ export {
   createIdGenerator,
   getRandomArray,
   removeNullElements,
-  isEscapeKey,
-  addDot
+  isEscapeKey
 };
