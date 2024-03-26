@@ -1,4 +1,4 @@
-import { throwError, addDot } from './util.js';
+import { throwError } from './util.js';
 
 const updateClassList = (element, className, isAdd = true) => {
   if (isAdd) {
@@ -8,51 +8,44 @@ const updateClassList = (element, className, isAdd = true) => {
   }
 };
 
-const getTemplateElement = (id, elementChildClassName = '') => {
-  if (id) {
-    const templateElement = document.querySelector(`#${id}`);
+//!! похожа с getFirstElementChild
+const getTemplateElement = (selector) => {
+  if (selector) {
+    const templateElement = document.querySelector(selector);
     if (!templateElement) {
-      throwError(`Не найден шаблон c id = "${id}"`);
+      throwError(`Не найден шаблон с селектором = "${selector}"`);
     }
-
-    if (elementChildClassName) {
-      try {
-        return templateElement.content.querySelector(addDot(elementChildClassName));
-      } catch (error) {
-        throwError(`Не найден дочерний элемент с сlass = "${elementChildClassName}" у шаблона id = "${id}"`);
-      }
-    } else {
-      const element = templateElement.content.firstElementChild;
-      if (!element) {
-        throwError(`Не найден первый дочерний элемент у шаблона id = "${id}"`);
-      }
-      return element;
+    const element = templateElement.content.firstElementChild;
+    if (!element) {
+      throwError(`Не найден первый дочерний элемент с селектором = "${selector}"`);
     }
+    return element;
   } else {
-    throwError('Не указан id шаблона');
+    throwError('Не указан селектор!');
   }
 };
 
-const getFirstElementChild = (className) => {
-  if (className) {
-    const element = document.querySelector(addDot(className));
+//!! похожа с getTemplateElement
+const getFirstElementChild = (selector) => {
+  if (selector) {
+    const element = document.querySelector(selector);
     if (!element) {
-      throwError(`Не найден элемент c class = "${className}"`);
+      throwError(`Не найден элемент c селектором "${selector}"!`);
     }
 
     const firstElement = element.firstElementChild;
     if (!firstElement) {
-      throwError(`Не найден первый дочерний элемент у элемента class = "${className}"`);
+      throwError(`Не найден первый дочерний элемент у элемента c селектором "${selector}"!`);
     }
     return firstElement;
   } else {
-    throwError('Не указан className элемента');
+    throwError('Не указан селектор!');
   }
 };
 
-const removeChilds = (containerElement, childClassName) => {
-  if (childClassName) {
-    const childs = containerElement.querySelectorAll(addDot(childClassName));
+const removeChilds = (containerElement, childSelector) => {
+  if (childSelector) {
+    const childs = containerElement.querySelectorAll(childSelector);
     childs.forEach((element) => element.remove());
   } else {
     containerElement.innerHTML = '';
@@ -83,5 +76,5 @@ export {
   getFirstElementChild,
   removeChilds,
   createFragment,
-  clearSelected,
+  clearSelected
 };

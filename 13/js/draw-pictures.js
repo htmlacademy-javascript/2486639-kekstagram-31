@@ -1,31 +1,39 @@
 import { createFragment } from './util/dom.js';
-import { addDot } from './util/util.js';
 import {
-  pictureImageClass, pictureLikesClass, pictureCommentsClass, pictureTemplateElement,
-  picturesContainerElement, picturesTitleElement, picturesImgUploadElement
+  pictureSelectorList, pictureTemplateElement, picturesContainerElement,
+  picturesTitleElement, picturesImgUploadElement
 } from './elements.js';
-import { openBigPictureModal } from './view-post/index.js';
+
+let onPictureClick;
 
 const createElement = (post) => {
   const { url, description, likes, comments } = post;
   const newElement = pictureTemplateElement.cloneNode(true);
-  const pictureImageElement = newElement.querySelector(addDot(pictureImageClass));
+  const pictureImageElement = newElement.querySelector(pictureSelectorList.image);
   pictureImageElement.src = url;
   pictureImageElement.alt = description;
 
-  newElement.querySelector(addDot(pictureLikesClass)).textContent = likes;
-  newElement.querySelector(addDot(pictureCommentsClass)).textContent = comments.length;
+  newElement.querySelector(pictureSelectorList.likes).textContent = likes;
+  newElement.querySelector(pictureSelectorList.comments).textContent = comments.length;
 
   newElement.addEventListener('click', (evt) => {
     evt.preventDefault();
     evt.currentTarget.blur(); // Баг - не скрываеться элемент '.picture__info'
-    openBigPictureModal(post);
+    if (onPictureClick) {
+      onPictureClick(post);
+    }
   });
 
   return newElement;
 };
 
-const drawPictures = (posts) =>
-  picturesContainerElement.replaceChildren(picturesTitleElement, picturesImgUploadElement, createFragment(posts, createElement));
+const initDrawPictures = (openBigPictureModal) => {
+  onPictureClick = openBigPictureModal;
+};
 
-export { drawPictures };
+const drawPictures = (posts) => {
+  const fragment = createFragment(posts, createElement);
+  picturesContainerElement.replaceChildren(picturesTitleElement, picturesImgUploadElement, fragment);
+};
+
+export { initDrawPictures, drawPictures };

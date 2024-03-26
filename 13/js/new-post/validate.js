@@ -1,5 +1,5 @@
-import { checkStringLength } from './../util/util.js';
-import { pristineOption, uploadImageFormElement, hashtagsInputElement, descriptionInputElement } from './elements.js';
+import { checkStringLength, removeNullElements } from './../util/util.js';
+import { pristineClassList, uploadImageFormElement, hashtagsInputElement, descriptionInputElement } from './elements.js';
 
 const DESCRIPTION_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;
@@ -9,12 +9,12 @@ const WarningMessage = {
   WRONG_HASHTAG: 'введён невалидный хэштег',
   DUBLICATE_HASHTAGS: 'хэштеги повторяются',
   WRONG_HASHTAGS_COUNT: 'превышено количество хэштегов',
-  WRONG_DESCRIPTION_LENGTH: `длина комментария больше ${DESCRIPTION_MAX_LENGTH} символов`,
+  WRONG_DESCRIPTION_LENGTH: `длина комментария больше ${DESCRIPTION_MAX_LENGTH} символов`
 };
 
 let pristine;
 
-const getHashtags = (string) => string.trim().toLocaleLowerCase().split(' ').filter((element) => (element) ? element : null);
+const getHashtags = (string) => removeNullElements(string.trim().toLocaleLowerCase().split(' '));
 
 const validateWrongHashtag = (value) => {
   const hashtags = getHashtags(value);
@@ -32,7 +32,7 @@ const validateHashtagsCount = (value) => {
 };
 
 const initValidate = () => {
-  pristine = new Pristine(uploadImageFormElement, pristineOption);
+  pristine = new Pristine(uploadImageFormElement, pristineClassList);
 
   pristine.addValidator(
     hashtagsInputElement,
@@ -63,7 +63,9 @@ const initValidate = () => {
   );
 };
 
-const resetValidate = () => pristine.reset();
+const resetValidate = () => {
+  pristine.reset();
+};
 
 const checkValidate = () => pristine.validate();
 
