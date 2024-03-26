@@ -5,9 +5,7 @@ const modalOption = {
   element: null,
   closeElement: null,
   onCloseModal: null,
-  enabledEscapeKeydown: true,
-  removeElementClassName: hiddenClass,
-  addDocumentClassName: modalOpenClass
+  enabledEscapeKeydown: true
 };
 
 const enableEscapeKeydownBasicModal = () => {
@@ -20,8 +18,8 @@ const disableEscapeKeydownBasicModal = () => {
 
 const closeBasicModal = (evt, exitByEscapeKey = false) => {
   modalOption.element.scrollTo(scrollX, 0); // + Баг, если модальное окно прокрутить, то при следующих открытиях прокрутка вниз остаеться
-  modalOption.element.classList.add(modalOption.removeElementClassName);
-  document.body.classList.remove(modalOption.addDocumentClassName);
+  modalOption.element.classList.add(hiddenClass);
+  document.body.classList.remove(modalOpenClass);
   if (modalOption.closeElement) {
     modalOption.closeElement.removeEventListener('click', closeBasicModal);
   }
@@ -36,8 +34,8 @@ const openBasicModal = (modalElement, closeElement, onCloseModal) => {
   modalOption.closeElement = closeElement;
   modalOption.onCloseModal = onCloseModal;
 
-  modalOption.element.classList.remove(modalOption.removeElementClassName);
-  document.body.classList.add(modalOption.addDocumentClassName);
+  modalOption.element.classList.remove(hiddenClass);
+  document.body.classList.add(modalOpenClass);
   if (modalOption.closeElement) {
     modalOption.closeElement.addEventListener('click', closeBasicModal);
   }
