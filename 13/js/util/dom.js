@@ -8,39 +8,34 @@ const updateClassList = (element, className, isAdd = true) => {
   }
 };
 
-//!! похожа с getFirstElementChild
-const getTemplateElement = (selector) => {
+const getElement = (selector) => {
   if (selector) {
-    const templateElement = document.querySelector(selector);
-    if (!templateElement) {
-      throwError(`Не найден шаблон с селектором = "${selector}"`);
+    const element = document.querySelector(selector);
+    if (element) {
+      return element;
     }
-    const element = templateElement.content.firstElementChild;
-    if (!element) {
-      throwError(`Не найден первый дочерний элемент с селектором = "${selector}"`);
-    }
-    return element;
+    throwError(`Не найден элемент с селектором = "${selector}"`);
   } else {
     throwError('Не указан селектор!');
   }
 };
 
-//!! похожа с getTemplateElement
-const getFirstElementChild = (selector) => {
-  if (selector) {
-    const element = document.querySelector(selector);
-    if (!element) {
-      throwError(`Не найден элемент c селектором "${selector}"!`);
-    }
-
-    const firstElement = element.firstElementChild;
-    if (!firstElement) {
-      throwError(`Не найден первый дочерний элемент у элемента c селектором "${selector}"!`);
-    }
-    return firstElement;
-  } else {
-    throwError('Не указан селектор!');
+const getTemplateElement = (selector) => {
+  const templateElement = getElement(selector);
+  const firstChildElement = templateElement.content.firstElementChild;
+  if (firstChildElement) {
+    return firstChildElement;
   }
+  throwError(`Не найден первый дочерний элемент у шаблона с селектором = "${selector}"`);
+};
+
+const getFirstElementChild = (selector) => {
+  const element = getElement(selector);
+  const firstChildElement = element.firstElementChild;
+  if (firstChildElement) {
+    return firstChildElement;
+  }
+  throwError(`Не найден первый дочерний элемент у элемента c селектором "${selector}"!`);
 };
 
 const removeChilds = (containerElement, childSelector) => {
