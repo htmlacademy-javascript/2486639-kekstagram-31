@@ -3,18 +3,20 @@ import { showError } from './show-error.js';
 import { initDrawPictures, drawPictures } from './draw-pictures.js';
 import { initFilterPosts } from './filter-posts.js';
 import { initBigPictureModal } from './view-post/index.js';
-import { initNewPosteModal } from './new-post/index.js';
+import { initNewPostModal } from './new-post/index.js';
 import { openBigPictureModal } from './view-post/index.js';
 
-getPosts(
-  (posts) => {
-    initDrawPictures(openBigPictureModal);
-    drawPictures(posts);
-    initFilterPosts(posts);
-    initBigPictureModal();
-  },
-  showError);
-initNewPosteModal();
+try {
+  const posts = await getPosts();
+  initDrawPictures(openBigPictureModal);
+  drawPictures(posts);
+  initFilterPosts(posts);
+  initBigPictureModal();
+} catch {
+  showError();
+}
+
+initNewPostModal();
 
 /*
  * + Баг 06.03.2024 / возможно будет мешать автотестам

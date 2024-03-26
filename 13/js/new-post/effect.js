@@ -24,6 +24,7 @@ const applyEffectOption = () => {
 };
 
 const resetEffect = (needApply = true) => {
+  currentEffect = null;
   updateSliderVisible();
   if (needApply) {
     applyEffectOption();
