@@ -3,10 +3,10 @@ import {
   scaleControlSmallerButtonElement, scaleControlBiggerButtonElement
 } from './elements.js';
 
-const ScaleOption = {
+const ScaleSetting = {
   MIN: 0.25,
   MAX: 1,
-  STEP: 0.25,
+  STEP: 0.25
 };
 
 let currentScale;
@@ -17,9 +17,9 @@ const applyScale = () => {
 };
 
 const changeScale = (isBigger) => {
-  let scale = currentScale + ((isBigger) ? 1 : -1) * ScaleOption.STEP;
+  let scale = currentScale + ((isBigger) ? 1 : -1) * ScaleSetting.STEP;
 
-  if ((scale < ScaleOption.MIN) || (scale > ScaleOption.MAX)) {
+  if ((scale < ScaleSetting.MIN) || (scale > ScaleSetting.MAX)) {
     scale = currentScale;
   }
 
@@ -30,7 +30,7 @@ const changeScale = (isBigger) => {
 };
 
 const resetScale = () => {
-  currentScale = ScaleOption.MAX;
+  currentScale = ScaleSetting.MAX;
   applyScale();
 };
 

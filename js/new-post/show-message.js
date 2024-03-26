@@ -1,28 +1,33 @@
-import { addDot, isEscapeKey } from './../util/util.js';
-import { successButtonClass, successInnerClass, successTemplateElement } from './elements.js';
-import { errorButtonClass, errorInnerClass, errorTemplateElement } from './elements.js';
+import { isEscapeKey } from './../util/util.js';
+import { messageOption, successTemplateElement, errorTemplateElement } from './elements.js';
 
-let messageElement = null;
-let messageButtonElement = null;
-let messageInnerClass = '';
+const currentMessage = {
+  element: null,
+  buttonElement: null,
+  innerSelector: null,
+  onClose: null
+};
 
 const hideMessage = () => {
-  messageElement.remove();
-  messageButtonElement.removeEventListener('click', hideMessage);
+  if (currentMessage.onClose) {
+    currentMessage.onClose();
+  }
+  currentMessage.element.remove();
+  currentMessage.buttonElement.removeEventListener('click', hideMessage);
   document.removeEventListener('keydown', onDocumentEscapeKeydown);
   document.removeEventListener('click', onDocumentClick);
 };
 
-const showMessage = (templateElement, innerClass, buttonClass) => {
-  messageInnerClass = innerClass;
-  messageElement = templateElement.cloneNode(true);
-  document.body.append(messageElement);
+const showMessage = (templateElement, { buttonSelector, innerSelector }, onClose) => {
+  currentMessage.element = templateElement.cloneNode(true);
+  currentMessage.buttonElement = currentMessage.element.querySelector(buttonSelector);
+  currentMessage.innerClass = innerSelector;
+  currentMessage.onClose = onClose;
 
-  messageButtonElement = messageElement.querySelector(addDot(buttonClass));
-
-  messageButtonElement.addEventListener('click', hideMessage);
+  currentMessage.buttonElement.addEventListener('click', hideMessage);
   document.addEventListener('keydown', onDocumentEscapeKeydown);
   document.addEventListener('click', onDocumentClick);
+  document.body.append(currentMessage.element);
 };
 
 function onDocumentEscapeKeydown(evt) {
@@ -33,13 +38,17 @@ function onDocumentEscapeKeydown(evt) {
 }
 
 function onDocumentClick(evt) {
-  if (!evt.target.closest(addDot(messageInnerClass))) {
+  if (!evt.target.closest(currentMessage.innerSelector)) {
     hideMessage();
   }
 }
 
-const showSuccess = () => showMessage(successTemplateElement, successInnerClass, successButtonClass);
+const showSuccessMessage = () => {
+  showMessage(successTemplateElement, messageOption.success);
+};
 
-const showError = () => showMessage(errorTemplateElement, errorInnerClass, errorButtonClass);
+const showErrorMessage = (onClose) => {
+  showMessage(errorTemplateElement, messageOption.error, onClose);
+};
 
-export { showSuccess, showError };
+export { showSuccessMessage, showErrorMessage };

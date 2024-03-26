@@ -1,20 +1,26 @@
 import { getTemplateElement } from './../util/dom.js';
 
-const pristineOption = {
+const pristineClassList = {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextTag: 'div',
-  errorTextClass: 'img-upload__field-wrapper--error',
+  errorTextClass: 'img-upload__field-wrapper--error'
 };
 
-const successButtonClass = 'success__button';
-const successInnerClass = 'success__inner';
-const errorButtonClass = 'error__button';
-const errorInnerClass = 'error__inner';
+const messageOption = {
+  success: {
+    buttonSelector: '.success__button',
+    innerSelector: '.success__inner'
+  },
+  error: {
+    buttonSelector: '.error__button',
+    innerSelector: '.error__inner'
+  }
+};
 
 const uploadImageFormElement = document.querySelector('#upload-select-image');
 const uploadSubmitElement = uploadImageFormElement.querySelector('#upload-submit');
-const uploadFileInputElement = uploadImageFormElement.querySelector('#upload-file'); // возможно понадобиться для отправки фото
+//const uploadFileInputElement = uploadImageFormElement.querySelector('#upload-file'); // возможно понадобиться для отправки фото
 const imageUploadOverlayElement = uploadImageFormElement.querySelector('.img-upload__overlay');
 const imageUploadInputElement = uploadImageFormElement.querySelector('#upload-file');
 const imageUploadCancelElement = uploadImageFormElement.querySelector('#upload-cancel');
@@ -28,18 +34,15 @@ const effectsListElement = uploadImageFormElement.querySelector('.effects__list'
 const effectLevelElement = uploadImageFormElement.querySelector('.img-upload__effect-level');
 const effectLevelSliderElement = effectLevelElement.querySelector('.effect-level__slider');
 const effectLevelInputlement = effectLevelElement.querySelector('.effect-level__value');
-const successTemplateElement = getTemplateElement('success');
-const errorTemplateElement = getTemplateElement('error');
+const successTemplateElement = getTemplateElement('#success');
+const errorTemplateElement = getTemplateElement('#error');
 
 export {
-  pristineOption,
-  successButtonClass,
-  successInnerClass,
-  errorButtonClass,
-  errorInnerClass,
+  pristineClassList,
+  messageOption,
   uploadImageFormElement,
   uploadSubmitElement,
-  uploadFileInputElement,
+  //uploadFileInputElement,
   imageUploadOverlayElement,
   imageUploadInputElement,
   imageUploadCancelElement,
@@ -54,5 +57,5 @@ export {
   effectLevelSliderElement,
   effectLevelInputlement,
   successTemplateElement,
-  errorTemplateElement,
+  errorTemplateElement
 };
