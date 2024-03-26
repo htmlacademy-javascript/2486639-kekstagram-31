@@ -9,12 +9,12 @@ const pictureSelectorList = {
   likes: '.picture__likes',
   comments: '.picture__comments'
 };
-const filterButtonSelector = 'button.img-filters__button';
 const filterDefaultId = 'filter-default';
 const filterRandomId = 'filter-random';
 const filterDiscussedId = 'filter-discussed';
 const filtersContainerElement = document.querySelector('.img-filters');
 const filtersFormElement = filtersContainerElement.querySelector('.img-filters__form');
+const filterButtonElements = filtersFormElement.querySelectorAll('button.img-filters__button');
 const picturesContainerElement = document.querySelector('.pictures');
 const picturesTitleElement = picturesContainerElement.querySelector('.pictures__title');
 const picturesImgUploadElement = picturesContainerElement.querySelector('.img-upload');
@@ -27,12 +27,11 @@ export {
   filterInactiveClass,
   filterButtonActiveClass,
   pictureSelectorList,
-  filterButtonSelector,
   filterDefaultId,
   filterRandomId,
   filterDiscussedId,
   filtersContainerElement,
-  filtersFormElement,
+  filterButtonElements,
   picturesContainerElement,
   picturesTitleElement,
   picturesImgUploadElement,
