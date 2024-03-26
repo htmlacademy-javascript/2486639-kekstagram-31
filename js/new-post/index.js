@@ -3,12 +3,14 @@ import {
   uploadImageFormElement, uploadSubmitElement, imageUploadOverlayElement, imageUploadInputElement,
   imageUploadCancelElement, hashtagsInputElement, descriptionInputElement
 } from './elements.js';
-import { openBasicModal, closeBasicModal, enableEscapeKeydownBasicModal, disableEscapeKeydownBasicModal } from './../basic-modal.js';
+import { openBasicModal, closeBasicModal } from './../basic-modal.js';
 import { initScale, resetScale } from './scale.js';
 import { initEffect, resetEffect } from './effect.js';
 import { initValidate, resetValidate, checkValidate } from './validate.js';
 import { sendPost } from './../api.js';
 import { showSuccessMessage, showErrorMessage } from './show-message.js';
+
+let canClose;
 
 const enableSubmitButton = () => {
   uploadSubmitElement.disabled = false;
@@ -18,7 +20,7 @@ const disableSubmitButton = () => {
   uploadSubmitElement.disabled = true;
 };
 
-const closeNewPostModal = (_, exitByEscapeKey) => {
+const afterCloseNewPostModal = (_, exitByEscapeKey) => {
   if (exitByEscapeKey) {
     uploadImageFormElement.reset();
   }
@@ -30,36 +32,45 @@ const onElementEscapeKeyDown = (evt) => {
   }
 };
 
+const onUploadImageFormClick = () => {
+  resetScale();
+  resetEffect();
+  resetValidate();
+  enableSubmitButton();
+};
+
+const onUploadImageFormSubmit = async (evt) => {
+  evt.preventDefault();
+
+  if (checkValidate()) {
+    disableSubmitButton();
+    try {
+      await sendPost(new FormData(evt.target));
+      uploadImageFormElement.reset();
+      closeBasicModal();
+      showSuccessMessage();
+    } catch {
+      //!! Если авто тест не пройдет, то для showErrorMessage сделать анонимный обработчик и запускать 1-enableSubmitButton 2-getCanClose
+      enableSubmitButton();
+      canClose = false;
+      showErrorMessage(() => {
+        canClose = true;
+      });
+    }
+  }
+};
+
+const onImageUploadInputElementChange = () => {
+  openBasicModal(imageUploadOverlayElement, imageUploadCancelElement, afterCloseNewPostModal, () => canClose);
+};
+
 const initNewPostModal = () => {
-  imageUploadInputElement.addEventListener('change', () => {
-    openBasicModal(imageUploadOverlayElement, imageUploadCancelElement, closeNewPostModal);
-  });
+  canClose = true;
+  imageUploadInputElement.addEventListener('change', onImageUploadInputElementChange);
   hashtagsInputElement.addEventListener('keydown', onElementEscapeKeyDown);
   descriptionInputElement.addEventListener('keydown', onElementEscapeKeyDown);
-  uploadImageFormElement.addEventListener('reset', () => {
-    resetScale();
-    resetEffect();
-    resetValidate();
-    enableSubmitButton();
-  });
-  uploadImageFormElement.addEventListener('submit', async (evt) => {
-    evt.preventDefault();
-
-    if (checkValidate()) {
-      disableSubmitButton();
-      try {
-        await sendPost(new FormData(evt.target));
-        uploadImageFormElement.reset();
-        closeBasicModal();
-        showSuccessMessage();
-      } catch {
-        //Если авто тест не пройдет, то для showErrorMessage сделать анонимный обработчик и запускать 1-enableSubmitButton 2-enableEscapeKeydownBasicModal
-        enableSubmitButton();
-        disableEscapeKeydownBasicModal();
-        showErrorMessage(enableEscapeKeydownBasicModal);
-      }
-    }
-  });
+  uploadImageFormElement.addEventListener('reset', onUploadImageFormClick);
+  uploadImageFormElement.addEventListener('submit', onUploadImageFormSubmit);
 
   initScale();
   initEffect();

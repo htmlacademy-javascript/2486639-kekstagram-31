@@ -9,25 +9,29 @@ const currentMessage = {
 };
 
 const hideMessage = () => {
-  if (currentMessage.onClose) {
-    currentMessage.onClose();
+  const { element, buttonElement, onClose } = currentMessage;
+  if (onClose) {
+    onClose();
   }
-  currentMessage.element.remove();
-  currentMessage.buttonElement.removeEventListener('click', hideMessage);
+  element.remove();
+  buttonElement.removeEventListener('click', onButtonElementClick);
   document.removeEventListener('keydown', onDocumentEscapeKeydown);
   document.removeEventListener('click', onDocumentClick);
 };
 
-const showMessage = (templateElement, { buttonSelector, innerSelector }, onClose) => {
-  currentMessage.element = templateElement.cloneNode(true);
-  currentMessage.buttonElement = currentMessage.element.querySelector(buttonSelector);
-  currentMessage.innerClass = innerSelector;
-  currentMessage.onClose = onClose;
+function onButtonElementClick() {
+  hideMessage();
+}
 
-  currentMessage.buttonElement.addEventListener('click', hideMessage);
+const showMessage = (templateElement, { buttonSelector, innerSelector }, onClose) => {
+  const element = templateElement.cloneNode(true);
+  const buttonElement = element.querySelector(buttonSelector);
+
+  buttonElement.addEventListener('click', onButtonElementClick);
   document.addEventListener('keydown', onDocumentEscapeKeydown);
   document.addEventListener('click', onDocumentClick);
-  document.body.append(currentMessage.element);
+  document.body.append(element);
+  Object.assign(currentMessage, { element, buttonElement, innerSelector, onClose });
 };
 
 function onDocumentEscapeKeydown(evt) {
