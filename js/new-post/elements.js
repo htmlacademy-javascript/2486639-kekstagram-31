@@ -7,14 +7,14 @@ const pristineClassList = {
   errorTextClass: 'img-upload__field-wrapper--error'
 };
 
-const messageSelectorList = {
+const messageOption = {
   success: {
-    inner: '.success__inner',
-    button: '.success__button'
+    buttonSelector: '.success__button',
+    innerSelector: '.success__inner'
   },
   error: {
-    inner: '.error__inner',
-    button: '.error__button'
+    buttonSelector: '.error__button',
+    innerSelector: '.error__inner'
   }
 };
 
@@ -39,7 +39,7 @@ const errorTemplateElement = getTemplateElement('#error');
 
 export {
   pristineClassList,
-  messageSelectorList,
+  messageOption,
   uploadImageFormElement,
   uploadSubmitElement,
   //uploadFileInputElement,

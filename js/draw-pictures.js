@@ -3,6 +3,7 @@ import {
   pictureSelectorList, pictureTemplateElement, picturesContainerElement,
   picturesTitleElement, picturesImgUploadElement
 } from './elements.js';
+import { debounce } from './util/render-tune.js';
 
 let onPictureClick;
 
@@ -27,10 +28,17 @@ const createElement = (post) => {
   return newElement;
 };
 
-const drawPictures = (posts, openBigPictureModal) => {
-  onPictureClick = openBigPictureModal;
+const drawPictures1 = (posts) => {
   const fragment = createFragment(posts, createElement);
   picturesContainerElement.replaceChildren(picturesTitleElement, picturesImgUploadElement, fragment);
 };
 
-export { drawPictures };
+const drawPictures = (posts) => {
+  debounce(drawPictures1)(posts);
+};
+
+const initDrawPictures = (openBigPictureModal) => {
+  onPictureClick = openBigPictureModal;
+};
+
+export { initDrawPictures, drawPictures };
