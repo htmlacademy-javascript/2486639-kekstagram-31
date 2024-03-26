@@ -12,24 +12,21 @@ const Method = {
   POST: 'POST'
 };
 
-const sendRequest = (route, onSuccess, onError, method = Method.GET, body = null) =>
-  fetch(`${BASE_URL}${route}`, { method, body })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
+const sendRequest = async (route, method = Method.GET, body = null) => {
+  try {
+    const response = await fetch(`${BASE_URL}${route}`, { method, body });
+    if (response.ok) {
+      return await response.json();
+    }
+    throwError(`${response.status} - ${response.statusText}`);
+  } catch (error) {
+    throwError(error);
+  }
+};
 
-      throwError(`${response.status} ${response.statusText}`);
-    })
-    .then((data) => {
-      onSuccess(data);
-    })
-    .catch((err) => {
-      onError(err);
-    });
+const getPosts = () => sendRequest(Route.GET_POSTS);
 
-const getPosts = (onSuccess, onError) => sendRequest(Route.GET_POSTS, onSuccess, onError);
 
-const sendPost = (onSuccess, onError, formData) => sendRequest(Route.SEND_POST, onSuccess, onError, Method.POST, formData);
+const sendPost = (formData) => sendRequest(Route.SEND_POST, Method.POST, formData);
 
 export { getPosts, sendPost };

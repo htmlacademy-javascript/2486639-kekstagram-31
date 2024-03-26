@@ -23,18 +23,18 @@ const initForm = (onSuccessSendPost, onErrorSendPost) => {
     resetValidate();
     enableSubmitButton();
   });
-  uploadImageFormElement.addEventListener('submit', (evt) => {
+  uploadImageFormElement.addEventListener('submit', async (evt) => {
     evt.preventDefault();
 
     if (checkValidate()) {
       disableSubmitButton();
-      sendPost(
-        onSuccessSendPost,
-        (err) => {
-          onErrorSendPost(err);
-          enableSubmitButton();
-        },
-        new FormData(evt.target));
+      try {
+        await sendPost(new FormData(evt.target));
+        uploadImageFormElement.reset();
+        onSuccessSendPost();
+      } catch {
+        onErrorSendPost();
+      }
     }
   });
 
