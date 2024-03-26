@@ -22,7 +22,7 @@ const closeBasicModal = (evt, exitByEscapeKey = false) => {
   }
 };
 
-const openBasicModal = (element, closeElement, afterCloseModal, canClose) => {
+const openBasicModal = (element, closeElement, afterCloseModal = null, canClose = null) => {
   element.classList.remove(hiddenClass);
   document.body.classList.add(modalOpenClass);
   if (closeElement) {
@@ -39,7 +39,7 @@ function onCloseElementClick(evt) {
 function onDocumentEscapeKeydown(evt) {
   if (isEscapeKey(evt)) {
     const { canClose } = modalSetting;
-    if (canClose && canClose()) {
+    if (!canClose || canClose()) {
       evt.preventDefault();
       closeBasicModal(evt, true);
     } else {
