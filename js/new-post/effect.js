@@ -5,44 +5,31 @@ import {
   imageUploadPreviewElement, effectsListElement, effectLevelElement,
   effectLevelSliderElement, effectLevelInputlement
 } from './elements.js';
-import { defaultSliderOption, effectList } from './effect-list.js';
+import { effectList } from './effect-list.js';
 
 let currentEffect;
 
-const updateSliderVisible = () => {
-  updateClassList(effectLevelElement, hiddenClass, !currentEffect);
-};
+const updateSliderVisible = () => updateClassList(effectLevelElement, hiddenClass, currentEffect === effectList.none);
 
 const applyEffectOption = () => {
-  if (currentEffect) {
-    const { filterType, filterUnit } = currentEffect;
-    const filter = `${filterType}(${effectLevelInputlement.value}${filterUnit})`;
-    imageUploadPreviewElement.style.setProperty('filter', filter);
-  } else {
+  if (currentEffect === effectList.none) {
     imageUploadPreviewElement.style.removeProperty('filter');
+  } else {
+    const { filterType, filterUnit } = currentEffect;
+    imageUploadPreviewElement.style.setProperty('filter', `${filterType}(${effectLevelInputlement.value}${filterUnit})`);
   }
 };
 
-const resetEffect = (needApply = true) => {
-  currentEffect = null;
+const resetEffect = () => {
+  currentEffect = effectList.none;
   updateSliderVisible();
-  if (needApply) {
-    applyEffectOption();
-  }
+  applyEffectOption();
 };
 
 const initEffect = () => {
-  resetEffect(false);
-  noUiSlider.create(effectLevelSliderElement, defaultSliderOption);
-  effectLevelSliderElement.noUiSlider.updateOptions({ connect: false });
-
-  effectLevelSliderElement.noUiSlider.updateOptions(
-    {
-      format: {
-        to: roundOneSignNumber,
-        from: parseFloat
-      }
-    });
+  resetEffect();
+  noUiSlider.create(effectLevelSliderElement, currentEffect.sliderOption);
+  effectLevelSliderElement.noUiSlider.updateOptions({ format: { to: roundOneSignNumber, from: parseFloat, } });
   effectLevelSliderElement.noUiSlider.on('update', () => {
     effectLevelInputlement.value = effectLevelSliderElement.noUiSlider.get();
     applyEffectOption();
@@ -55,9 +42,9 @@ const initEffect = () => {
       // видимость слайдера
       updateSliderVisible();
       // смена слайдера, т.к. в насройках есть start, то дополнительно не вызываю noUiSlider.set
-      const newSliderOption = (currentEffect) ? currentEffect.sliderOption : defaultSliderOption;
-      effectLevelSliderElement.noUiSlider.updateOptions(newSliderOption);
-      // не вызываем applyEffectOption, т.к. отрисовка будет вызвана при применении параметра 'start' у слайдера
+      effectLevelSliderElement.noUiSlider.updateOptions(currentEffect.sliderOption);
+      // отрисовка
+      applyEffectOption();
     }
   });
 };

@@ -1,22 +1,12 @@
 import { getPosts } from './api.js';
 import { showError } from './show-error.js';
-import { initDrawPictures, drawPictures } from './draw-pictures.js';
-import { initFilterPosts } from './filter-posts.js';
+import { drawPictures } from './draw-pictures.js';
 import { initBigPictureModal } from './view-post/index.js';
-import { initNewPostModal } from './new-post/index.js';
-import { openBigPictureModal } from './view-post/index.js';
+import { initNewPosteModal } from './new-post/index.js';
 
-try {
-  const posts = await getPosts();
-  initDrawPictures(openBigPictureModal);
-  drawPictures(posts);
-  initFilterPosts(posts);
-  initBigPictureModal();
-} catch {
-  showError();
-}
-
-initNewPostModal();
+getPosts(drawPictures, showError);
+initBigPictureModal();
+initNewPosteModal();
 
 /*
  * + Баг 06.03.2024 / возможно будет мешать автотестам
@@ -30,17 +20,13 @@ initNewPostModal();
  * Сделать либо, чтобы не пропадал, либо пропадал сразу при появлении модального окна.
  * добавил 07.03.2024, после зактыия он остаеться и не скрываеться когда перемещаешь мышь на другую картинку и отображаються сразу две
  *
- * + Баг 12.03.2024 - очиска выделения и смена фокуса на изображение big-picture.js строки clearSelected() и imageElement.focus()
- * Если в модальном окне, что то выделить и потом закрыть по esc или по кнопке, то выделение остаеться на следующее открытие.
+ * Баг 12.03.2024
+ * Если в модальном окне, что то выделить и потом закрыть по esc, то выделение остаеться на следующее открытие.
  * выдение на "Нравится", "5 из 26 комментариев"
- * Если было выделеное другое, то на этом элементе моргает курсов ввода.
  *
  * Баг или фича 21.03.2024
  * При открытом модальном окне и смене фокуса Tab-ом, то переходит на элементы основной страницы
  * Наверное нужно обработать смену фокуса...
- *
- * + Баг или фича 23.03.2024 - так у всех кнопок
- * У всех кнопок фильтра моргает курсов ввода в конце слова, если нажимать снизу кнопки
  *
  * Поробовать реализорвать: возможно будет мешать автотестам
  * Кнопка для загрузки новой порции комментариев === прокрутка до самого низу.

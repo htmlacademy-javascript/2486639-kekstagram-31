@@ -3,38 +3,45 @@ import { initScale, resetScale } from './scale.js';
 import { initEffect, resetEffect } from './effect.js';
 import { initValidate, resetValidate, checkValidate } from './validate.js';
 import { sendPost } from './../api.js';
+import { showSuccess, showError } from './show-message.js';
 
-const enableSubmitButton = () => {
-  uploadSubmitElement.disabled = false;
-};
+let onSuccess = null;
 
-const disableSubmitButton = () => {
-  uploadSubmitElement.disabled = true;
-};
+const enableSubmitButton = () => (uploadSubmitElement.disabled = false);
+const disablekSubmitButton = () => (uploadSubmitElement.disabled = true);
 
-const resetForm = () => {
+const onSuccessSendPost = (/*data*/) => {
+  //!!
+  //console.log(data);
   uploadImageFormElement.reset();
+  if (onSuccess) {
+    onSuccess();
+  }
+  showSuccess();
 };
 
-const initForm = (onSuccessSendPost, onErrorSendPost) => {
+const onErrorSendPost = (/*err*/) => {
+  //!!
+  //console.log(err);
+  showError();
+  enableSubmitButton();
+};
+
+const initForm = (onSuccessSubmit) => {
+  onSuccess = onSuccessSubmit;
   uploadImageFormElement.addEventListener('reset', () => {
     resetScale();
     resetEffect();
     resetValidate();
     enableSubmitButton();
   });
-  uploadImageFormElement.addEventListener('submit', async (evt) => {
+  uploadImageFormElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
     if (checkValidate()) {
-      disableSubmitButton();
-      try {
-        await sendPost(new FormData(evt.target));
-        uploadImageFormElement.reset();
-        onSuccessSendPost();
-      } catch {
-        onErrorSendPost();
-      }
+      disablekSubmitButton();
+      //!! ?? нужно ли тримить коментарий и хештеги при отправке? и при провеке коментария на длинну?
+      sendPost(onSuccessSendPost, onErrorSendPost, new FormData(evt.target));
     }
   });
 
@@ -43,4 +50,4 @@ const initForm = (onSuccessSendPost, onErrorSendPost) => {
   initValidate();
 };
 
-export { initForm, resetForm };
+export { initForm };
