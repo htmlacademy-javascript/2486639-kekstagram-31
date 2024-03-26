@@ -1,36 +1,27 @@
 import { isEscapeKey } from './../util/util.js';
-import { openBasicModal, closeBasicModal, enableEscapeKeydownBasicModal, disableEscapeKeydownBasicModal } from './../basic-modal.js';
 import {
-  imageUploadOverlayElement, imageUploadInputElement, imageUploadCancelElement,
-  hashtagsInputElement, descriptionInputElement
+  uploadImageFormElement, uploadSubmitElement, imageUploadOverlayElement, imageUploadInputElement,
+  imageUploadCancelElement, hashtagsInputElement, descriptionInputElement
 } from './elements.js';
-import { initForm, resetForm } from './form.js';
+import { openBasicModal, closeBasicModal, enableEscapeKeydownBasicModal, disableEscapeKeydownBasicModal } from './../basic-modal.js';
+import { initScale, resetScale } from './scale.js';
+import { initEffect, resetEffect } from './effect.js';
+import { initValidate, resetValidate, checkValidate } from './validate.js';
+import { sendPost } from './../api.js';
 import { showSuccessMessage, showErrorMessage } from './show-message.js';
 
-const onSuccessSendPost = () => {
-  closeBasicModal();
-  showSuccessMessage();
+const enableSubmitButton = () => {
+  uploadSubmitElement.disabled = false;
 };
 
-const onErrorSendPost = () => {
-  disableEscapeKeydownBasicModal();
-  showErrorMessage(() => {
-    enableEscapeKeydownBasicModal();
-  });
+const disableSubmitButton = () => {
+  uploadSubmitElement.disabled = true;
 };
 
 const closeNewPostModal = (_, exitByEscapeKey) => {
   if (exitByEscapeKey) {
-    resetForm();
+    uploadImageFormElement.reset();
   }
-};
-
-const openNewPostModal = () => {
-  openBasicModal(
-    imageUploadOverlayElement,
-    imageUploadCancelElement,
-    closeNewPostModal
-  );
 };
 
 const onElementEscapeKeyDown = (evt) => {
@@ -40,10 +31,39 @@ const onElementEscapeKeyDown = (evt) => {
 };
 
 const initNewPostModal = () => {
-  imageUploadInputElement.addEventListener('change', openNewPostModal);
+  imageUploadInputElement.addEventListener('change', () => {
+    openBasicModal(imageUploadOverlayElement, imageUploadCancelElement, closeNewPostModal);
+  });
   hashtagsInputElement.addEventListener('keydown', onElementEscapeKeyDown);
   descriptionInputElement.addEventListener('keydown', onElementEscapeKeyDown);
-  initForm(onSuccessSendPost, onErrorSendPost);
+  uploadImageFormElement.addEventListener('reset', () => {
+    resetScale();
+    resetEffect();
+    resetValidate();
+    enableSubmitButton();
+  });
+  uploadImageFormElement.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+
+    if (checkValidate()) {
+      disableSubmitButton();
+      try {
+        await sendPost(new FormData(evt.target));
+        uploadImageFormElement.reset();
+        closeBasicModal();
+        showSuccessMessage();
+      } catch {
+        //Если авто тест не пройдет, то для showErrorMessage сделать анонимный обработчик и запускать 1-enableSubmitButton 2-enableEscapeKeydownBasicModal
+        enableSubmitButton();
+        disableEscapeKeydownBasicModal();
+        showErrorMessage(enableEscapeKeydownBasicModal);
+      }
+    }
+  });
+
+  initScale();
+  initEffect();
+  initValidate();
 };
 
 export { initNewPostModal };
