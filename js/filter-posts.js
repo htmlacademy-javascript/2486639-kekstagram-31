@@ -24,24 +24,24 @@ const getDiscussedPosts = (posts) => posts.slice().sort(
 
 const debounceDrawPictures =
   debounce(
-    (posts, filterHandler) => {
-      drawPictures(filterHandler(posts));
+    (posts, onFilter) => {
+      drawPictures(onFilter(posts));
     },
     DEBOUNCE_DELAY);
 
 const initFilterPosts = (posts) => {
-  const filterHandlerOption = {};
-  filterHandlerOption[filterDefaultId] = (value) => value;
-  filterHandlerOption[filterRandomId] = getRandomPosts;
-  filterHandlerOption[filterDiscussedId] = getDiscussedPosts;
+  const onFilterOption = {};
+  onFilterOption[filterDefaultId] = (value) => value;
+  onFilterOption[filterRandomId] = getRandomPosts;
+  onFilterOption[filterDiscussedId] = getDiscussedPosts;
 
   showFilter((filterId) => {
-    const filterHandler = filterHandlerOption[filterId];
-    if (!filterHandler) {
+    const onFilter = onFilterOption[filterId];
+    if (!onFilter) {
       throwError(`Тип фильтра ${filterId} не настроен!`);
     }
 
-    debounceDrawPictures(posts, filterHandler);
+    debounceDrawPictures(posts, onFilter);
   });
 };
 

@@ -1,7 +1,7 @@
 import { isEscapeKey } from './util/util.js';
 import { hiddenClass, modalOpenClass } from './elements.js';
 
-const modalOption = {
+const modalSetting = {
   element: null,
   closeElement: null,
   onCloseModal: null,
@@ -9,42 +9,42 @@ const modalOption = {
 };
 
 const enableEscapeKeydownBasicModal = () => {
-  modalOption.enabledEscapeKeydown = true;
+  modalSetting.enabledEscapeKeydown = true;
 };
 
 const disableEscapeKeydownBasicModal = () => {
-  modalOption.enabledEscapeKeydown = false;
+  modalSetting.enabledEscapeKeydown = false;
 };
 
 const closeBasicModal = (evt, exitByEscapeKey = false) => {
-  modalOption.element.scrollTo(scrollX, 0); // + Баг, если модальное окно прокрутить, то при следующих открытиях прокрутка вниз остаеться
-  modalOption.element.classList.add(hiddenClass);
+  modalSetting.element.scrollTo(scrollX, 0); // + Баг, если модальное окно прокрутить, то при следующих открытиях прокрутка вниз остаеться
+  modalSetting.element.classList.add(hiddenClass);
   document.body.classList.remove(modalOpenClass);
-  if (modalOption.closeElement) {
-    modalOption.closeElement.removeEventListener('click', closeBasicModal);
+  if (modalSetting.closeElement) {
+    modalSetting.closeElement.removeEventListener('click', closeBasicModal);
   }
   document.removeEventListener('keydown', onDocumentEscapeKeydown);
-  if (modalOption.onCloseModal) {
-    modalOption.onCloseModal(evt, exitByEscapeKey);
+  if (modalSetting.onCloseModal) {
+    modalSetting.onCloseModal(evt, exitByEscapeKey);
   }
 };
 
 const openBasicModal = (modalElement, closeElement, onCloseModal) => {
-  modalOption.element = modalElement;
-  modalOption.closeElement = closeElement;
-  modalOption.onCloseModal = onCloseModal;
+  modalSetting.element = modalElement;
+  modalSetting.closeElement = closeElement;
+  modalSetting.onCloseModal = onCloseModal;
 
-  modalOption.element.classList.remove(hiddenClass);
+  modalSetting.element.classList.remove(hiddenClass);
   document.body.classList.add(modalOpenClass);
-  if (modalOption.closeElement) {
-    modalOption.closeElement.addEventListener('click', closeBasicModal);
+  if (modalSetting.closeElement) {
+    modalSetting.closeElement.addEventListener('click', closeBasicModal);
   }
   document.addEventListener('keydown', onDocumentEscapeKeydown);
 };
 
 function onDocumentEscapeKeydown(evt) {
   if (isEscapeKey(evt)) {
-    if (modalOption.enabledEscapeKeydown) {
+    if (modalSetting.enabledEscapeKeydown) {
       evt.preventDefault();
       closeBasicModal(evt, true);
     } else {
