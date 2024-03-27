@@ -1,7 +1,8 @@
-import { removeChilds, createFragment, clearSelected } from './../util/dom.js';
+import { removeChilds, createFragment, clearSelected, updateClassList } from './../util/dom.js';
 import {
-  socialSelectorList, likesCountElement, imageElement, commentShowCountElement,
-  commentTotalCountElement, captionElement, commentsContainerElement, commentTemplateElement
+  socialSelectorList, likesCountActiveClass, likesCountElement,
+  imageElement, commentShowCountElement, commentTotalCountElement,
+  captionElement, commentsContainerElement, commentTemplateElement
 } from './elements.js';
 
 const CommentsCount = {
@@ -11,6 +12,7 @@ const CommentsCount = {
 
 let currentComments = [];
 let commentsShowCount = 0;
+let likesCount;
 
 const isAllBigPictureCommentsShow = () => ((commentsShowCount === 0) || (commentsShowCount === currentComments.length));
 
@@ -36,9 +38,17 @@ const drawMoreBigPictureComments = () => {
   drawComments(commentsShowCount + CommentsCount.LOAD_MORE);
 };
 
+const updateLikesCount = () => {
+  const isLikeActive = likesCountElement.classList.contains(likesCountActiveClass);
+  updateClassList(likesCountElement, likesCountActiveClass, !isLikeActive);
+  likesCount += (isLikeActive) ? -1 : 1;
+  likesCountElement.textContent = likesCount;
+};
+
 const renderImageElement = ({ url, description, likes, comments }) => {
   imageElement.src = url;
   imageElement.alt = description;
+  likesCount = likes;
   likesCountElement.textContent = likes;
   commentShowCountElement.textContent = 0;
   commentTotalCountElement.textContent = comments.length;
@@ -63,4 +73,4 @@ const drawBigPicture = (post) => {
   drawComments(CommentsCount.ON_START);
 };
 
-export { drawBigPicture, clearBigPicture, drawMoreBigPictureComments, isAllBigPictureCommentsShow };
+export { drawBigPicture, clearBigPicture, updateLikesCount, drawMoreBigPictureComments, isAllBigPictureCommentsShow };
