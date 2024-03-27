@@ -17,14 +17,15 @@ const applyScale = () => {
 };
 
 const changeScale = (isBigger) => {
-  let scale = currentScale + ((isBigger) ? 1 : -1) * ScaleSetting.STEP;
+  const { MIN, MAX, STEP } = ScaleSetting;
+  let newScale = currentScale + ((isBigger) ? 1 : -1) * STEP;
 
-  if ((scale < ScaleSetting.MIN) || (scale > ScaleSetting.MAX)) {
-    scale = currentScale;
+  if ((newScale < MIN) || (newScale > MAX)) {
+    newScale = currentScale;
   }
 
-  if (scale !== currentScale) {
-    currentScale = scale;
+  if (newScale !== currentScale) {
+    currentScale = newScale;
     applyScale();
   }
 };
