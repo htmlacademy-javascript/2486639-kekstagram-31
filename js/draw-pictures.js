@@ -19,9 +19,7 @@ const createElement = (post) => {
   const onNewElementClick = (evt) => {
     evt.preventDefault();
     evt.currentTarget.blur(); // Баг - не скрываеться элемент '.picture__info'
-    if (onPictureClick) {
-      onPictureClick(post);
-    }
+    onPictureClick?.(post);
   };
   newElement.addEventListener('click', onNewElementClick);
 

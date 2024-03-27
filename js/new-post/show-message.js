@@ -10,9 +10,7 @@ const currentMessage = {
 
 const hideMessage = () => {
   const { element, buttonElement, onClose } = currentMessage;
-  if (onClose) {
-    onClose();
-  }
+  onClose?.();
   element.remove();
   buttonElement.removeEventListener('click', onButtonElementClick);
   document.removeEventListener('keydown', onDocumentKeydown);

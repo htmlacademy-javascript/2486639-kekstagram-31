@@ -10,9 +10,7 @@ const getOnButtonClick = (onChangeFilter) => (evt) => {
     });
     buttonElement.classList.add(filterButtonActiveClass);
     // вызовем нужную загрузку
-    if (onChangeFilter) {
-      onChangeFilter(buttonElement.id);
-    }
+    onChangeFilter?.(buttonElement.id);
   }
 };
 

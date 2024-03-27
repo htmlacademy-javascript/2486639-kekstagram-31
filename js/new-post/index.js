@@ -36,7 +36,6 @@ const onUploadImageFormClick = () => {
   resetScale();
   resetEffect();
   resetValidate();
-  enableSubmitButton();
 };
 
 const onUploadImageFormSubmit = async (evt) => {
@@ -50,12 +49,12 @@ const onUploadImageFormSubmit = async (evt) => {
       closeBasicModal();
       showSuccessMessage();
     } catch {
-      //!! Если авто тест не пройдет, то для showErrorMessage сделать анонимный обработчик и запускать 1-enableSubmitButton 2-getCanClose
-      enableSubmitButton();
       canClose = false;
       showErrorMessage(() => {
         canClose = true;
       });
+    } finally {
+      enableSubmitButton();
     }
   }
 };
