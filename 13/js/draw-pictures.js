@@ -16,13 +16,14 @@ const createElement = (post) => {
   newElement.querySelector(pictureSelectorList.likes).textContent = likes;
   newElement.querySelector(pictureSelectorList.comments).textContent = comments.length;
 
-  newElement.addEventListener('click', (evt) => {
+  const onNewElementClick = (evt) => {
     evt.preventDefault();
     evt.currentTarget.blur(); // Баг - не скрываеться элемент '.picture__info'
     if (onPictureClick) {
       onPictureClick(post);
     }
-  });
+  };
+  newElement.addEventListener('click', onNewElementClick);
 
   return newElement;
 };

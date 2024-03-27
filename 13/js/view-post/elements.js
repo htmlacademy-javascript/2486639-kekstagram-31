@@ -5,6 +5,7 @@ const socialSelectorList = {
   picture: '.social__picture',
   text: '.social__text'
 };
+const likesCountActiveClass = 'likes-count--active';
 const bigPictureElement = document.querySelector('.big-picture');
 const closePictureElement = bigPictureElement.querySelector('.big-picture__cancel');
 const commentsLoaderElement = bigPictureElement.querySelector('.comments-loader');
@@ -21,6 +22,7 @@ const commentTemplateElement = getFirstElementChild(socialSelectorList.сomments
 
 export {
   socialSelectorList,
+  likesCountActiveClass,
   bigPictureElement,
   closePictureElement,
   commentsLoaderElement,

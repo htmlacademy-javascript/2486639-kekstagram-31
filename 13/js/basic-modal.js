@@ -16,7 +16,7 @@ const closeBasicModal = (evt, exitByEscapeKey = false) => {
   if (closeElement) {
     closeElement.removeEventListener('click', onCloseElementClick);
   }
-  document.removeEventListener('keydown', onDocumentEscapeKeydown);
+  document.removeEventListener('keydown', onDocumentKeydown);
   if (afterCloseModal) {
     afterCloseModal(evt, exitByEscapeKey);
   }
@@ -28,7 +28,7 @@ const openBasicModal = (element, closeElement, afterCloseModal = null, canClose 
   if (closeElement) {
     closeElement.addEventListener('click', onCloseElementClick);
   }
-  document.addEventListener('keydown', onDocumentEscapeKeydown);
+  document.addEventListener('keydown', onDocumentKeydown);
   Object.assign(modalSetting, { element, closeElement, afterCloseModal, canClose });
 };
 
@@ -36,7 +36,7 @@ function onCloseElementClick(evt) {
   closeBasicModal(evt);
 }
 
-function onDocumentEscapeKeydown(evt) {
+function onDocumentKeydown(evt) {
   if (isEscapeKey(evt)) {
     const { canClose } = modalSetting;
     if (!canClose || canClose()) {
