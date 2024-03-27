@@ -14,7 +14,8 @@ const debounce = (callback, timeoutDelay = DEBOUNCE_DELAY_DEFAULT) => {
     clearTimeout(timeoutId);
 
     // Затем устанавливаем новый таймаут с вызовом колбэка на ту же задержку
-    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+    //? зачем сложно callback.apply(this, rest) если callback(...rest) работает
+    timeoutId = setTimeout(() => callback(...rest), timeoutDelay);
 
     // Таким образом цикл «поставить таймаут - удалить таймаут» будет выполняться,
     // пока действие совершается чаще, чем переданная задержка timeoutDelay
