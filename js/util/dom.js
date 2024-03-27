@@ -1,5 +1,3 @@
-import { throwError } from './util.js';
-
 const updateClassList = (element, className, isAdd = true) => {
   if (isAdd) {
     element.classList.add(className);
@@ -14,9 +12,9 @@ const getElement = (selector) => {
     if (element) {
       return element;
     }
-    throwError(`Не найден элемент с селектором = "${selector}"`);
+    throw new Error(`Не найден элемент с селектором = "${selector}"`);
   } else {
-    throwError('Не указан селектор!');
+    throw new Error('Не указан селектор!');
   }
 };
 
@@ -26,7 +24,7 @@ const getTemplateElement = (selector) => {
   if (firstChildElement) {
     return firstChildElement;
   }
-  throwError(`Не найден первый дочерний элемент у шаблона с селектором = "${selector}"`);
+  throw new Error(`Не найден первый дочерний элемент у шаблона с селектором = "${selector}"`);
 };
 
 const getFirstElementChild = (selector) => {
@@ -35,7 +33,7 @@ const getFirstElementChild = (selector) => {
   if (firstChildElement) {
     return firstChildElement;
   }
-  throwError(`Не найден первый дочерний элемент у элемента c селектором "${selector}"!`);
+  throw new Error(`Не найден первый дочерний элемент у элемента c селектором "${selector}"!`);
 };
 
 const removeChilds = (containerElement, childSelector) => {
@@ -65,17 +63,17 @@ const clearSelected = () => {
   }
 };
 
-const updateEnabledButtom = (buttonElement, isEnaled, text) => {
-  buttonElement.disabled = !isEnaled;
+const updateEnabledButton = (buttonElement, enabled, text) => {
+  buttonElement.disabled = !enabled;
   buttonElement.textContent = text;
 };
 
 const enableButton = (buttonElement, text) => {
-  updateEnabledButtom(buttonElement, true, text);
+  updateEnabledButton(buttonElement, true, text);
 };
 
 const disableButton = (buttonElement, text) => {
-  updateEnabledButtom(buttonElement, false, text);
+  updateEnabledButton(buttonElement, false, text);
 };
 
 export {

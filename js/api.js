@@ -1,5 +1,3 @@
-import { throwError } from './util/util.js';
-
 const BASE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram';
 
 const Route = {
@@ -18,9 +16,9 @@ const sendRequest = async (route, method = Method.GET, body = null) => {
     if (response.ok) {
       return await response.json();
     }
-    throwError(`${response.status} - ${response.statusText}`);
+    throw new Error(`${response.status} - ${response.statusText}`);
   } catch (error) {
-    throwError(error);
+    throw new Error(error);
   }
 };
 
