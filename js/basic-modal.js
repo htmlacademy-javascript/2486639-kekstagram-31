@@ -1,44 +1,44 @@
 import { isEscapeKey } from './util/util.js';
 import { hiddenClass, modalOpenClass } from './elements.js';
 
-const baseModal = {
+const modalSetting = {
   element: null,
   closeElement: null,
-  onCloseModal: null,
-  removeElementClassName: hiddenClass,
-  addDocumentClassName: modalOpenClass,
+  afterCloseModal: null,
+  canClose: null
 };
 
 const closeBasicModal = (evt, exitByEscapeKey = false) => {
-  baseModal.element.scrollTo(scrollX, 0); // + Баг, если модальное окно прокрутить, то при следующих открытиях прокрутка вниз остаеться
-  baseModal.element.classList.add(baseModal.removeElementClassName);
-  document.body.classList.remove(baseModal.addDocumentClassName);
-  if (baseModal.closeElement) {
-    baseModal.closeElement.removeEventListener('click', closeBasicModal);
-  }
-  document.removeEventListener('keydown', onDocumentEscapeKeydown);
-  if (baseModal.onCloseModal) {
-    baseModal.onCloseModal(evt, exitByEscapeKey);
-  }
+  const { element, closeElement, afterCloseModal } = modalSetting;
+  element.scrollTo(scrollX, 0); // + Баг, если модальное окно прокрутить, то при следующих открытиях прокрутка вниз остаеться
+  element.classList.add(hiddenClass);
+  document.body.classList.remove(modalOpenClass);
+  closeElement?.removeEventListener('click', onCloseElementClick);
+  document.removeEventListener('keydown', onDocumentKeydown);
+  afterCloseModal?.(evt, exitByEscapeKey);
 };
 
-const openBasicModal = (modalElement, closeElement, onCloseModal) => {
-  baseModal.element = modalElement;
-  baseModal.closeElement = closeElement;
-  baseModal.onCloseModal = onCloseModal;
-
-  baseModal.element.classList.remove(baseModal.removeElementClassName);
-  document.body.classList.add(baseModal.addDocumentClassName);
-  if (baseModal.closeElement) {
-    baseModal.closeElement.addEventListener('click', closeBasicModal);
-  }
-  document.addEventListener('keydown', onDocumentEscapeKeydown);
+const openBasicModal = (element, closeElement, afterCloseModal = null, canClose = null) => {
+  element.classList.remove(hiddenClass);
+  document.body.classList.add(modalOpenClass);
+  closeElement?.addEventListener('click', onCloseElementClick);
+  document.addEventListener('keydown', onDocumentKeydown);
+  Object.assign(modalSetting, { element, closeElement, afterCloseModal, canClose });
 };
 
-function onDocumentEscapeKeydown(evt) {
+function onCloseElementClick(evt) {
+  closeBasicModal(evt);
+}
+
+function onDocumentKeydown(evt) {
   if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closeBasicModal(evt, true);
+    const { canClose } = modalSetting;
+    if (!canClose || canClose()) {
+      evt.preventDefault();
+      closeBasicModal(evt, true);
+    } else {
+      evt.stopPropagation();
+    }
   }
 }
 

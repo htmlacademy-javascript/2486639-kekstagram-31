@@ -1,27 +1,27 @@
 import { isEscapeKey } from './../util/util.js';
-import { openBasicModal, closeBasicModal } from './../basic-modal.js';
+import { enableButton, disableButton } from './../util/dom.js';
 import {
-  uploadImageFormElement, imageUploadOverlayElement, imageUploadInputElement,
+  uploadImageFormElement, uploadSubmitElement, imageUploadOverlayElement, imageUploadInputElement,
   imageUploadCancelElement, hashtagsInputElement, descriptionInputElement
 } from './elements.js';
-import { initForm } from './form.js';
+import { openBasicModal, closeBasicModal } from './../basic-modal.js';
+import { initScale, resetScale } from './scale.js';
+import { initEffect, resetEffect } from './effect.js';
+import { initValidate, resetValidate, checkValidate } from './validate.js';
+import { sendPost } from './../api.js';
+import { showSuccessMessage, showErrorMessage } from './show-message.js';
 
-const closeNewPostModal = (_, exitByEscapeKey) => {
+const submitText = {
+  enabled: uploadSubmitElement.textContent,
+  disabled: 'Публикую...' // 'Сохраняю...'
+};
+
+let canClose;
+
+const afterCloseNewPostModal = (_, exitByEscapeKey) => {
   if (exitByEscapeKey) {
     uploadImageFormElement.reset();
   }
-};
-
-const openNewPostModal = () => {
-  openBasicModal(
-    imageUploadOverlayElement,
-    imageUploadCancelElement,
-    closeNewPostModal
-  );
-
-  // подставить загруженное изображение
-  //!! imageUploadInputElement.value
-  //console.log(imageUploadInputElement.value);
 };
 
 const onElementEscapeKeyDown = (evt) => {
@@ -30,11 +30,48 @@ const onElementEscapeKeyDown = (evt) => {
   }
 };
 
-const initNewPosteModal = () => {
-  imageUploadInputElement.addEventListener('change', openNewPostModal);
-  hashtagsInputElement.addEventListener('keydown', onElementEscapeKeyDown);
-  descriptionInputElement.addEventListener('keydown', onElementEscapeKeyDown);
-  initForm(closeBasicModal);
+const onUploadImageFormClick = () => {
+  resetScale();
+  resetEffect();
+  resetValidate();
 };
 
-export { initNewPosteModal };
+const onUploadImageFormSubmit = async (evt) => {
+  evt.preventDefault();
+
+  if (checkValidate()) {
+    disableButton(uploadSubmitElement, submitText.disabled);
+    try {
+      await sendPost(new FormData(evt.target));
+      uploadImageFormElement.reset();
+      closeBasicModal();
+      showSuccessMessage();
+    } catch {
+      canClose = false;
+      showErrorMessage(() => {
+        canClose = true;
+      });
+    } finally {
+      enableButton(uploadSubmitElement, submitText.enabled);
+    }
+  }
+};
+
+const onImageUploadInputElementChange = () => {
+  openBasicModal(imageUploadOverlayElement, imageUploadCancelElement, afterCloseNewPostModal, () => canClose);
+};
+
+const initNewPostModal = () => {
+  canClose = true;
+  imageUploadInputElement.addEventListener('change', onImageUploadInputElementChange);
+  hashtagsInputElement.addEventListener('keydown', onElementEscapeKeyDown);
+  descriptionInputElement.addEventListener('keydown', onElementEscapeKeyDown);
+  uploadImageFormElement.addEventListener('reset', onUploadImageFormClick);
+  uploadImageFormElement.addEventListener('submit', onUploadImageFormSubmit);
+
+  initScale();
+  initEffect();
+  initValidate();
+};
+
+export { initNewPostModal };

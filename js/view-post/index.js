@@ -1,8 +1,14 @@
 import { updateClassList } from './../util/dom.js';
 import { openBasicModal } from './../basic-modal.js';
 import { hiddenClass } from './../elements.js';
-import { bigPictureElement, closePictureElement, commentCountElement, commentsLoaderElement } from './elements.js';
-import { initDrawBigPicture, drawBigPicture, clearBigPicture, drawMoreBigPictureComments, isAllBigPictureCommentsShow } from './big-picture.js';
+import {
+  bigPictureElement, closePictureElement, commentCountElement,
+  likesCountElement, commentsLoaderElement
+} from './elements.js';
+import {
+  drawBigPicture, clearBigPicture, updateLikesCount,
+  drawMoreBigPictureComments, isAllBigPictureCommentsShow
+} from './big-picture.js';
 
 const updateCommentsLoaderVisible = () => {
   const isAllCommentsShow = isAllBigPictureCommentsShow();
@@ -11,19 +17,25 @@ const updateCommentsLoaderVisible = () => {
   updateClassList(commentsLoaderElement, hiddenClass, isAllCommentsShow);
 };
 
-const initBigPictureModal = () => {
-  initDrawBigPicture();
+const onCommentsLoaderElementClick = (evt) => {
+  evt.preventDefault();
+  drawMoreBigPictureComments();
+  updateCommentsLoaderVisible();
+};
 
-  commentsLoaderElement.addEventListener('click', (evt) => {
-    evt.preventDefault();
-    drawMoreBigPictureComments();
-    updateCommentsLoaderVisible();
-  });
+const onLikesCountElementClick = (evt) => {
+  evt.preventDefault();
+  updateLikesCount();
+};
+
+const initBigPictureModal = () => {
+  clearBigPicture();
+  commentsLoaderElement.addEventListener('click', onCommentsLoaderElementClick);
+  likesCountElement.addEventListener('click', onLikesCountElementClick);
 };
 
 const openBigPictureModal = (post) => {
   openBasicModal(bigPictureElement, closePictureElement, clearBigPicture);
-
   drawBigPicture(post);
   updateCommentsLoaderVisible();
 };

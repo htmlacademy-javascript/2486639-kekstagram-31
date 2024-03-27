@@ -1,31 +1,38 @@
-import { addDot, isEscapeKey } from './../util/util.js';
-import { successButtonClass, successInnerClass, successTemplateElement } from './elements.js';
-import { errorButtonClass, errorInnerClass, errorTemplateElement } from './elements.js';
+import { isEscapeKey } from './../util/util.js';
+import { messageOption, successTemplateElement, errorTemplateElement } from './elements.js';
 
-let messageElement = null;
-let messageButtonElement = null;
-let messageInnerClass = '';
+const currentMessage = {
+  element: null,
+  buttonElement: null,
+  innerSelector: null,
+  onClose: null
+};
 
 const hideMessage = () => {
-  messageElement.remove();
-  messageButtonElement.removeEventListener('click', hideMessage);
-  document.removeEventListener('keydown', onDocumentEscapeKeydown);
+  const { element, buttonElement, onClose } = currentMessage;
+  onClose?.();
+  element.remove();
+  buttonElement.removeEventListener('click', onButtonElementClick);
+  document.removeEventListener('keydown', onDocumentKeydown);
   document.removeEventListener('click', onDocumentClick);
 };
 
-const showMessage = (templateElement, innerClass, buttonClass) => {
-  messageInnerClass = innerClass;
-  messageElement = templateElement.cloneNode(true);
-  document.body.append(messageElement);
+function onButtonElementClick() {
+  hideMessage();
+}
 
-  messageButtonElement = messageElement.querySelector(addDot(buttonClass));
+const showMessage = (templateElement, { buttonSelector, innerSelector }, onClose) => {
+  const element = templateElement.cloneNode(true);
+  const buttonElement = element.querySelector(buttonSelector);
 
-  messageButtonElement.addEventListener('click', hideMessage);
-  document.addEventListener('keydown', onDocumentEscapeKeydown);
+  buttonElement.addEventListener('click', onButtonElementClick);
+  document.addEventListener('keydown', onDocumentKeydown);
   document.addEventListener('click', onDocumentClick);
+  document.body.append(element);
+  Object.assign(currentMessage, { element, buttonElement, innerSelector, onClose });
 };
 
-function onDocumentEscapeKeydown(evt) {
+function onDocumentKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     hideMessage();
@@ -33,13 +40,17 @@ function onDocumentEscapeKeydown(evt) {
 }
 
 function onDocumentClick(evt) {
-  if (!evt.target.closest(addDot(messageInnerClass))) {
+  if (!evt.target.closest(currentMessage.innerSelector)) {
     hideMessage();
   }
 }
 
-const showSuccess = () => showMessage(successTemplateElement, successInnerClass, successButtonClass);
+const showSuccessMessage = () => {
+  showMessage(successTemplateElement, messageOption.success);
+};
 
-const showError = () => showMessage(errorTemplateElement, errorInnerClass, errorButtonClass);
+const showErrorMessage = (onClose) => {
+  showMessage(errorTemplateElement, messageOption.error, onClose);
+};
 
-export { showSuccess, showError };
+export { showSuccessMessage, showErrorMessage };
