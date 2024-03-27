@@ -1,4 +1,5 @@
 import { isEscapeKey } from './../util/util.js';
+import { enableButton, disableButton } from './../util/dom.js';
 import {
   uploadImageFormElement, uploadSubmitElement, imageUploadOverlayElement, imageUploadInputElement,
   imageUploadCancelElement, hashtagsInputElement, descriptionInputElement
@@ -10,15 +11,12 @@ import { initValidate, resetValidate, checkValidate } from './validate.js';
 import { sendPost } from './../api.js';
 import { showSuccessMessage, showErrorMessage } from './show-message.js';
 
+const submitText = {
+  enabled: uploadSubmitElement.textContent,
+  disabled: 'Публикую...' // 'Сохраняю...'
+};
+
 let canClose;
-
-const enableSubmitButton = () => {
-  uploadSubmitElement.disabled = false;
-};
-
-const disableSubmitButton = () => {
-  uploadSubmitElement.disabled = true;
-};
 
 const afterCloseNewPostModal = (_, exitByEscapeKey) => {
   if (exitByEscapeKey) {
@@ -42,7 +40,7 @@ const onUploadImageFormSubmit = async (evt) => {
   evt.preventDefault();
 
   if (checkValidate()) {
-    disableSubmitButton();
+    disableButton(uploadSubmitElement, submitText.disabled);
     try {
       await sendPost(new FormData(evt.target));
       uploadImageFormElement.reset();
@@ -54,7 +52,7 @@ const onUploadImageFormSubmit = async (evt) => {
         canClose = true;
       });
     } finally {
-      enableSubmitButton();
+      enableButton(uploadSubmitElement, submitText.enabled);
     }
   }
 };

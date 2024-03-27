@@ -65,11 +65,26 @@ const clearSelected = () => {
   }
 };
 
+const updateEnabledButtom = (buttonElement, isEnaled, text) => {
+  buttonElement.disabled = !isEnaled;
+  buttonElement.textContent = text;
+};
+
+const enableButton = (buttonElement, text) => {
+  updateEnabledButtom(buttonElement, true, text);
+};
+
+const disableButton = (buttonElement, text) => {
+  updateEnabledButtom(buttonElement, false, text);
+};
+
 export {
   updateClassList,
   getTemplateElement,
   getFirstElementChild,
   removeChilds,
   createFragment,
-  clearSelected
+  clearSelected,
+  enableButton,
+  disableButton
 };
