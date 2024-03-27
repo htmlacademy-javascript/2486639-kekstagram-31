@@ -1,4 +1,4 @@
-import { throwError, addDot } from './util.js';
+import { throwError } from './util.js';
 
 const updateClassList = (element, className, isAdd = true) => {
   if (isAdd) {
@@ -8,51 +8,39 @@ const updateClassList = (element, className, isAdd = true) => {
   }
 };
 
-const getTemplateElement = (id, elementChildClassName = '') => {
-  if (id) {
-    const templateElement = document.querySelector(`#${id}`);
-    if (!templateElement) {
-      throwError(`Не найден шаблон c id = "${id}"`);
-    }
-
-    if (elementChildClassName) {
-      try {
-        return templateElement.content.querySelector(addDot(elementChildClassName));
-      } catch (error) {
-        throwError(`Не найден дочерний элемент с сlass = "${elementChildClassName}" у шаблона id = "${id}"`);
-      }
-    } else {
-      const element = templateElement.content.firstElementChild;
-      if (!element) {
-        throwError(`Не найден первый дочерний элемент у шаблона id = "${id}"`);
-      }
+const getElement = (selector) => {
+  if (selector) {
+    const element = document.querySelector(selector);
+    if (element) {
       return element;
     }
+    throwError(`Не найден элемент с селектором = "${selector}"`);
   } else {
-    throwError('Не указан id шаблона');
+    throwError('Не указан селектор!');
   }
 };
 
-const getFirstElementChild = (className) => {
-  if (className) {
-    const element = document.querySelector(addDot(className));
-    if (!element) {
-      throwError(`Не найден элемент c class = "${className}"`);
-    }
-
-    const firstElement = element.firstElementChild;
-    if (!firstElement) {
-      throwError(`Не найден первый дочерний элемент у элемента class = "${className}"`);
-    }
-    return firstElement;
-  } else {
-    throwError('Не указан className элемента');
+const getTemplateElement = (selector) => {
+  const templateElement = getElement(selector);
+  const firstChildElement = templateElement.content.firstElementChild;
+  if (firstChildElement) {
+    return firstChildElement;
   }
+  throwError(`Не найден первый дочерний элемент у шаблона с селектором = "${selector}"`);
 };
 
-const removeChilds = (containerElement, childClassName) => {
-  if (childClassName) {
-    const childs = containerElement.querySelectorAll(addDot(childClassName));
+const getFirstElementChild = (selector) => {
+  const element = getElement(selector);
+  const firstChildElement = element.firstElementChild;
+  if (firstChildElement) {
+    return firstChildElement;
+  }
+  throwError(`Не найден первый дочерний элемент у элемента c селектором "${selector}"!`);
+};
+
+const removeChilds = (containerElement, childSelector) => {
+  if (childSelector) {
+    const childs = containerElement.querySelectorAll(childSelector);
     childs.forEach((element) => element.remove());
   } else {
     containerElement.innerHTML = '';
@@ -65,10 +53,38 @@ const createFragment = (records, createElement) => {
   return fragment;
 };
 
+const clearSelected = () => {
+  if (window.getSelection) {
+    if (window.getSelection().empty) {// Chrome
+      window.getSelection().empty();
+    } else if (window.getSelection().removeAllRanges) {// Firefox
+      window.getSelection().removeAllRanges();
+    }
+  } else if (document.selection) {// IE?
+    document.selection.empty();
+  }
+};
+
+const updateEnabledButtom = (buttonElement, isEnaled, text) => {
+  buttonElement.disabled = !isEnaled;
+  buttonElement.textContent = text;
+};
+
+const enableButton = (buttonElement, text) => {
+  updateEnabledButtom(buttonElement, true, text);
+};
+
+const disableButton = (buttonElement, text) => {
+  updateEnabledButtom(buttonElement, false, text);
+};
+
 export {
   updateClassList,
   getTemplateElement,
   getFirstElementChild,
   removeChilds,
   createFragment,
+  clearSelected,
+  enableButton,
+  disableButton
 };
