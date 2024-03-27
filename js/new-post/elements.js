@@ -18,6 +18,7 @@ const messageOption = {
   }
 };
 
+const effectsPreviewSelector = '.effects__item .effects__label .effects__preview';
 const uploadImageFormElement = document.querySelector('#upload-select-image');
 const uploadSubmitElement = uploadImageFormElement.querySelector('#upload-submit');
 const imageUploadOverlayElement = uploadImageFormElement.querySelector('.img-upload__overlay');
@@ -39,6 +40,7 @@ const errorTemplateElement = getTemplateElement('#error');
 export {
   pristineClassList,
   messageOption,
+  effectsPreviewSelector,
   uploadImageFormElement,
   uploadSubmitElement,
   imageUploadOverlayElement,

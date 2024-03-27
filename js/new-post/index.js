@@ -2,8 +2,9 @@ import { isEscapeKey } from './../util/util.js';
 import { isImageFileType } from '../util/file-types.js';
 import { enableButton, disableButton } from './../util/dom.js';
 import {
-  uploadImageFormElement, uploadSubmitElement, imageUploadOverlayElement, imageUploadInputElement,
-  imageUploadPreviewElement, imageUploadCancelElement, hashtagsInputElement, descriptionInputElement
+  effectsPreviewSelector, uploadImageFormElement, uploadSubmitElement, imageUploadOverlayElement,
+  imageUploadInputElement, imageUploadPreviewElement, imageUploadCancelElement,
+  hashtagsInputElement, descriptionInputElement, effectsListElement
 } from './elements.js';
 import { openBasicModal, closeBasicModal } from './../basic-modal.js';
 import { initScale, resetScale } from './scale.js';
@@ -29,6 +30,14 @@ const afterCloseNewPostModal = (_, exitByEscapeKey) => {
   }
 };
 
+const updateImagePreview = (previewImageURL = '') => {
+  imageUploadPreviewElement.src = previewImageURL;
+
+  effectsListElement.querySelectorAll(effectsPreviewSelector).forEach((element) => {
+    element.style.backgroundImage = `url(${previewImageURL})`;
+  });
+};
+
 const onElementEscapeKeyDown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
@@ -36,7 +45,7 @@ const onElementEscapeKeyDown = (evt) => {
 };
 
 const onUploadImageFormClick = () => {
-  imageUploadPreviewElement.src = '';
+  updateImagePreview();
   resetScale();
   resetEffect();
   resetValidate();
@@ -67,13 +76,16 @@ const onImageUploadInputElementChange = () => {
   openBasicModal(imageUploadOverlayElement, imageUploadCancelElement, afterCloseNewPostModal, () => canClose);
 
   const file = imageUploadInputElement.files[0];
+  let previewImageURL = ERROR_IMAGE_SRC;
+
   if (isImageFileType(file.name)) {
-    imageUploadPreviewElement.src = URL.createObjectURL(file);
+    previewImageURL = URL.createObjectURL(file);
     enableButton(uploadSubmitElement, submitText.enabled);
   } else {
-    imageUploadPreviewElement.src = ERROR_IMAGE_SRC;
     disableButton(uploadSubmitElement, submitText.notImage);
   }
+
+  updateImagePreview(previewImageURL);
 };
 
 const initNewPostModal = () => {
