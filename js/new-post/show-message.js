@@ -15,7 +15,7 @@ const hideMessage = () => {
   }
   element.remove();
   buttonElement.removeEventListener('click', onButtonElementClick);
-  document.removeEventListener('keydown', onDocumentEscapeKeydown);
+  document.removeEventListener('keydown', onDocumentKeydown);
   document.removeEventListener('click', onDocumentClick);
 };
 
@@ -28,13 +28,13 @@ const showMessage = (templateElement, { buttonSelector, innerSelector }, onClose
   const buttonElement = element.querySelector(buttonSelector);
 
   buttonElement.addEventListener('click', onButtonElementClick);
-  document.addEventListener('keydown', onDocumentEscapeKeydown);
+  document.addEventListener('keydown', onDocumentKeydown);
   document.addEventListener('click', onDocumentClick);
   document.body.append(element);
   Object.assign(currentMessage, { element, buttonElement, innerSelector, onClose });
 };
 
-function onDocumentEscapeKeydown(evt) {
+function onDocumentKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     hideMessage();

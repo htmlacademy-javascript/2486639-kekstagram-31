@@ -29,7 +29,6 @@ const drawComments = (newShowCommentsCount) => {
   const fragment = createFragment(comments, createElement);
   commentsContainerElement.append(fragment);
   commentsShowCount = newShowCommentsCount;
-
   commentShowCountElement.textContent = commentsShowCount;
 };
 
@@ -45,7 +44,7 @@ const renderImageElement = ({ url, description, likes, comments }) => {
   commentTotalCountElement.textContent = comments.length;
   captionElement.textContent = description;
   if (url) {
-    // Баг оставалось выделение и курссор ввода
+    // Баг оставалось выделение
     clearSelected();
     imageElement.focus();
   }

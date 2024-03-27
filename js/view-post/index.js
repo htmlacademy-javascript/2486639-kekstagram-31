@@ -11,19 +11,19 @@ const updateCommentsLoaderVisible = () => {
   updateClassList(commentsLoaderElement, hiddenClass, isAllCommentsShow);
 };
 
+const onCommentsLoaderElementClick = (evt) => {
+  evt.preventDefault();
+  drawMoreBigPictureComments();
+  updateCommentsLoaderVisible();
+};
+
 const initBigPictureModal = () => {
   clearBigPicture();
-
-  commentsLoaderElement.addEventListener('click', (evt) => {
-    evt.preventDefault();
-    drawMoreBigPictureComments();
-    updateCommentsLoaderVisible();
-  });
+  commentsLoaderElement.addEventListener('click', onCommentsLoaderElementClick);
 };
 
 const openBigPictureModal = (post) => {
   openBasicModal(bigPictureElement, closePictureElement, clearBigPicture);
-
   drawBigPicture(post);
   updateCommentsLoaderVisible();
 };

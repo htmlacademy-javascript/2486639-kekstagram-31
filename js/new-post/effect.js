@@ -9,6 +9,11 @@ import { defaultSliderOption, effectList } from './effect-list.js';
 
 let currentEffect;
 
+const formatSliderOption = {
+  to: roundOneSignNumber,
+  from: parseFloat
+};
+
 const updateSliderVisible = () => {
   updateClassList(effectLevelElement, hiddenClass, !currentEffect);
 };
@@ -31,35 +36,30 @@ const resetEffect = (needApply = true) => {
   }
 };
 
+const onEffectLevelSliderElementUpdate = () => {
+  effectLevelInputlement.value = effectLevelSliderElement.noUiSlider.get();
+  applyEffectOption();
+};
+
+const onEffectsListElementChange = (evt) => {
+  const newEffectOption = effectList[evt.target.value];
+  if (newEffectOption !== currentEffect) {
+    currentEffect = newEffectOption;
+    // видимость слайдера
+    updateSliderVisible();
+    // смена слайдера, т.к. в насройках есть start, то дополнительно не вызываю noUiSlider.set
+    const newSliderOption = (currentEffect) ? currentEffect.sliderOption : defaultSliderOption;
+    effectLevelSliderElement.noUiSlider.updateOptions(newSliderOption);
+    // не вызываем applyEffectOption, т.к. отрисовка будет вызвана при применении параметра 'start' у слайдера
+  }
+};
+
 const initEffect = () => {
   resetEffect(false);
   noUiSlider.create(effectLevelSliderElement, defaultSliderOption);
-  effectLevelSliderElement.noUiSlider.updateOptions({ connect: false });
-
-  effectLevelSliderElement.noUiSlider.updateOptions(
-    {
-      format: {
-        to: roundOneSignNumber,
-        from: parseFloat
-      }
-    });
-  effectLevelSliderElement.noUiSlider.on('update', () => {
-    effectLevelInputlement.value = effectLevelSliderElement.noUiSlider.get();
-    applyEffectOption();
-  });
-
-  effectsListElement.addEventListener('change', (evt) => {
-    const newEffectOption = effectList[evt.target.value];
-    if (newEffectOption !== currentEffect) {
-      currentEffect = newEffectOption;
-      // видимость слайдера
-      updateSliderVisible();
-      // смена слайдера, т.к. в насройках есть start, то дополнительно не вызываю noUiSlider.set
-      const newSliderOption = (currentEffect) ? currentEffect.sliderOption : defaultSliderOption;
-      effectLevelSliderElement.noUiSlider.updateOptions(newSliderOption);
-      // не вызываем applyEffectOption, т.к. отрисовка будет вызвана при применении параметра 'start' у слайдера
-    }
-  });
+  effectLevelSliderElement.noUiSlider.updateOptions({ format: formatSliderOption });
+  effectLevelSliderElement.noUiSlider.on('update', onEffectLevelSliderElementUpdate);
+  effectsListElement.addEventListener('change', onEffectsListElementChange);
 };
 
 export { initEffect, resetEffect };
