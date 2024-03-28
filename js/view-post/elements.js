@@ -17,6 +17,8 @@ const commentCountElement = socialElement.querySelector('.social__comment-count'
 const commentShowCountElement = commentCountElement.querySelector('.social__comment-shown-count');
 const commentTotalCountElement = commentCountElement.querySelector('.social__comment-total-count');
 const captionElement = socialElement.querySelector('.social__caption');
+const footerTextElement = socialElement.querySelector('.social__footer-text');
+const footerButtonElement = socialElement.querySelector('.social__footer-btn');
 const commentsContainerElement = document.querySelector(socialSelectorList.сomments);
 const commentTemplateElement = getFirstElementChild(socialSelectorList.сomments);
 
@@ -32,6 +34,8 @@ export {
   commentShowCountElement,
   commentTotalCountElement,
   captionElement,
+  footerTextElement,
+  footerButtonElement,
   commentsContainerElement,
   commentTemplateElement
 };

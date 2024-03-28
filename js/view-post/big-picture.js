@@ -26,7 +26,14 @@ const createElement = ({ avatar, name, message }) => {
 };
 
 const drawComments = (newShowCommentsCount) => {
-  newShowCommentsCount = Math.min(newShowCommentsCount, currentComments.length);
+  if (newShowCommentsCount === -1) {
+    newShowCommentsCount = commentsShowCount + 1;
+    commentsShowCount = 0;
+    removeChilds(commentsContainerElement);
+  } else {
+    newShowCommentsCount = Math.min(newShowCommentsCount, currentComments.length);
+  }
+
   const comments = currentComments.slice(commentsShowCount, newShowCommentsCount);
   const fragment = createFragment(comments, createElement);
   commentsContainerElement.append(fragment);
@@ -34,8 +41,15 @@ const drawComments = (newShowCommentsCount) => {
   commentShowCountElement.textContent = commentsShowCount;
 };
 
-const drawMoreBigPictureComments = () => {
-  drawComments(commentsShowCount + CommentsCount.LOAD_MORE);
+const drawMoreBigPictureComments = (newComment = null) => {
+  let newCommentsShowCount = commentsShowCount + CommentsCount.LOAD_MORE;
+
+  if (newComment) {
+    currentComments.unshift(newComment);
+    newCommentsShowCount = -1;
+  }
+
+  drawComments(newCommentsShowCount);
 };
 
 const updateLikesCount = () => {

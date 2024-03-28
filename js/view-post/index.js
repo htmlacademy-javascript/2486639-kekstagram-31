@@ -2,8 +2,8 @@ import { updateClassList } from './../util/dom.js';
 import { openBasicModal } from './../basic-modal.js';
 import { hiddenClass } from './../elements.js';
 import {
-  bigPictureElement, closePictureElement, commentCountElement,
-  likesCountElement, commentsLoaderElement
+  bigPictureElement, closePictureElement, commentCountElement, likesCountElement,
+  commentsLoaderElement, footerTextElement, footerButtonElement
 } from './elements.js';
 import {
   drawBigPicture, clearBigPicture, updateLikesCount,
@@ -28,10 +28,28 @@ const onLikesCountElementClick = (evt) => {
   updateLikesCount();
 };
 
+const onFooterButtonElementClick = (evt) => {
+  evt.preventDefault();
+
+  const message = footerTextElement.value.trim();
+  if (message) {
+    const comment = {
+      avatar: 'img/avatar-1.svg',
+      id: 0,
+      message: message,
+      name: 'Гость'
+    };
+
+    footerTextElement.value = '';
+    drawMoreBigPictureComments(comment);
+  }
+};
+
 const initBigPictureModal = () => {
   clearBigPicture();
   commentsLoaderElement.addEventListener('click', onCommentsLoaderElementClick);
   likesCountElement.addEventListener('click', onLikesCountElementClick);
+  footerButtonElement.addEventListener('click', onFooterButtonElementClick);
 };
 
 const openBigPictureModal = (post) => {

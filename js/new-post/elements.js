@@ -11,7 +11,7 @@ const messageOption = {
   success: {
     innerSelector: '.success__inner',
     titleSelector: '.success__title',
-    buttoSelector: '.success__button',
+    buttonSelector: '.success__button',
   },
   error: {
     innerSelector: '.error__inner',

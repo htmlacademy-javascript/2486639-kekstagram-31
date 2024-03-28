@@ -18,6 +18,7 @@ const submitText = {
   disabled: 'Публикую...'
 };
 
+let onAfterSuccess = null;
 let canClose;
 
 const afterCloseNewPostModal = (_, exitByEscapeKey) => {
@@ -53,10 +54,19 @@ const onUploadImageFormSubmit = async (evt) => {
   if (isValidated()) {
     disableButton(uploadSubmitElement, submitText.disabled);
     try {
-      await sendPost(new FormData(evt.target));
+      const previewImageURL = imageUploadPreviewElement.src;
+      const sendResult = await sendPost(new FormData(evt.target));
       uploadImageFormElement.reset();
       closeBasicModal();
       showSuccessMessage();
+      //
+      onAfterSuccess?.({
+        comments: [],
+        description: sendResult.description,
+        id: -1,
+        likes: 0,
+        url: previewImageURL
+      });
     } catch {
       canClose = false;
       showErrorMessage('', () => {
@@ -80,7 +90,8 @@ const onImageUploadInputElementChange = () => {
   }
 };
 
-const initNewPostModal = () => {
+const initNewPostModal = (onAfterSuccessSendPost) => {
+  onAfterSuccess = onAfterSuccessSendPost;
   canClose = true;
   imageUploadInputElement.addEventListener('change', onImageUploadInputElementChange);
   hashtagsInputElement.addEventListener('keydown', onElementEscapeKeyDown);
