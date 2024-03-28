@@ -1,3 +1,4 @@
+import { isEnterKey } from '../util/util.js';
 import { updateClassList, stopPropagationIfEscapeKey } from './../util/dom.js';
 import { openBasicModal } from './../basic-modal.js';
 import { hiddenClass } from './../elements.js';
