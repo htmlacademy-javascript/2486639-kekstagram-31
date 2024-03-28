@@ -7,8 +7,8 @@ import {
   commentsLoaderElement, footerTextElement, footerButtonElement
 } from './elements.js';
 import {
-  drawBigPicture, clearBigPicture, updateLikesCount,
-  drawMoreBigPictureComments, drawNewBigPictureComment, isAllBigPictureCommentsShow
+  drawBigPicture, clearBigPicture, drawMoreComments,
+  drawNewComment, updateLikesCount, isAllCommentsShown
 } from './big-picture.js';
 
 const SCROLL_ON_DOWN_DELAY = 4000;
@@ -16,7 +16,7 @@ const SCROLL_ON_DOWN_DELAY = 4000;
 let scrollTimeout;
 
 const updateCommentsLoaderVisible = () => {
-  const isAllCommentsShow = isAllBigPictureCommentsShow();
+  const isAllCommentsShow = isAllCommentsShown();
   // Скроем надпись и ссылку, т.к. все комментарии загружены
   updateClassList(commentCountElement, hiddenClass, isAllCommentsShow);
   updateClassList(commentsLoaderElement, hiddenClass, isAllCommentsShow);
@@ -24,7 +24,7 @@ const updateCommentsLoaderVisible = () => {
 
 const loadMoreComments = () => {
   if (document.activeElement !== footerTextElement) {
-    drawMoreBigPictureComments();
+    drawMoreComments();
     updateCommentsLoaderVisible();
   }
 };
@@ -40,7 +40,7 @@ const addComment = () => {
     };
 
     footerTextElement.value = '';
-    drawNewBigPictureComment(comment);
+    drawNewComment(comment);
   }
 };
 

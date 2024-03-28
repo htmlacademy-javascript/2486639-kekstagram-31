@@ -11,10 +11,8 @@ const CommentsCount = {
 };
 
 let currentComments = [];
-let countCommentShown = 0;
+let shownCommentsCount = 0;
 let likesCount;
-
-const isAllBigPictureCommentsShow = () => ((countCommentShown === 0) || (countCommentShown === currentComments.length));
 
 const createElement = ({ avatar, name, message }) => {
   const newElement = commentTemplateElement.cloneNode(true);
@@ -25,27 +23,27 @@ const createElement = ({ avatar, name, message }) => {
   return newElement;
 };
 
-const drawComments = (newCountCommentShown) => {
-  newCountCommentShown = Math.min(newCountCommentShown, currentComments.length);
+const drawComments = (newShownCommentsCount) => {
+  newShownCommentsCount = Math.min(newShownCommentsCount, currentComments.length);
 
-  const comments = currentComments.slice(countCommentShown, newCountCommentShown);
+  const comments = currentComments.slice(shownCommentsCount, newShownCommentsCount);
   const fragment = createFragment(comments, createElement);
   commentsContainerElement.append(fragment);
-  countCommentShown = newCountCommentShown;
-  commentShowCountElement.textContent = countCommentShown;
+  shownCommentsCount = newShownCommentsCount;
+  commentShowCountElement.textContent = shownCommentsCount;
 };
 
-const drawMoreBigPictureComments = () => {
-  drawComments(countCommentShown + CommentsCount.LOAD_MORE);
+const drawMoreComments = () => {
+  drawComments(shownCommentsCount + CommentsCount.LOAD_MORE);
 };
 
-const drawNewBigPictureComment = (newComment) => {
-  const newCountCommentShown = countCommentShown + 1;
+const drawNewComment = (newComment) => {
+  const newShownCommentsCount = shownCommentsCount + 1;
 
-  currentComments.splice(countCommentShown, 0, newComment);
-  countCommentShown = 0;
+  currentComments.splice(shownCommentsCount, 0, newComment);
+  shownCommentsCount = 0;
   removeChilds(commentsContainerElement);
-  drawComments(newCountCommentShown);
+  drawComments(newShownCommentsCount);
   bigPictureElement.scrollTo(scrollX, bigPictureElement.scrollHeight);
 };
 
@@ -55,6 +53,8 @@ const updateLikesCount = () => {
   likesCount += (isLikeActive) ? -1 : 1;
   likesCountElement.textContent = likesCount;
 };
+
+const isAllCommentsShown = () => shownCommentsCount === currentComments.length;
 
 const renderImageElement = ({ url, description, likes, comments }) => {
   imageElement.src = url;
@@ -73,7 +73,7 @@ const renderImageElement = ({ url, description, likes, comments }) => {
 
 const clearBigPicture = () => {
   currentComments = [];
-  countCommentShown = 0;
+  shownCommentsCount = 0;
   renderImageElement({ url: '', description: '', likes: 0, comments: [] });
   removeChilds(commentsContainerElement);
   footerTextElement.value = '';
@@ -86,4 +86,4 @@ const drawBigPicture = (post) => {
   drawComments(CommentsCount.ON_START);
 };
 
-export { drawBigPicture, clearBigPicture, updateLikesCount, drawMoreBigPictureComments, drawNewBigPictureComment, isAllBigPictureCommentsShow };
+export { drawBigPicture, clearBigPicture, drawMoreComments, drawNewComment, updateLikesCount, isAllCommentsShown };
