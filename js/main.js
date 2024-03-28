@@ -13,7 +13,6 @@ initNewPostModal(onAfterSuccessSendPost);
 
 try {
   const posts = await getPosts();
-  posts[0].comments = [];
   setPosts(posts);
   drawPictures(posts);
   initFilterPosts(posts);
