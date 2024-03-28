@@ -9,12 +9,14 @@ const pristineClassList = {
 
 const messageOption = {
   success: {
-    buttonSelector: '.success__button',
-    innerSelector: '.success__inner'
+    innerSelector: '.success__inner',
+    titleSelector: '.success__title',
+    buttoSelector: '.success__button',
   },
   error: {
+    innerSelector: '.error__inner',
+    titleSelector: '.error__title',
     buttonSelector: '.error__button',
-    innerSelector: '.error__inner'
   }
 };
 

@@ -1,20 +1,20 @@
-import { createFragment } from './util/dom.js';
+import { createFragment, removeChilds } from './util/dom.js';
 import {
-  pictureSelectorList, pictureTemplateElement, picturesContainerElement,
-  picturesTitleElement, picturesImgUploadElement
+  pictureSelector, pictureChildsSelector, pictureTemplateElement, picturesContainerElement,
 } from './elements.js';
 
 let onPictureClick;
 
 const createElement = (post) => {
   const { url, description, likes, comments } = post;
+  const { image: imageSelector, likes: likesSelector, comments: commentsSelector } = pictureChildsSelector;
   const newElement = pictureTemplateElement.cloneNode(true);
-  const pictureImageElement = newElement.querySelector(pictureSelectorList.image);
+  const pictureImageElement = newElement.querySelector(imageSelector);
   pictureImageElement.src = url;
   pictureImageElement.alt = description;
 
-  newElement.querySelector(pictureSelectorList.likes).textContent = likes;
-  newElement.querySelector(pictureSelectorList.comments).textContent = comments.length;
+  newElement.querySelector(likesSelector).textContent = likes;
+  newElement.querySelector(commentsSelector).textContent = comments.length;
 
   const onNewElementClick = (evt) => {
     evt.preventDefault();
@@ -32,7 +32,12 @@ const initDrawPictures = (openBigPictureModal) => {
 
 const drawPictures = (posts) => {
   const fragment = createFragment(posts, createElement);
-  picturesContainerElement.replaceChildren(picturesTitleElement, picturesImgUploadElement, fragment);
+  //!! Ошибки при автотесте: пока тестирует форму публкации, то происходит получение данных и отрисовка постов,
+  // а при замене элементов использовалась picturesContainerElement.replaceChildren(picturesTitleElement, picturesImgUploadElement, fragment)
+  // элементы формы теряються и автотест выдает ошибку
+  // Удаляем только картинки по классу
+  removeChilds(picturesContainerElement, pictureSelector);
+  picturesContainerElement.append(fragment);
 };
 
 export { initDrawPictures, drawPictures };

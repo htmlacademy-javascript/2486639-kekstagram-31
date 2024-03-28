@@ -9,17 +9,13 @@ import {
 import { openBasicModal, closeBasicModal } from './../basic-modal.js';
 import { initScale, resetScale } from './scale.js';
 import { initEffect, resetEffect } from './effect.js';
-import { initValidate, resetValidate, checkValidate } from './validate.js';
+import { initValidate, resetValidate, isValidated } from './validate.js';
 import { sendPost } from './../api.js';
 import { showSuccessMessage, showErrorMessage } from './show-message.js';
 
-const ERROR_IMAGE_SRC = 'img/logo-mask.png';
-
 const submitText = {
   enabled: uploadSubmitElement.textContent,
-  disabled: 'Публикую...',
-  //disabled: 'Сохраняю...',
-  notImage: 'Файл не картинка!'
+  disabled: 'Публикую...'
 };
 
 let canClose;
@@ -54,7 +50,7 @@ const onUploadImageFormClick = () => {
 const onUploadImageFormSubmit = async (evt) => {
   evt.preventDefault();
 
-  if (checkValidate()) {
+  if (isValidated()) {
     disableButton(uploadSubmitElement, submitText.disabled);
     try {
       await sendPost(new FormData(evt.target));
@@ -63,7 +59,7 @@ const onUploadImageFormSubmit = async (evt) => {
       showSuccessMessage();
     } catch {
       canClose = false;
-      showErrorMessage(() => {
+      showErrorMessage('', () => {
         canClose = true;
       });
     } finally {
@@ -73,19 +69,15 @@ const onUploadImageFormSubmit = async (evt) => {
 };
 
 const onImageUploadInputElementChange = () => {
-  openBasicModal(imageUploadOverlayElement, imageUploadCancelElement, afterCloseNewPostModal, () => canClose);
-
   const file = imageUploadInputElement.files[0];
-  let previewImageURL = ERROR_IMAGE_SRC;
 
   if (isImageFileType(file.name)) {
-    previewImageURL = URL.createObjectURL(file);
-    enableButton(uploadSubmitElement, submitText.enabled);
+    updateImagePreview(URL.createObjectURL(file));
+    openBasicModal(imageUploadOverlayElement, imageUploadCancelElement, afterCloseNewPostModal, () => canClose);
   } else {
-    disableButton(uploadSubmitElement, submitText.notImage);
+    imageUploadPreviewElement.src = '';
+    showErrorMessage('Выбранный файл не изображение!');
   }
-
-  updateImagePreview(previewImageURL);
 };
 
 const initNewPostModal = () => {

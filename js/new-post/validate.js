@@ -67,6 +67,6 @@ const resetValidate = () => {
   pristine.reset();
 };
 
-const checkValidate = () => pristine.validate();
+const isValidated = () => pristine.validate();
 
-export { initValidate, resetValidate, checkValidate };
+export { initValidate, resetValidate, isValidated };
