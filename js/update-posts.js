@@ -8,6 +8,7 @@ const setPosts = (posts) => {
 
 const onAfterSuccessSendPost = (newPost) => {
   currentPosts.unshift(newPost);
+  // нарисовать бы одну, но добавляю в начало и все картинки сдвигаються
   drawPictures(currentPosts);
 };
 

@@ -41,6 +41,7 @@ const addComment = () => {
 
     footerTextElement.value = '';
     drawNewComment(comment);
+    //!! обновить информацию в миниатюре...
   }
 };
 
@@ -51,7 +52,8 @@ const onBigPictureElementScroll = (evt) => {
   const offsetTotal = scrollTop + offsetHeight;
 
   clearTimeout(scrollTimeout);
-  if (offsetTotal === scrollHeight) {
+  // на разных расширениях offsetTotal и scrollHeight не совпадают
+  if (Math.abs(offsetTotal - scrollHeight) < 1) {
     scrollTimeout = setTimeout(loadMoreComments, SCROLL_ON_DOWN_DELAY);
   }
 };

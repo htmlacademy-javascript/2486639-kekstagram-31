@@ -54,6 +54,7 @@ const updateLikesCount = () => {
   updateClassList(likesCountElement, likesCountActiveClass, !isLikeActive);
   likesCount += (isLikeActive) ? -1 : 1;
   likesCountElement.textContent = likesCount;
+  //!! сохранить бы свой лайк и добавить его в пост и обновить на минитюре
 };
 
 const isAllCommentsShown = () => shownCommentsCount === currentComments.length;
