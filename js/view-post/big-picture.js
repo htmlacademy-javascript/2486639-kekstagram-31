@@ -27,10 +27,12 @@ const drawComments = (newShownCommentsCount) => {
   newShownCommentsCount = Math.min(newShownCommentsCount, currentComments.length);
 
   const comments = currentComments.slice(shownCommentsCount, newShownCommentsCount);
-  const fragment = createFragment(comments, createElement);
-  commentsContainerElement.append(fragment);
-  shownCommentsCount = newShownCommentsCount;
-  commentShowCountElement.textContent = shownCommentsCount;
+  if (shownCommentsCount < newShownCommentsCount) {
+    const fragment = createFragment(comments, createElement);
+    commentsContainerElement.append(fragment);
+    shownCommentsCount = newShownCommentsCount;
+    commentShowCountElement.textContent = shownCommentsCount;
+  }
 };
 
 const drawMoreComments = () => {

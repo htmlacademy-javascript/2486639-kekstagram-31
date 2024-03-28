@@ -13,16 +13,16 @@ import { initValidate, resetValidate, isValidated } from './validate.js';
 import { sendPost } from './../api.js';
 import { showSuccessMessage, showErrorMessage } from './show-message.js';
 
-const submitText = {
+const submitTextOption = {
   enabled: uploadSubmitElement.textContent,
   disabled: 'Публикую...'
 };
 
 let onAfterSuccess = null;
-let canClose;
+let canClose = true;
 
-const afterCloseNewPostModal = (_, exitByEscapeKey) => {
-  if (exitByEscapeKey) {
+const afterCloseNewPostModal = (isEscapeKeyPress) => {
+  if (isEscapeKeyPress) {
     uploadImageFormElement.reset();
   }
 };
@@ -52,7 +52,7 @@ const onUploadImageFormSubmit = async (evt) => {
   evt.preventDefault();
 
   if (isValidated()) {
-    disableButton(uploadSubmitElement, submitText.disabled);
+    disableButton(uploadSubmitElement, submitTextOption.disabled);
     try {
       const previewImageURL = imageUploadPreviewElement.src;
       const sendResult = await sendPost(new FormData(evt.target));
@@ -73,7 +73,7 @@ const onUploadImageFormSubmit = async (evt) => {
         canClose = true;
       });
     } finally {
-      enableButton(uploadSubmitElement, submitText.enabled);
+      enableButton(uploadSubmitElement, submitTextOption.enabled);
     }
   }
 };

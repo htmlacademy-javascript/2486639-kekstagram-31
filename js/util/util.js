@@ -1,6 +1,6 @@
 const checkStringLength = (string, length) => string.length <= length;
 
-const roundOneSignNumber = (value) => {
+const roundToTenths = (value) => {
   if (Number.isInteger(value)) {
     return value.toFixed(0);
   }
@@ -54,7 +54,7 @@ const isEnterKey = (evt) => evt.key === 'Enter';
 
 export {
   checkStringLength,
-  roundOneSignNumber,
+  roundToTenths,
   getRandomNumber,
   createIdGenerator,
   getRandomArray,

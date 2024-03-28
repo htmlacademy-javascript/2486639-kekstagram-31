@@ -8,7 +8,7 @@ const modalSetting = {
   canClose: null
 };
 
-const closeBasicModal = (evt, exitByEscapeKey = false) => {
+const closeBasicModal = (isEscapeKeyPress = false) => {
   const { element, closeElement, afterCloseModal } = modalSetting;
   if (element.scrollTop !== 0) {
     element.scrollTo(0, 0); // + Баг, если модальное окно прокрутить, то при следующих открытиях прокрутка вниз остаеться
@@ -17,7 +17,7 @@ const closeBasicModal = (evt, exitByEscapeKey = false) => {
   document.body.classList.remove(modalOpenClass);
   closeElement?.removeEventListener('click', onCloseElementClick);
   document.removeEventListener('keydown', onDocumentKeydown);
-  afterCloseModal?.(evt, exitByEscapeKey);
+  afterCloseModal?.(isEscapeKeyPress);
 };
 
 const openBasicModal = (element, closeElement, afterCloseModal = null, canClose = null) => {
@@ -28,8 +28,8 @@ const openBasicModal = (element, closeElement, afterCloseModal = null, canClose 
   Object.assign(modalSetting, { element, closeElement, afterCloseModal, canClose });
 };
 
-function onCloseElementClick(evt) {
-  closeBasicModal(evt);
+function onCloseElementClick() {
+  closeBasicModal();
 }
 
 function onDocumentKeydown(evt) {
@@ -37,7 +37,7 @@ function onDocumentKeydown(evt) {
     const { canClose } = modalSetting;
     if (!canClose || canClose()) {
       evt.preventDefault();
-      closeBasicModal(evt, true);
+      closeBasicModal(true);
     } else {
       evt.stopPropagation();
     }
