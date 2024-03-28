@@ -1,5 +1,4 @@
-import { isEscapeKey, isEnterKey } from './../util/util.js';
-import { updateClassList } from './../util/dom.js';
+import { updateClassList, stopPropagationIfEscapeKey } from './../util/dom.js';
 import { openBasicModal } from './../basic-modal.js';
 import { hiddenClass } from './../elements.js';
 import {
@@ -70,8 +69,8 @@ const onFooterTextElementKeydown = (evt) => {
   if (isEnterKey(evt)) {
     evt.preventDefault();
     addComment();
-  } else if (isEscapeKey(evt)) {
-    evt.stopPropagation();
+  } else {
+    stopPropagationIfEscapeKey(evt);
   }
 };
 

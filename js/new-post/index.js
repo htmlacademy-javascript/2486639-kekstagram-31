@@ -1,6 +1,5 @@
-import { isEscapeKey } from './../util/util.js';
 import { isImageFileType } from '../util/file-types.js';
-import { enableButton, disableButton } from './../util/dom.js';
+import { enableButton, disableButton, stopPropagationIfEscapeKey } from './../util/dom.js';
 import {
   effectsPreviewSelector, uploadImageFormElement, uploadSubmitElement, imageUploadOverlayElement,
   imageUploadInputElement, imageUploadPreviewElement, imageUploadCancelElement,
@@ -21,7 +20,7 @@ const submitTextOption = {
 let onAfterSuccess = null;
 let canClose = true;
 
-const afterCloseNewPostModal = (isEscapeKeyPress) => {
+const afterCloseBasicModal = (isEscapeKeyPress) => {
   if (isEscapeKeyPress) {
     uploadImageFormElement.reset();
   }
@@ -35,10 +34,12 @@ const updateImagePreview = (previewImageURL = '') => {
   });
 };
 
-const onElementEscapeKeyDown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
+const onHashtagsInputElementKeydown = (evt) => {
+  stopPropagationIfEscapeKey(evt);
+};
+
+const onDescriptionInputElementKeydown = (evt) => {
+  stopPropagationIfEscapeKey(evt);
 };
 
 const onUploadImageFormClick = () => {
@@ -83,7 +84,7 @@ const onImageUploadInputElementChange = () => {
 
   if (isImageFileType(file.name)) {
     updateImagePreview(URL.createObjectURL(file));
-    openBasicModal(imageUploadOverlayElement, imageUploadCancelElement, afterCloseNewPostModal, () => canClose);
+    openBasicModal(imageUploadOverlayElement, imageUploadCancelElement, afterCloseBasicModal, () => canClose);
   } else {
     imageUploadPreviewElement.src = '';
     showErrorMessage('Выбранный файл не изображение!');
@@ -94,8 +95,8 @@ const initNewPostModal = (onAfterSuccessSendPost) => {
   onAfterSuccess = onAfterSuccessSendPost;
   canClose = true;
   imageUploadInputElement.addEventListener('change', onImageUploadInputElementChange);
-  hashtagsInputElement.addEventListener('keydown', onElementEscapeKeyDown);
-  descriptionInputElement.addEventListener('keydown', onElementEscapeKeyDown);
+  hashtagsInputElement.addEventListener('keydown', onHashtagsInputElementKeydown);
+  descriptionInputElement.addEventListener('keydown', onDescriptionInputElementKeydown);
   uploadImageFormElement.addEventListener('reset', onUploadImageFormClick);
   uploadImageFormElement.addEventListener('submit', onUploadImageFormSubmit);
 
