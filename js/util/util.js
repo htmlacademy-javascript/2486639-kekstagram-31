@@ -50,6 +50,8 @@ const removeNullElements = (elements) => elements.filter((element) => (element) 
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
+const isEnterKey = (evt) => evt.key === 'Enter';
+
 export {
   checkStringLength,
   roundOneSignNumber,
@@ -57,5 +59,6 @@ export {
   createIdGenerator,
   getRandomArray,
   removeNullElements,
-  isEscapeKey
+  isEscapeKey,
+  isEnterKey
 };

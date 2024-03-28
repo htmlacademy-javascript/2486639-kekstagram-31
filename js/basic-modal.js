@@ -10,7 +10,9 @@ const modalSetting = {
 
 const closeBasicModal = (evt, exitByEscapeKey = false) => {
   const { element, closeElement, afterCloseModal } = modalSetting;
-  element.scrollTo(scrollX, 0); // + Баг, если модальное окно прокрутить, то при следующих открытиях прокрутка вниз остаеться
+  if (element.scrollTop !== 0) {
+    element.scrollTo(0, 0); // + Баг, если модальное окно прокрутить, то при следующих открытиях прокрутка вниз остаеться
+  }
   element.classList.add(hiddenClass);
   document.body.classList.remove(modalOpenClass);
   closeElement?.removeEventListener('click', onCloseElementClick);

@@ -1,8 +1,8 @@
 import { removeChilds, createFragment, clearSelected, updateClassList } from './../util/dom.js';
 import {
-  socialSelectorList, likesCountActiveClass, likesCountElement,
-  imageElement, commentShowCountElement, commentTotalCountElement,
-  captionElement, commentsContainerElement, commentTemplateElement
+  socialSelectorList, likesCountActiveClass, bigPictureElement, likesCountElement,
+  imageElement, commentShowCountElement, commentTotalCountElement, captionElement,
+  footerTextElement, commentsContainerElement, commentTemplateElement
 } from './elements.js';
 
 const CommentsCount = {
@@ -11,10 +11,10 @@ const CommentsCount = {
 };
 
 let currentComments = [];
-let commentsShowCount = 0;
+let countCommentShown = 0;
 let likesCount;
 
-const isAllBigPictureCommentsShow = () => ((commentsShowCount === 0) || (commentsShowCount === currentComments.length));
+const isAllBigPictureCommentsShow = () => ((countCommentShown === 0) || (countCommentShown === currentComments.length));
 
 const createElement = ({ avatar, name, message }) => {
   const newElement = commentTemplateElement.cloneNode(true);
@@ -25,31 +25,28 @@ const createElement = ({ avatar, name, message }) => {
   return newElement;
 };
 
-const drawComments = (newShowCommentsCount) => {
-  if (newShowCommentsCount === -1) {
-    newShowCommentsCount = commentsShowCount + 1;
-    commentsShowCount = 0;
-    removeChilds(commentsContainerElement);
-  } else {
-    newShowCommentsCount = Math.min(newShowCommentsCount, currentComments.length);
-  }
+const drawComments = (newCountCommentShown) => {
+  newCountCommentShown = Math.min(newCountCommentShown, currentComments.length);
 
-  const comments = currentComments.slice(commentsShowCount, newShowCommentsCount);
+  const comments = currentComments.slice(countCommentShown, newCountCommentShown);
   const fragment = createFragment(comments, createElement);
   commentsContainerElement.append(fragment);
-  commentsShowCount = newShowCommentsCount;
-  commentShowCountElement.textContent = commentsShowCount;
+  countCommentShown = newCountCommentShown;
+  commentShowCountElement.textContent = countCommentShown;
 };
 
-const drawMoreBigPictureComments = (newComment = null) => {
-  let newCommentsShowCount = commentsShowCount + CommentsCount.LOAD_MORE;
+const drawMoreBigPictureComments = () => {
+  drawComments(countCommentShown + CommentsCount.LOAD_MORE);
+};
 
-  if (newComment) {
-    currentComments.unshift(newComment);
-    newCommentsShowCount = -1;
-  }
+const drawNewBigPictureComment = (newComment) => {
+  const newCountCommentShown = countCommentShown + 1;
 
-  drawComments(newCommentsShowCount);
+  currentComments.splice(countCommentShown, 0, newComment);
+  countCommentShown = 0;
+  removeChilds(commentsContainerElement);
+  drawComments(newCountCommentShown);
+  bigPictureElement.scrollTo(scrollX, bigPictureElement.scrollHeight);
 };
 
 const updateLikesCount = () => {
@@ -76,9 +73,10 @@ const renderImageElement = ({ url, description, likes, comments }) => {
 
 const clearBigPicture = () => {
   currentComments = [];
-  commentsShowCount = 0;
-  removeChilds(commentsContainerElement);
+  countCommentShown = 0;
   renderImageElement({ url: '', description: '', likes: 0, comments: [] });
+  removeChilds(commentsContainerElement);
+  footerTextElement.value = '';
   likesCountElement.classList.remove(likesCountActiveClass);
 };
 
@@ -88,4 +86,4 @@ const drawBigPicture = (post) => {
   drawComments(CommentsCount.ON_START);
 };
 
-export { drawBigPicture, clearBigPicture, updateLikesCount, drawMoreBigPictureComments, isAllBigPictureCommentsShow };
+export { drawBigPicture, clearBigPicture, updateLikesCount, drawMoreBigPictureComments, drawNewBigPictureComment, isAllBigPictureCommentsShow };

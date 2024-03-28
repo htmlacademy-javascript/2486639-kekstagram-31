@@ -19,7 +19,7 @@ const commentTotalCountElement = commentCountElement.querySelector('.social__com
 const captionElement = socialElement.querySelector('.social__caption');
 const footerTextElement = socialElement.querySelector('.social__footer-text');
 const footerButtonElement = socialElement.querySelector('.social__footer-btn');
-const commentsContainerElement = document.querySelector(socialSelectorList.сomments);
+const commentsContainerElement = bigPicturePreviewElement.querySelector(socialSelectorList.сomments);
 const commentTemplateElement = getFirstElementChild(socialSelectorList.сomments);
 
 export {
