@@ -79,6 +79,7 @@ const clearBigPicture = () => {
   commentsShowCount = 0;
   removeChilds(commentsContainerElement);
   renderImageElement({ url: '', description: '', likes: 0, comments: [] });
+  likesCountElement.classList.remove(likesCountActiveClass);
 };
 
 const drawBigPicture = (post) => {
