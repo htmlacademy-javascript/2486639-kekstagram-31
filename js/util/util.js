@@ -52,6 +52,22 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const isEnterKey = (evt) => evt.key === 'Enter';
 
+const stopPropagationIfEscapeKey = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.stopPropagation();
+  }
+};
+
+const elementScrollAtBottom = (element) => {
+  const offsetHeight = element.offsetHeight;
+  const scrollHeight = element.scrollHeight;
+  const scrollTop = element.scrollTop;
+  const offsetTotal = scrollTop + offsetHeight;
+
+  // на разных расширениях offsetTotal и scrollHeight не совпадают немного
+  return Math.abs(offsetTotal - scrollHeight) < 1;
+};
+
 export {
   checkStringLength,
   roundToTenths,
@@ -60,5 +76,7 @@ export {
   getRandomArray,
   removeNullElements,
   isEscapeKey,
-  isEnterKey
+  isEnterKey,
+  stopPropagationIfEscapeKey,
+  elementScrollAtBottom
 };

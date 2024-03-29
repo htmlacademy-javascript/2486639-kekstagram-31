@@ -1,27 +1,23 @@
 import { isEscapeKey } from './../util/util.js';
-import { messageOption, successTemplateElement, errorTemplateElement } from './elements.js';
+import { messageOption } from './elements.js';
 
-const currentMessage = {
+const messageSetting = {
   element: null,
   buttonElement: null,
   innerSelector: null,
-  onAfterClose: null
+  afterClose: null
 };
 
 const hideMessage = () => {
-  const { element, buttonElement, onAfterClose } = currentMessage;
+  const { element, buttonElement, afterClose } = messageSetting;
   document.removeEventListener('keydown', onDocumentKeydown);
   document.removeEventListener('click', onDocumentClick);
   buttonElement.removeEventListener('click', onButtonElementClick);
   element.remove();
-  onAfterClose?.();
+  afterClose?.();
 };
 
-function onButtonElementClick() {
-  hideMessage();
-}
-
-const showMessage = (templateElement, { innerSelector, titleSelector, buttonSelector }, title = '', onAfterClose = null) => {
+const showMessage = ({ templateElement, innerSelector, titleSelector, buttonSelector }, title = '', afterClose = null) => {
   const element = templateElement.cloneNode(true);
   const buttonElement = element.querySelector(buttonSelector);
   if (title) {
@@ -32,8 +28,12 @@ const showMessage = (templateElement, { innerSelector, titleSelector, buttonSele
   document.addEventListener('keydown', onDocumentKeydown);
   document.addEventListener('click', onDocumentClick);
   document.body.append(element);
-  Object.assign(currentMessage, { element, buttonElement, innerSelector, onAfterClose });
+  Object.assign(messageSetting, { element, buttonElement, innerSelector, afterClose });
 };
+
+function onButtonElementClick() {
+  hideMessage();
+}
 
 function onDocumentKeydown(evt) {
   if (isEscapeKey(evt)) {
@@ -43,17 +43,17 @@ function onDocumentKeydown(evt) {
 }
 
 function onDocumentClick(evt) {
-  if (!evt.target.closest(currentMessage.innerSelector)) {
+  if (!evt.target.closest(messageSetting.innerSelector)) {
     hideMessage();
   }
 }
 
-const showSuccessMessage = (successText = '', onAfterClose = null) => {
-  showMessage(successTemplateElement, messageOption.success, successText, onAfterClose);
+const showSuccessMessage = (successText = '', afterClose = null) => {
+  showMessage(messageOption.success, successText, afterClose);
 };
 
-const showErrorMessage = (errorText = '', onAfterClose = null) => {
-  showMessage(errorTemplateElement, messageOption.error, errorText, onAfterClose);
+const showErrorMessage = (errorText = '', afterClose = null) => {
+  showMessage(messageOption.error, errorText, afterClose);
 };
 
 export { showSuccessMessage, showErrorMessage };

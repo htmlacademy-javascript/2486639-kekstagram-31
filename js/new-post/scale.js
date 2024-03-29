@@ -1,7 +1,4 @@
-import {
-  imageUploadPreviewElement, scaleControlInputElement,
-  scaleControlSmallerButtonElement, scaleControlBiggerButtonElement
-} from './elements.js';
+import { imageUploadPreviewElement, scaleControlInputElement, scaleControlSmallerButtonElement, scaleControlBiggerButtonElement } from './elements.js';
 
 const ScaleSetting = {
   MIN: 0.25,
@@ -9,7 +6,7 @@ const ScaleSetting = {
   STEP: 0.25
 };
 
-let currentScale;
+let currentScale = ScaleSetting.MAX;
 
 const applyScale = () => {
   scaleControlInputElement.value = `${(currentScale * 100)}%`;
@@ -35,10 +32,17 @@ const resetScale = () => {
   applyScale();
 };
 
+const onScaleControlSmallerButtonElementClick = () => {
+  changeScale(false);
+};
+
+const onScaleControlBiggerButtonElementClick = () => {
+  changeScale(true);
+};
+
 const initScale = () => {
-  scaleControlSmallerButtonElement.addEventListener('click', () => changeScale(false));
-  scaleControlBiggerButtonElement.addEventListener('click', () => changeScale(true));
-  resetScale();
+  scaleControlSmallerButtonElement.addEventListener('click', onScaleControlSmallerButtonElementClick);
+  scaleControlBiggerButtonElement.addEventListener('click', onScaleControlBiggerButtonElementClick);
 };
 
 export { initScale, resetScale };

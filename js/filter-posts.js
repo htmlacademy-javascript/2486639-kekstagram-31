@@ -7,33 +7,32 @@ import { drawPictures } from './draw-pictures.js';
 const DEBOUNCE_DELAY = 500;
 const RANDOM_POST_COUNT = 10;
 
+const filterHandlerOption = {};
+let currentPosts = [];
+
 const getRandomPosts = (posts) => getRandomArray(posts, RANDOM_POST_COUNT);
 
 const getDiscussedPosts = (posts) => posts.slice().sort(
   (firstElement, secondElement) => (secondElement.comments.length - firstElement.comments.length)
 );
 
-const debounceDrawPictures =
-  debounce(
-    (posts, onFilter) => {
-      drawPictures(onFilter(posts));
-    },
-    DEBOUNCE_DELAY);
+const changeFilter = (filterId) => {
+  const filterHandler = filterHandlerOption[filterId];
+  if (!filterHandler) {
+    throw new Error(`Тип фильтра ${filterId} не настроен!`);
+  }
+  drawPictures(filterHandler(currentPosts));
+};
+
+const debounceChangeFilter = debounce(changeFilter, DEBOUNCE_DELAY);
 
 const initFilterPosts = (posts) => {
-  const onFilterOption = {};
-  onFilterOption[filterDefaultId] = (value) => value;
-  onFilterOption[filterRandomId] = getRandomPosts;
-  onFilterOption[filterDiscussedId] = getDiscussedPosts;
+  currentPosts = posts;
+  filterHandlerOption[filterDefaultId] = (value) => value;
+  filterHandlerOption[filterRandomId] = getRandomPosts;
+  filterHandlerOption[filterDiscussedId] = getDiscussedPosts;
 
-  showFilter((filterId) => {
-    const onFilter = onFilterOption[filterId];
-    if (!onFilter) {
-      throw new Error(`Тип фильтра ${filterId} не настроен!`);
-    }
-
-    debounceDrawPictures(posts, onFilter);
-  });
+  showFilter(debounceChangeFilter);
 };
 
 export { initFilterPosts };

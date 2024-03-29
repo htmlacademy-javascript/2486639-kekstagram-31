@@ -1,71 +1,48 @@
-import { isEnterKey } from '../util/util.js';
-import { updateClassList, stopPropagationIfEscapeKey } from './../util/dom.js';
-import { openBasicModal } from './../basic-modal.js';
-import { hiddenClass } from './../elements.js';
+import { isEnterKey, stopPropagationIfEscapeKey, elementScrollAtBottom } from '../util/util.js';
+import { createComment } from '../update-posts.js';
 import {
-  bigPictureElement, closePictureElement, commentCountElement, likesCountElement,
+  bigPictureElement, closePictureElement, likesCountElement,
   commentsLoaderElement, footerTextElement, footerButtonElement
 } from './elements.js';
-import {
-  drawBigPicture, clearBigPicture, drawMoreComments,
-  drawNewComment, updateLikesCount, isAllCommentsShown
-} from './big-picture.js';
+import { openBasicModal } from './../basic-modal.js';
+import { drawBigPicture, clearBigPicture, updateLikesCount } from './big-picture.js';
+import { drawFirstComments, drawMoreComments, clearComments, drawNewComment } from './comments.js';
 
-const SCROLL_ON_DOWN_DELAY = 4000;
-
+const SCROLL_AT_BOTTOM_DELAY = 4000;
 let scrollTimeout;
-
-const updateCommentsLoaderVisible = () => {
-  const isAllCommentsShow = isAllCommentsShown();
-  // Скроем надпись и ссылку, т.к. все комментарии загружены
-  updateClassList(commentCountElement, hiddenClass, isAllCommentsShow);
-  updateClassList(commentsLoaderElement, hiddenClass, isAllCommentsShow);
-};
 
 const loadMoreComments = () => {
   if (document.activeElement !== footerTextElement) {
     drawMoreComments();
-    updateCommentsLoaderVisible();
   }
 };
 
 const addComment = () => {
   const message = footerTextElement.value.trim();
   if (message) {
-    const comment = {
-      id: 0,
-      avatar: 'img/avatar-1.svg',
-      message: message,
-      name: 'Гость'
-    };
-
     footerTextElement.value = '';
+    const comment = createComment(0, 'img/avatar-1.svg', message, 'Гость');
     drawNewComment(comment);
+    bigPictureElement.scrollTo(scrollX, bigPictureElement.scrollHeight);
     //!! обновить информацию в миниатюре...
   }
 };
 
 const onBigPictureElementScroll = (evt) => {
-  const offsetHeight = evt.target.offsetHeight;
-  const scrollHeight = evt.target.scrollHeight;
-  const scrollTop = evt.target.scrollTop;
-  const offsetTotal = scrollTop + offsetHeight;
-
   clearTimeout(scrollTimeout);
-  // на разных расширениях offsetTotal и scrollHeight не совпадают
-  if (Math.abs(offsetTotal - scrollHeight) < 1) {
-    scrollTimeout = setTimeout(loadMoreComments, SCROLL_ON_DOWN_DELAY);
+  if (elementScrollAtBottom(evt.target)) {
+    scrollTimeout = setTimeout(loadMoreComments, SCROLL_AT_BOTTOM_DELAY);
   }
-};
-
-const onCommentsLoaderElementClick = (evt) => {
-  evt.preventDefault();
-  loadMoreComments();
 };
 
 const onLikesCountElementClick = (evt) => {
   evt.preventDefault();
   updateLikesCount();
+};
+
+const onCommentsLoaderElementClick = (evt) => {
+  evt.preventDefault();
+  loadMoreComments();
 };
 
 const onFooterTextElementKeydown = (evt) => {
@@ -82,19 +59,26 @@ const onFooterButtonElementClick = (evt) => {
   addComment();
 };
 
-const initBigPictureModal = () => {
+const afterCloseModal = () => {
   clearBigPicture();
-  bigPictureElement.addEventListener('scroll', onBigPictureElementScroll);
-  commentsLoaderElement.addEventListener('click', onCommentsLoaderElementClick);
-  likesCountElement.addEventListener('click', onLikesCountElementClick);
-  footerTextElement.addEventListener('keydown', onFooterTextElementKeydown);
-  footerButtonElement.addEventListener('click', onFooterButtonElementClick);
+  clearComments();
 };
 
+
 const openBigPictureModal = (post) => {
-  openBasicModal(bigPictureElement, closePictureElement, clearBigPicture);
+  openBasicModal(bigPictureElement, closePictureElement, afterCloseModal);
   drawBigPicture(post);
-  updateCommentsLoaderVisible();
+  drawFirstComments(post.comments);
+};
+
+const initBigPictureModal = () => {
+  clearBigPicture();
+  clearComments();
+  bigPictureElement.addEventListener('scroll', onBigPictureElementScroll);
+  likesCountElement.addEventListener('click', onLikesCountElementClick);
+  commentsLoaderElement.addEventListener('click', onCommentsLoaderElementClick);
+  footerTextElement.addEventListener('keydown', onFooterTextElementKeydown);
+  footerButtonElement.addEventListener('click', onFooterButtonElementClick);
 };
 
 export { initBigPictureModal, openBigPictureModal };

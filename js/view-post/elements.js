@@ -14,7 +14,7 @@ const imageElement = bigPicturePreviewElement.querySelector('.big-picture__img i
 const socialElement = bigPicturePreviewElement.querySelector('.big-picture__social');
 const likesCountElement = socialElement.querySelector('.likes-count');
 const commentCountElement = socialElement.querySelector('.social__comment-count');
-const commentShowCountElement = commentCountElement.querySelector('.social__comment-shown-count');
+const commentShownCountElement = commentCountElement.querySelector('.social__comment-shown-count');
 const commentTotalCountElement = commentCountElement.querySelector('.social__comment-total-count');
 const captionElement = socialElement.querySelector('.social__caption');
 const footerTextElement = socialElement.querySelector('.social__footer-text');
@@ -31,7 +31,7 @@ export {
   imageElement,
   likesCountElement,
   commentCountElement,
-  commentShowCountElement,
+  commentShownCountElement,
   commentTotalCountElement,
   captionElement,
   footerTextElement,

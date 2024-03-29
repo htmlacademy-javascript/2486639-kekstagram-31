@@ -1,15 +1,15 @@
 import { isEscapeKey } from './util/util.js';
 import { hiddenClass, modalOpenClass } from './elements.js';
 
-const modalSetting = {
+const basicModalSetting = {
   element: null,
   closeElement: null,
   afterCloseModal: null,
-  canClose: null
+  canCloseModal: null
 };
 
 const closeBasicModal = (isEscapeKeyPress = false) => {
-  const { element, closeElement, afterCloseModal } = modalSetting;
+  const { element, closeElement, afterCloseModal } = basicModalSetting;
   if (element.scrollTop !== 0) {
     element.scrollTo(0, 0); // + Баг, если модальное окно прокрутить, то при следующих открытиях прокрутка вниз остаеться
   }
@@ -20,12 +20,12 @@ const closeBasicModal = (isEscapeKeyPress = false) => {
   afterCloseModal?.(isEscapeKeyPress);
 };
 
-const openBasicModal = (element, closeElement, afterCloseModal = null, canClose = null) => {
+const openBasicModal = (element, closeElement, afterCloseModal = null, canCloseModal = null) => {
   element.classList.remove(hiddenClass);
   document.body.classList.add(modalOpenClass);
   closeElement?.addEventListener('click', onCloseElementClick);
   document.addEventListener('keydown', onDocumentKeydown);
-  Object.assign(modalSetting, { element, closeElement, afterCloseModal, canClose });
+  Object.assign(basicModalSetting, { element, closeElement, afterCloseModal, canCloseModal });
 };
 
 function onCloseElementClick() {
@@ -34,8 +34,8 @@ function onCloseElementClick() {
 
 function onDocumentKeydown(evt) {
   if (isEscapeKey(evt)) {
-    const { canClose } = modalSetting;
-    if (!canClose || canClose()) {
+    const { canCloseModal } = basicModalSetting;
+    if (!canCloseModal || canCloseModal()) {
       evt.preventDefault();
       closeBasicModal(true);
     } else {

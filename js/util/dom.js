@@ -1,5 +1,3 @@
-import { isEscapeKey } from './util.js';
-
 const updateClassList = (element, className, isAdd = true) => {
   if (isAdd) {
     element.classList.add(className);
@@ -78,12 +76,6 @@ const disableButton = (buttonElement, text) => {
   updateButtonEnabled(buttonElement, false, text);
 };
 
-const stopPropagationIfEscapeKey = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
-};
-
 export {
   updateClassList,
   getTemplateElement,
@@ -92,6 +84,5 @@ export {
   createFragment,
   clearSelected,
   enableButton,
-  disableButton,
-  stopPropagationIfEscapeKey
+  disableButton
 };

@@ -1,11 +1,9 @@
 import { createFragment, removeChilds } from './util/dom.js';
-import {
-  pictureSelector, pictureChildsSelector, pictureTemplateElement, picturesContainerElement,
-} from './elements.js';
+import { pictureSelector, pictureChildsSelector, pictureTemplateElement, picturesContainerElement } from './elements.js';
 
-let onPictureClick;
+let pictureClick;
 
-const createElement = (post) => {
+const createPictureElement = (post) => {
   const { url, description, likes, comments } = post;
   const { image: imageSelector, likes: likesSelector, comments: commentsSelector } = pictureChildsSelector;
   const newElement = pictureTemplateElement.cloneNode(true);
@@ -19,19 +17,19 @@ const createElement = (post) => {
   const onNewElementClick = (evt) => {
     evt.preventDefault();
     evt.currentTarget.blur(); // Баг - не скрываеться элемент '.picture__info'
-    onPictureClick?.(post);
+    pictureClick?.(post);
   };
   newElement.addEventListener('click', onNewElementClick);
 
   return newElement;
 };
 
-const initDrawPictures = (openBigPictureModal) => {
-  onPictureClick = openBigPictureModal;
+const initDrawPictures = (onPictureClick) => {
+  pictureClick = onPictureClick;
 };
 
 const drawPictures = (posts) => {
-  const fragment = createFragment(posts, createElement);
+  const fragment = createFragment(posts, createPictureElement);
   //!! Ошибки при автотесте: пока тестирует форму публкации, то происходит получение данных и отрисовка постов,
   // а при замене элементов использовалась picturesContainerElement.replaceChildren(picturesTitleElement, picturesImgUploadElement, fragment)
   // элементы формы теряються и автотест выдает ошибку
