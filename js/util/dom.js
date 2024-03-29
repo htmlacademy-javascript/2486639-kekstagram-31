@@ -63,17 +63,17 @@ const clearSelected = () => {
   }
 };
 
-const updateEnabledButton = (buttonElement, enabled, text) => {
+const updateButtonEnabled = (buttonElement, enabled, text) => {
   buttonElement.disabled = !enabled;
   buttonElement.textContent = text;
 };
 
 const enableButton = (buttonElement, text) => {
-  updateEnabledButton(buttonElement, true, text);
+  updateButtonEnabled(buttonElement, true, text);
 };
 
 const disableButton = (buttonElement, text) => {
-  updateEnabledButton(buttonElement, false, text);
+  updateButtonEnabled(buttonElement, false, text);
 };
 
 export {

@@ -14,10 +14,12 @@ const imageElement = bigPicturePreviewElement.querySelector('.big-picture__img i
 const socialElement = bigPicturePreviewElement.querySelector('.big-picture__social');
 const likesCountElement = socialElement.querySelector('.likes-count');
 const commentCountElement = socialElement.querySelector('.social__comment-count');
-const commentShowCountElement = commentCountElement.querySelector('.social__comment-shown-count');
+const commentShownCountElement = commentCountElement.querySelector('.social__comment-shown-count');
 const commentTotalCountElement = commentCountElement.querySelector('.social__comment-total-count');
 const captionElement = socialElement.querySelector('.social__caption');
-const commentsContainerElement = document.querySelector(socialSelectorList.сomments);
+const footerTextElement = socialElement.querySelector('.social__footer-text');
+const footerButtonElement = socialElement.querySelector('.social__footer-btn');
+const commentsContainerElement = bigPicturePreviewElement.querySelector(socialSelectorList.сomments);
 const commentTemplateElement = getFirstElementChild(socialSelectorList.сomments);
 
 export {
@@ -29,9 +31,11 @@ export {
   imageElement,
   likesCountElement,
   commentCountElement,
-  commentShowCountElement,
+  commentShownCountElement,
   commentTotalCountElement,
   captionElement,
+  footerTextElement,
+  footerButtonElement,
   commentsContainerElement,
   commentTemplateElement
 };

@@ -1,4 +1,4 @@
-import { roundOneSignNumber } from './../util/util.js';
+import { roundToTenths } from './../util/util.js';
 import { updateClassList } from './../util/dom.js';
 import { hiddenClass } from './../elements.js';
 import {
@@ -9,8 +9,8 @@ import { defaultSliderOption, effectList } from './effect-list.js';
 
 let currentEffect;
 
-const formatSliderOption = {
-  to: roundOneSignNumber,
+const sliderFormatOption = {
+  to: roundToTenths,
   from: parseFloat
 };
 
@@ -18,33 +18,32 @@ const updateSliderVisible = () => {
   updateClassList(effectLevelElement, hiddenClass, !currentEffect);
 };
 
-const applyEffectOption = () => {
+const applyEffect = () => {
   if (currentEffect) {
     const { filterType, filterUnit } = currentEffect;
-    const filter = `${filterType}(${effectLevelInputlement.value}${filterUnit})`;
-    imageUploadPreviewElement.style.setProperty('filter', filter);
+    imageUploadPreviewElement.style.setProperty('filter', `${filterType}(${effectLevelInputlement.value}${filterUnit})`);
   } else {
     imageUploadPreviewElement.style.removeProperty('filter');
   }
 };
 
-const resetEffect = (needApply = true) => {
+const resetEffect = (needApplyEffect = true) => {
   currentEffect = null;
   updateSliderVisible();
-  if (needApply) {
-    applyEffectOption();
+  if (needApplyEffect) {
+    applyEffect();
   }
 };
 
 const onEffectLevelSliderElementUpdate = () => {
   effectLevelInputlement.value = effectLevelSliderElement.noUiSlider.get();
-  applyEffectOption();
+  applyEffect();
 };
 
 const onEffectsListElementChange = (evt) => {
-  const newEffectOption = effectList[evt.target.value];
-  if (newEffectOption !== currentEffect) {
-    currentEffect = newEffectOption;
+  const newEffect = effectList[evt.target.value];
+  if (newEffect !== currentEffect) {
+    currentEffect = newEffect;
     // видимость слайдера
     updateSliderVisible();
     // смена слайдера, т.к. в насройках есть start, то дополнительно не вызываю noUiSlider.set
@@ -57,7 +56,7 @@ const onEffectsListElementChange = (evt) => {
 const initEffect = () => {
   resetEffect(false);
   noUiSlider.create(effectLevelSliderElement, defaultSliderOption);
-  effectLevelSliderElement.noUiSlider.updateOptions({ format: formatSliderOption });
+  effectLevelSliderElement.noUiSlider.updateOptions({ format: sliderFormatOption });
   effectLevelSliderElement.noUiSlider.on('update', onEffectLevelSliderElementUpdate);
   effectsListElement.addEventListener('change', onEffectsListElementChange);
 };

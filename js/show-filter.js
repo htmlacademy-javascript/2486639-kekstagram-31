@@ -1,6 +1,6 @@
 import { filterInactiveClass, filterButtonActiveClass, filtersContainerElement, filterButtonElements } from './elements.js';
 
-const getOnButtonClick = (onChangeFilter) => (evt) => {
+const getOnFilterButtonClick = (onChangeFilter) => (evt) => {
   const buttonElement = evt.currentTarget;
   // проверка на активный фильтр
   if (!buttonElement.classList.contains(filterButtonActiveClass)) {
@@ -19,7 +19,7 @@ const showFilter = (onChangeFilter) => {
 
   filterButtonElements.forEach(
     (element) => {
-      element.addEventListener('click', getOnButtonClick(onChangeFilter));
+      element.addEventListener('click', getOnFilterButtonClick(onChangeFilter));
     }
   );
 };

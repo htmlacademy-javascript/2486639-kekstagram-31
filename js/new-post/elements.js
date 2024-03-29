@@ -9,12 +9,16 @@ const pristineClassList = {
 
 const messageOption = {
   success: {
+    templateElement: getTemplateElement('#success'),
+    innerSelector: '.success__inner',
+    titleSelector: '.success__title',
     buttonSelector: '.success__button',
-    innerSelector: '.success__inner'
   },
   error: {
+    templateElement: getTemplateElement('#error'),
+    innerSelector: '.error__inner',
+    titleSelector: '.error__title',
     buttonSelector: '.error__button',
-    innerSelector: '.error__inner'
   }
 };
 
@@ -34,8 +38,6 @@ const effectsListElement = uploadImageFormElement.querySelector('.effects__list'
 const effectLevelElement = uploadImageFormElement.querySelector('.img-upload__effect-level');
 const effectLevelSliderElement = effectLevelElement.querySelector('.effect-level__slider');
 const effectLevelInputlement = effectLevelElement.querySelector('.effect-level__value');
-const successTemplateElement = getTemplateElement('#success');
-const errorTemplateElement = getTemplateElement('#error');
 
 export {
   pristineClassList,
@@ -55,7 +57,5 @@ export {
   effectsListElement,
   effectLevelElement,
   effectLevelSliderElement,
-  effectLevelInputlement,
-  successTemplateElement,
-  errorTemplateElement
+  effectLevelInputlement
 };

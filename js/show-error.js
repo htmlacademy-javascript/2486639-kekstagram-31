@@ -1,6 +1,6 @@
 import { errorTemplateElement } from './elements.js';
 
-const SHOW_ERROR_MILLISECOND = 5 * 1000;
+const SHOW_ERROR_MILLISECOND = 5000;
 
 const showError = () => {
   const errorElement = errorTemplateElement.cloneNode(true);
@@ -8,7 +8,8 @@ const showError = () => {
   setTimeout(
     () => {
       errorElement.remove();
-    }, SHOW_ERROR_MILLISECOND);
+    },
+    SHOW_ERROR_MILLISECOND);
 };
 
 export { showError };

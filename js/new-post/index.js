@@ -1,104 +1,86 @@
-import { isEscapeKey } from './../util/util.js';
 import { isImageFileType } from '../util/file-types.js';
 import { enableButton, disableButton } from './../util/dom.js';
+import { sendPost } from './../api.js';
+import { createPost } from './../update-posts.js';
 import {
-  effectsPreviewSelector, uploadImageFormElement, uploadSubmitElement, imageUploadOverlayElement,
-  imageUploadInputElement, imageUploadPreviewElement, imageUploadCancelElement,
-  hashtagsInputElement, descriptionInputElement, effectsListElement
+  uploadImageFormElement, uploadSubmitElement, imageUploadOverlayElement,
+  imageUploadInputElement, imageUploadPreviewElement, imageUploadCancelElement
 } from './elements.js';
 import { openBasicModal, closeBasicModal } from './../basic-modal.js';
-import { initScale, resetScale } from './scale.js';
-import { initEffect, resetEffect } from './effect.js';
-import { initValidate, resetValidate, checkValidate } from './validate.js';
-import { sendPost } from './../api.js';
+import { initFormInputs, isValidatedFormInputs, resetFormInputs, updateEffectsBackgroundImage } from './form-inputs.js';
 import { showSuccessMessage, showErrorMessage } from './show-message.js';
 
-const ERROR_IMAGE_SRC = 'img/logo-mask.png';
-
-const submitText = {
+const submitTextOption = {
   enabled: uploadSubmitElement.textContent,
-  disabled: 'Публикую...',
-  //disabled: 'Сохраняю...',
-  notImage: 'Файл не картинка!'
+  disabled: 'Публикую...'
 };
 
-let canClose;
+const newPostSetting = {
+  onAfterSuccessUpload: null,
+  canCloseModal: true
+};
 
-const afterCloseNewPostModal = (_, exitByEscapeKey) => {
-  if (exitByEscapeKey) {
+const canCloseModal = () => newPostSetting.canCloseModal;
+
+const afterCloseModal = (isEscapeKeyPress) => {
+  if (isEscapeKeyPress) {
     uploadImageFormElement.reset();
   }
 };
 
 const updateImagePreview = (previewImageURL = '') => {
   imageUploadPreviewElement.src = previewImageURL;
-
-  effectsListElement.querySelectorAll(effectsPreviewSelector).forEach((element) => {
-    element.style.backgroundImage = `url(${previewImageURL})`;
-  });
+  updateEffectsBackgroundImage(previewImageURL);
 };
 
-const onElementEscapeKeyDown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
-};
-
-const onUploadImageFormClick = () => {
+const onUploadImageFormReset = () => {
   updateImagePreview();
-  resetScale();
-  resetEffect();
-  resetValidate();
+  resetFormInputs();
 };
 
 const onUploadImageFormSubmit = async (evt) => {
   evt.preventDefault();
 
-  if (checkValidate()) {
-    disableButton(uploadSubmitElement, submitText.disabled);
+  if (isValidatedFormInputs()) {
+    disableButton(uploadSubmitElement, submitTextOption.disabled);
     try {
-      await sendPost(new FormData(evt.target));
+      const sendResult = await sendPost(new FormData(uploadImageFormElement));
+      //!! вместо previewImageURL взять бы блоб изображения из imageUploadPreviewElement
+      const post = createPost(null, imageUploadPreviewElement.src, sendResult.description, sendResult.hashtags);
+      newPostSetting.onAfterSuccessUpload?.(post);
+      //
       uploadImageFormElement.reset();
       closeBasicModal();
       showSuccessMessage();
     } catch {
-      canClose = false;
-      showErrorMessage(() => {
-        canClose = true;
+      newPostSetting.canCloseModal = false;
+      showErrorMessage('', () => {
+        newPostSetting.canCloseModal = true;
       });
     } finally {
-      enableButton(uploadSubmitElement, submitText.enabled);
+      enableButton(uploadSubmitElement, submitTextOption.enabled);
     }
   }
 };
 
 const onImageUploadInputElementChange = () => {
-  openBasicModal(imageUploadOverlayElement, imageUploadCancelElement, afterCloseNewPostModal, () => canClose);
-
   const file = imageUploadInputElement.files[0];
-  let previewImageURL = ERROR_IMAGE_SRC;
 
   if (isImageFileType(file.name)) {
-    previewImageURL = URL.createObjectURL(file);
-    enableButton(uploadSubmitElement, submitText.enabled);
+    updateImagePreview(URL.createObjectURL(file));
+    openBasicModal(imageUploadOverlayElement, imageUploadCancelElement, afterCloseModal, canCloseModal);
   } else {
-    disableButton(uploadSubmitElement, submitText.notImage);
+    imageUploadPreviewElement.src = '';
+    showErrorMessage('Выбранный файл не изображение!');
   }
-
-  updateImagePreview(previewImageURL);
 };
 
-const initNewPostModal = () => {
-  canClose = true;
+const initNewPostModal = (onAfterSuccessUpload) => {
+  newPostSetting.onAfterSuccessUpload = onAfterSuccessUpload;
   imageUploadInputElement.addEventListener('change', onImageUploadInputElementChange);
-  hashtagsInputElement.addEventListener('keydown', onElementEscapeKeyDown);
-  descriptionInputElement.addEventListener('keydown', onElementEscapeKeyDown);
-  uploadImageFormElement.addEventListener('reset', onUploadImageFormClick);
+  uploadImageFormElement.addEventListener('reset', onUploadImageFormReset);
   uploadImageFormElement.addEventListener('submit', onUploadImageFormSubmit);
-
-  initScale();
-  initEffect();
-  initValidate();
+  initFormInputs();
 };
 
 export { initNewPostModal };

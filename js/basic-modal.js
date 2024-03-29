@@ -1,41 +1,43 @@
 import { isEscapeKey } from './util/util.js';
 import { hiddenClass, modalOpenClass } from './elements.js';
 
-const modalSetting = {
+const basicModalSetting = {
   element: null,
   closeElement: null,
   afterCloseModal: null,
-  canClose: null
+  canCloseModal: null
 };
 
-const closeBasicModal = (evt, exitByEscapeKey = false) => {
-  const { element, closeElement, afterCloseModal } = modalSetting;
-  element.scrollTo(scrollX, 0); // + Баг, если модальное окно прокрутить, то при следующих открытиях прокрутка вниз остаеться
+const closeBasicModal = (isEscapeKeyPress = false) => {
+  const { element, closeElement, afterCloseModal } = basicModalSetting;
+  if (element.scrollTop !== 0) {
+    element.scrollTo(0, 0); // + Баг, если модальное окно прокрутить, то при следующих открытиях прокрутка вниз остаеться
+  }
   element.classList.add(hiddenClass);
   document.body.classList.remove(modalOpenClass);
   closeElement?.removeEventListener('click', onCloseElementClick);
   document.removeEventListener('keydown', onDocumentKeydown);
-  afterCloseModal?.(evt, exitByEscapeKey);
+  afterCloseModal?.(isEscapeKeyPress);
 };
 
-const openBasicModal = (element, closeElement, afterCloseModal = null, canClose = null) => {
+const openBasicModal = (element, closeElement, afterCloseModal = null, canCloseModal = null) => {
   element.classList.remove(hiddenClass);
   document.body.classList.add(modalOpenClass);
   closeElement?.addEventListener('click', onCloseElementClick);
   document.addEventListener('keydown', onDocumentKeydown);
-  Object.assign(modalSetting, { element, closeElement, afterCloseModal, canClose });
+  Object.assign(basicModalSetting, { element, closeElement, afterCloseModal, canCloseModal });
 };
 
-function onCloseElementClick(evt) {
-  closeBasicModal(evt);
+function onCloseElementClick() {
+  closeBasicModal();
 }
 
 function onDocumentKeydown(evt) {
   if (isEscapeKey(evt)) {
-    const { canClose } = modalSetting;
-    if (!canClose || canClose()) {
+    const { canCloseModal } = basicModalSetting;
+    if (!canCloseModal || canCloseModal()) {
       evt.preventDefault();
-      closeBasicModal(evt, true);
+      closeBasicModal(true);
     } else {
       evt.stopPropagation();
     }

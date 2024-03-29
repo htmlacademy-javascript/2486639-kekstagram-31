@@ -24,7 +24,6 @@ const sendRequest = async (route, method = Method.GET, body = null) => {
 
 const getPosts = () => sendRequest(Route.GET_POSTS);
 
-
 const sendPost = (formData) => sendRequest(Route.SEND_POST, Method.POST, formData);
 
 export { getPosts, sendPost };
